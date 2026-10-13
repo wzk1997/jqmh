@@ -1,7 +1,7 @@
 module.exports = {
-	PROJECT_COLOR: '#00C176',
-	NAV_COLOR: '#ffffff',
-	NAV_BG: '#00C176',
+	PROJECT_COLOR: '#116b60',
+	NAV_COLOR: '#000000',
+	NAV_BG: '#ffffff',
 
 	// setup
 	SETUP_CONTENT_ITEMS: [

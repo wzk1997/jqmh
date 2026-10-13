@@ -1,3 +1,4 @@
+const {getChrome}=require('../../../../ui/navigation_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
 const cacheHelper = require('../../../../../../helper/cache_helper.js');
@@ -7,11 +8,13 @@ const projectSetting = require('../../../../public/project_setting.js');
 const CACHE_USER_CHECK_REASON = 'CACHE_USER_CHECK_REASON';
 
 Page({
+    bindScenicLayout(e){this.setData({uiChrome:e.detail});},
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        uiChrome:getChrome(),
 		userRegCheck: projectSetting.USER_REG_CHECK,
 		checkModalShow: false,
 

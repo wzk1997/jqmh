@@ -1,3 +1,4 @@
+<scenic-nav-bar title="修改管理员" bind:layout="bindScenicLayout"/>
 <view wx:if="{{isLoad===null}}" class="margin-top load notexist text-l text-admin"></view>
 <view wx:if="{{isLoad===false}}" class="margin-top load loading text-l text-admin"></view>
 
@@ -35,6 +36,7 @@
 
 	</view>
 
+	<button bindtap="url" data-url="../permissions/admin_permissions?id={{id}}" class="btn-admin margin-top">配置操作权限</button>
 	<button bindtap="bindFormSubmit" class="btn-admin margin-top">确定修改</button>
 
 </view>

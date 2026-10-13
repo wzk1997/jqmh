@@ -581,6 +581,22 @@ async function getList(collectionName, where, fields = '*', orderBy = {}, page =
 	return data;
 }
 
+// Server-authored expressions only; computed values are never persisted.
+async function getListComputed(collectionName, where, fields, computed, orderBy, page = 1, size = DEFAULT_RECORD_SIZE, isTotal = true, oldTotal = 0) {
+    const data = { page, size };
+    let offset = 0;
+    if (isTotal) {
+        data.total = await count(collectionName, where);
+        data.count = Math.ceil(data.total / size);
+        if (page > 1 && oldTotal > 0) offset = Math.max(0, data.total - oldTotal);
+    }
+    let query = db.collection(collectionName).aggregate().match(fmtWhere(where))
+        .addFields(computed).sort(fmtJoinSort(orderBy)).skip((page - 1) * size + offset).limit(size);
+    if (fields && fields !== '*') query = query.project(fmtFields(fields));
+    data.list = (await query.end()).list;
+    return data;
+}
+
 async function getAllBig(collectionName, where, fields = '*', orderBy, size = MAX_RECORD_SIZE) {
 	size = Number(size);
 	if (size > MAX_RECORD_SIZE) size = MAX_RECORD_SIZE;
@@ -808,7 +824,7 @@ function fmtWhereSimple(arr) {
 		case 'like':
 			if (!util.isDefined(val) || !val) break; //无条件不搜索
 			where = {
-				$regex: val,
+				$regex: util.escapeRegex(val),
 				$options: 'i'
 			}
 			break;
@@ -856,6 +872,7 @@ module.exports = {
 
 	getAllByArray,
 	getList,
+    getListComputed,
 	getListJoin,
 	getListJoinCount,
 	getListByArray,

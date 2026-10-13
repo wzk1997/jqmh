@@ -4,9 +4,10 @@
 .main-admin {
 	width: 100%;
 	box-sizing: border-box;
-	padding: 0rpx 0rpx 30rpx; 
+	padding: 0rpx 0rpx 30rpx;
 }
 
 .table .table-form .oprt .min-btn {
 	padding: 5rpx 30rpx;
 }
+@import "../../../../style/admin_ui.wxss";

@@ -1,5 +1,5 @@
-@import "../../../style/skin.wxss";  
- 
+@import "../../../style/skin.wxss";
+
 
 .main {
 	padding: 0 0 20rpx;
@@ -46,7 +46,7 @@
 	width: 65rpx;
 	height: 65rpx;
 	border-radius: 10rpx;
-	position: relative; 
+	position: relative;
 }
 
 .main .list .item .title {
@@ -70,4 +70,5 @@
 	font-size: 28rpx;
 }
 
- 
+
+@import "../../../style/ui_common.wxss";

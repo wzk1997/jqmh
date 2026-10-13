@@ -1,3 +1,4 @@
+const {getChrome}=require('../../../../ui/navigation_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
 const cloudHelper = require('../../../../../../helper/cloud_helper.js');
@@ -7,11 +8,13 @@ const PublicBiz = require('../../../../../../comm/biz/public_biz.js');
 const projectSetting = require('../../../../public/project_setting.js');
 
 Page({
+    bindScenicLayout(e){this.setData({uiChrome:e.detail});},
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        uiChrome:getChrome(),
 		isLoad: false,
 	},
 
@@ -19,6 +22,9 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: async function (options) {
+        if (!AdminBiz.isAdmin(this)) return;
+        wx.redirectTo({url:'/projects/TRIP1/pages/admin/cms/edit/cms_edit?module=news' + (options && options.id ? '&id='+options.id : '')});
+        return;
 		if (!AdminBiz.isAdmin(this)) return;
 		if (!pageHelper.getOptions(this, options)) return;
 

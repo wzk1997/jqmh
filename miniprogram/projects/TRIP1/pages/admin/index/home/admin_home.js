@@ -1,3 +1,4 @@
+const cms=require('../../../../ui/cms_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
 const cloudHelper = require('../../../../../../helper/cloud_helper.js');
@@ -7,7 +8,8 @@ Page({
 	/**
 	 * 页面的初始数据
 	 */
-	data: {},
+	data: {modules:[{id:'scenic',title:'景区简介',icon:'icon-home'},{id:'album',title:'园区攻略',icon:'icon-pic'},{id:'merchant',title:'吃住行',icon:'icon-shop'},{id:'panorama',title:'全景图',icon:'icon-camera'},{id:'news',title:'活动资讯',icon:'icon-form'},{id:'feedback',title:'客户反馈',icon:'icon-edit'}]},
+    openModule(e){const id=e.currentTarget.dataset.id;wx.navigateTo({url:id==='feedback'?'/projects/TRIP1/pages/admin/feedback/admin_feedback':'/projects/TRIP1/pages/admin/cms/list/cms_list?module='+id});},
 
 	/**
 	 * 生命周期函数--监听页面加载
@@ -31,7 +33,9 @@ Page({
 		let admin = AdminBiz.getAdminToken();
 		this.setData({
 			isLoad: true,
-			admin
+			admin,
+            modules:this.data.modules.filter(module=>cms.can(admin,module.id,'read')),
+            canProduct:cms.can(admin,'product','read'),canScenic:cms.can(admin,'scenic','read')
 		});
 
 		try {
@@ -40,7 +44,7 @@ Page({
 			}
 			let res = await cloudHelper.callCloudData('admin/home', {}, opts);
 			this.setData({
-				stat: res
+				stat: Array.isArray(res) ? res.filter(item => item.title !== '预约项目') : []
 			});
 
 		} catch (err) {

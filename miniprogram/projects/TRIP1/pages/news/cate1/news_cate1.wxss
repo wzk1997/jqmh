@@ -1,2 +1,9 @@
-@import "../../../../../style/public/comm_box_list.wxss";
-@import "../../../style/skin.wxss"; 
+@import "../../../style/skin.wxss";
+.news-list { padding: 24rpx 32rpx 0; }
+.news-card { display: flex; width: 100%; background: white; border-radius: 24rpx; padding: 24rpx; margin-bottom: 20rpx; }
+.news-cover { width: 190rpx; height: 184rpx; flex-shrink: 0; border-radius: 16rpx; }
+.news-placeholder { display: flex; align-items: center; justify-content: center; font-size: 48rpx; color: var(--wt-brand); background: var(--wt-brand-soft); }
+.news-copy { flex: 1; min-width: 0; margin-left: 24rpx; }
+.news-title { font-size: 30rpx; font-weight: 600; line-height: 1.5; }
+.news-desc { color: var(--wt-muted); font-size: 25rpx; line-height: 1.7; margin-top: 10rpx; }
+.news-meta { margin-top: 20rpx; display: flex; justify-content: space-between; align-items: center; color: var(--wt-muted); font-size: 22rpx; }

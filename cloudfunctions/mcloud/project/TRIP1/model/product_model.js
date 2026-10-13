@@ -15,6 +15,9 @@ class ProductModel extends BaseProjectModel {
 ProductModel.CL = BaseProjectModel.C('product');
 
 ProductModel.DB_STRUCTURE = {
+    _id: 'string|false',
+    PRODUCT_DEMO: 'bool|false|default=false',
+    PRODUCT_DRAFT: 'object|false|default={}',
 	_pid: 'string|true',
 	PRODUCT_ID: 'string|true',
 
@@ -37,6 +40,13 @@ ProductModel.DB_STRUCTURE = {
 	PRODUCT_EDIT_TIME: 'int|true',
 	PRODUCT_ADD_IP: 'string|false',
 	PRODUCT_EDIT_IP: 'string|false',
+    PRODUCT_CMS_STATE: 'string|false|default=|comment=draft/published/offline/deleted',
+    PRODUCT_PUBLISH_TIME: 'int|false|default=0',
+    PRODUCT_DELETED: 'bool|false|default=false',
+    PRODUCT_DELETED_TIME: 'int|false|default=0',
+    PRODUCT_EDIT_ADMIN: 'string|false',
+    PRODUCT_REVISION: 'int|false|default=0',
+
 };
 
 // 字段前缀

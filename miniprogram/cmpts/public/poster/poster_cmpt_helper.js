@@ -7,6 +7,8 @@ async function config1({
 	qr,
 	bg = ''
 }) {
+    cover = typeof cover === 'string' ? cover : '';
+    qr = typeof qr === 'string' ? qr : '';
 	if (cover.startsWith('cloud'))
 		cover = await cloudHelper.getTempFileURLOne(cover);
 

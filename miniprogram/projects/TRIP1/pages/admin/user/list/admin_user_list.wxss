@@ -2,8 +2,9 @@
 
 page {
 	background-color: #f8f8f8;
-} 
+}
 
-.admin-comm-list .item .info .oprt { 
+.admin-comm-list .item .info .oprt {
     padding: 0rpx 0rpx;
 }
+@import "../../../../style/admin_ui.wxss";

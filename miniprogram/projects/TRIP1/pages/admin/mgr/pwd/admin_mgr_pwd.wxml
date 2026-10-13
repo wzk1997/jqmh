@@ -1,3 +1,4 @@
+<scenic-nav-bar title="管理员密码修改" bind:layout="bindScenicLayout"/>
 <view class="main-admin" wx:if="{{isAdmin}}"> 
 	 
 	<view class="form-box shadow"> 

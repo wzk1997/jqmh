@@ -23,7 +23,13 @@ class MultiModel extends Model {
 					_id: where,
 					_pid: util.getProjectId()
 				};
-			} else
+			} else if (where.and || where.or) {
+                // fmtWhere only retains and/or for compound queries. Put tenancy
+                // and all ordinary constraints inside and so they cannot be lost.
+                const ordinary = {};
+                for (const key of Object.keys(where)) if (!['and','or'].includes(key)) ordinary[key] = where[key];
+                where = { ...(where.or ? {or:where.or} : {}), and:{...ordinary,...(where.and || {}),_pid:util.getProjectId()} };
+            } else
 				where._pid = util.getProjectId();
 		}
 		return where;
@@ -48,9 +54,9 @@ class MultiModel extends Model {
 		return await super.getOne(where, fields, orderBy);
 	}
 
-	static async edit(where, data, mustPID = true) {
+	static async edit(where, data, mustPID = true, replaceFields = []) {
 		where = MultiModel._getWhere(where, mustPID);
-		return await super.edit(where, data);
+		return await super.edit(where, data, replaceFields);
 	}
 
 	static async editForms(where, formName, objName, hasImageForms, mustPID = true) {

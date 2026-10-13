@@ -20,25 +20,13 @@ class BaseAdminService extends BaseService {
 	/** 是否管理员 */
 	async isAdmin(token) {
 
-		if (config.IS_DEMO) { // 演示版本
-			let admin = {};
-			admin.ADMIN_NAME = 'demo-admin';
-			admin.ADMIN_DESC = '体验用户';
-			admin.ADMIN_ID = '1';
-			admin.ADMIN_PHONE = '13900000000';
-			admin.ADMIN_LOGIN_CNT = 0;
-			admin.ADMIN_LOGIN_TIME = '';
-			admin.ADMIN_TYPE = 0;
-			admin.ADMIN_STATUS = 1;
-			return admin;
-		}
-
+		if (typeof token !== 'string' || !token.trim()) this.AppError('请先登录管理后台', appCode.ADMIN_ERROR);
 		let where = {
 			ADMIN_TOKEN: token,
 			ADMIN_TOKEN_TIME: ['>', timeUtil.time() - config.ADMIN_LOGIN_EXPIRE * 1000], // token有效时间
-			ADMIN_STATUS: 1,
+			ADMIN_STATUS: 1, ADMIN_DELETED: ['<>',true],
 		}
-		let admin = await AdminModel.getOne(where, 'ADMIN_ID,ADMIN_PHONE,ADMIN_NAME,ADMIN_TYPE,ADMIN_DESC');
+		let admin = await AdminModel.getOne(where, 'ADMIN_ID,ADMIN_PHONE,ADMIN_NAME,ADMIN_TYPE,ADMIN_DESC,ADMIN_PERMISSIONS');
 		if (!admin)
 			this.AppError('管理员不存在', appCode.ADMIN_ERROR);
 
@@ -48,13 +36,14 @@ class BaseAdminService extends BaseService {
 	/** 是否超级管理员 */
 	async isSuperAdmin(token) {
 
+		if (typeof token !== 'string' || !token.trim()) this.AppError('请先登录管理后台', appCode.ADMIN_ERROR);
 		let where = {
 			ADMIN_TOKEN: token,
 			ADMIN_TOKEN_TIME: ['>', timeUtil.time() - config.ADMIN_LOGIN_EXPIRE * 1000], // token有效时间
-			ADMIN_STATUS: 1,
+			ADMIN_STATUS: 1, ADMIN_DELETED: ['<>',true],
 			ADMIN_TYPE: 1
 		}
-		let admin = await AdminModel.getOne(where, 'ADMIN_ID,ADMIN_PHONE,ADMIN_NAME,ADMIN_TYPE');
+		let admin = await AdminModel.getOne(where, 'ADMIN_ID,ADMIN_PHONE,ADMIN_NAME,ADMIN_TYPE,ADMIN_DESC,ADMIN_PERMISSIONS');
 		if (!admin)
 			this.AppError('超级管理员不存在', appCode.ADMIN_ERROR);
 

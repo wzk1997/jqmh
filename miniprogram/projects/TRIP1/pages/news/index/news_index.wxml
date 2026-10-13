@@ -1,2 +1,8 @@
-<import src="../../../../../tpls/project/news_index_tpl.wxml" />
-<template is="newsIndexTpl" data="{{showUp:false,upImg:'',dataList,_params,search,listMode:listMode,isTotalMenu:true}}" />
+<scenic-nav-bar title="{{newsHeading||'活动资讯'}}" bind:layout="bindScenicLayout"/>
+<view wx:if="{{!_params}}" class="wt-state">正在加载资讯…</view>
+<block wx:else>
+  <cmpt-comm-list topOffset="{{uiChrome.height}}" heading="{{newsHeading}}" headingSubtitle="{{newsSubtitle}}" headingImage="{{waterfallLayout?'/projects/TRIP1/images/design/portal-mountains-v3.jpg':''}}" headerHeight="{{waterfallLayout?280:160}}" filterMenus="{{newsCategory=='1'?activityFilters:newsFilters}}" filterValue="{{newsCategory=='1'?newsFacet:newsCategory}}" bind:filter="bindNewsCategory" type="news-list" search="{{search || ''}}" _params="{{_params}}" route="news/list" topBottom="120" placeholder="搜索资讯标题" bind:list="bindCommListCmpt">
+    <news-waterfall media-urls="{{mediaUrls}}" items="{{visibleNews}}"/>
+    <view wx:if="{{dataList.list.length&&!visibleNews.length}}" class="wt-state">当前分类暂无内容</view><import src="../../../../../tpls/public/list_load_tpl.wxml" /><template is="listLoadTpl" data="{{skin:'load-project',dataList,noHint:'暂无符合条件的内容，试试其他分类或搜索词'}}" />
+  </cmpt-comm-list>
+</block>

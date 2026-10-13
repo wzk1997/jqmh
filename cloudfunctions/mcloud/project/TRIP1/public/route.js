@@ -6,6 +6,25 @@
  */
 
 module.exports = {
+    "home/portal": "home_controller@portal",
+    "admin/portal_get": "admin/admin_portal_controller@get",
+    "admin/portal_save": "admin/admin_portal_controller@save",
+    "admin/portal_publish": "admin/admin_portal_controller@publish",
+    "admin/portal_upload": "admin/admin_portal_controller@upload",
+    "admin/portal_choices": "admin/admin_portal_controller@choices",
+    'admin/cms_list': 'admin/admin_cms_controller@list',
+    'admin/cms_detail': 'admin/admin_cms_controller@detail',
+    'admin/cms_save': 'admin/admin_cms_controller@save',
+    'admin/cms_state': 'admin/admin_cms_controller@state',
+    'admin/cms_remove': 'admin/admin_cms_controller@remove',
+    'admin/cms_upload': 'admin/admin_cms_controller@upload',
+    'admin/cms_demo_reserve': 'admin/admin_cms_controller@reserveDemo',
+    'admin/cms_spots': 'admin/admin_cms_controller@spots',
+    'admin/cms_categories': 'admin/admin_cms_controller@categories',
+    'cms/list': 'cms_controller@list',
+    'cms/detail': 'cms_controller@detail',
+    'cms/categories': 'cms_controller@categories',
+
 	'test/test': 'test/test_controller@test',
 
 	'home/setup_get': 'home_controller@getSetup',
@@ -15,6 +34,16 @@ module.exports = {
 	'passport/my_detail': 'passport_controller@getMyDetail',
 	'passport/register': 'passport_controller@register',
 	'passport/edit_base': 'passport_controller@editBase',
+
+	'admin/feedback_detail':'admin/admin_feedback_controller@detail',
+    'admin/feedback_search':'admin/admin_feedback_controller@search',
+    'admin/feedback_process':'admin/admin_feedback_controller@process',
+	// 客户反馈
+	'feedback/upload':'feedback_controller@upload',
+	'feedback/submit': 'feedback_controller@submit',
+	'feedback/my_list': 'feedback_controller@myList',
+	'admin/feedback_list': 'admin/admin_feedback_controller@list',
+	'admin/feedback_reply': 'admin/admin_feedback_controller@reply#demo',
 
 	// 收藏
 	'fav/update': 'fav_controller@updateFav',
@@ -26,6 +55,7 @@ module.exports = {
 	'admin/clear_vouch': 'admin/admin_home_controller@clearVouchData',
 
 	'admin/login': 'admin/admin_mgr_controller@adminLogin',
+	'admin/mgr_permissions':'admin/admin_mgr_controller@permissions',
 	'admin/mgr_list': 'admin/admin_mgr_controller@getMgrList',
 	'admin/mgr_insert': 'admin/admin_mgr_controller@insertMgr#demo',
 	'admin/mgr_del': 'admin/admin_mgr_controller@delMgr#demo',

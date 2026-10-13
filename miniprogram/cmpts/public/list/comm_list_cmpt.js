@@ -14,6 +14,14 @@ Component({
 	 * 组件的属性列表
 	 */
 	properties: {
+        topOffset: { type: Number, value: 0 },
+        filterMenus: { type: Array, value: [] },
+        filterValue: { type: String, value: '' },
+        heading: { type: String, value: '' },
+        headingSubtitle: { type: String, value: '' },
+        headingImage: { type: String, value: '' },
+        headerHeight: { type: Number, value: 0 },
+        bottomInset: { type: Number, value: 0 },
 		doDate: {
 			type: Boolean,
 			value: false
@@ -216,6 +224,7 @@ Component({
 	 * 组件的方法列表
 	 */
 	methods: {
+        bindFilterTap: function (e) { this.triggerEvent('filter', { value: e.currentTarget.dataset.value }); },
 		reload: async function () {
 			await this._getList(1);
 		},
@@ -263,6 +272,7 @@ Component({
 		},
 
 		bindReachBottom: function () {
+            if (!this.data._dataList || this.data._dataList.page >= this.data._dataList.count) return;
 			// 上拉触底 
 			this._getList(this.data._dataList.page + 1);
 		},

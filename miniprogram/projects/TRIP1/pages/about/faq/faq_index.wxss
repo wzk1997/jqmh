@@ -1,0 +1,2 @@
+@import "../../../style/design_v3.wxss";
+.faq-card{margin:0 26rpx 20rpx;padding:28rpx;background:white;border-radius:20rpx;display:flex;flex-direction:column;gap:18rpx}.faq-card>text:first-child{font-size:29rpx;font-weight:600}.faq-card>text:last-child{font-size:25rpx;line-height:1.8;color:#77897d}

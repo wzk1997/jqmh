@@ -1,4 +1,4 @@
-@import '../../../../../../style/public/admin.wxss'; 
+@import '../../../../../../style/public/admin.wxss';
 
 .form-box .title-desc {
 	padding-bottom: 10rpx;
@@ -10,3 +10,4 @@
 .btn-admin{
 	margin-bottom: 20rpx;
 }
+@import "../../../../style/admin_ui.wxss";

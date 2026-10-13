@@ -65,18 +65,28 @@ module.exports = Behavior({
 			if (!oid) return;
 			let that = this;
 			let callback = async function () {
-				await cloudHelper.callCloudSumbit('fav/del', {
+				that._removingFavs = that._removingFavs || new Set();
+				if (that._removingFavs.has(oid)) return;
+				that._removingFavs.add(oid);
+				try { await cloudHelper.callCloudSumbit('fav/del', {
 					oid
 				}).then(res => {
-					pageHelper.delListNode(oid, that.data.dataList.list, 'FAV_OID');
-					that.data.dataList.total--;
+					const before = that.data.dataList.list || [];
+					const list = before.filter(item => item.FAV_OID !== oid);
+					const removed = before.length - list.length;
+					that.data.dataList.list = list;
+					that.data.dataList.total = Math.max(0, (Number(that.data.dataList.total) || 0) - removed);
+					if (that.data.dataList.size > 0) that.data.dataList.count = Math.ceil(that.data.dataList.total / that.data.dataList.size);
+					require('../biz/public_biz.js').removeCacheList('my-fav');
 					that.setData({
 						dataList: that.data.dataList
 					});
+					const listComponent = that.selectComponent && that.selectComponent('#favList');
+					if (listComponent) listComponent.setData({_dataList:that.data.dataList});
 					pageHelper.showSuccToast('删除成功');
 				}).catch(err => {
 					console.log(err);
-				 });
+				 }); } finally { that._removingFavs.delete(oid); }
 			}
 			pageHelper.showConfirm('您确认删除？', callback);
 		}

@@ -7,6 +7,7 @@ const setting = require('../../../../../setting/setting.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 	/**
 	 * 页面的初始数据
 	 */

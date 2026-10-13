@@ -108,8 +108,8 @@ class AdminBiz extends BaseBiz {
 	//  登录状态判定
 	static isAdmin(that, isSuper = false) {
 		wx.setNavigationBarColor({ //顶部
-			backgroundColor: '#2499f2',
-			frontColor: '#ffffff',
+			backgroundColor: '#ffffff',
+			frontColor: '#000000',
 		});
 
 		if (setting.IS_SUB) wx.hideHomeButton();

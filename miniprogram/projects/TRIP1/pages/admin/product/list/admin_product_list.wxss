@@ -5,3 +5,5 @@ page {
 	background-color: #f8f8f8;
 }
 
+
+@import "../../../../style/admin_ui.wxss";

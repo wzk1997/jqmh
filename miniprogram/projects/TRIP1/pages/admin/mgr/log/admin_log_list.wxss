@@ -3,7 +3,8 @@
 page {
 	background-color: #f8f8f8;
 }
- 
-.admin-comm-list .item .info { 
-	padding: 15rpx 20rpx 0rpx; 
+
+.admin-comm-list .item .info {
+	padding: 15rpx 20rpx 0rpx;
 }
+@import "../../../../style/admin_ui.wxss";

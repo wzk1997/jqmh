@@ -1,6 +1,10 @@
 {
-	"usingComponents": { 
-	}, 
-	"disableScroll": true, 
-	"navigationBarTitleText": "资讯"
+  "usingComponents": {
+    "news-waterfall": "/cmpts/biz/news_waterfall/news_waterfall"
+  },
+  "disableScroll": true,
+  "navigationBarTitleText": "活动资讯",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

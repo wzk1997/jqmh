@@ -1,14 +1,17 @@
+const {getChrome}=require('../../../../ui/navigation_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
 const cloudHelper = require('../../../../../../helper/cloud_helper.js');
 const projectSetting = require('../../../../public/project_setting.js');
 
 Page({
+    bindScenicLayout(e){this.setData({uiChrome:e.detail});},
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        uiChrome:getChrome(),
 		isLoad: false,
 		key: '',
 
@@ -111,18 +114,18 @@ Page({
 	/** 
 	 * 数据提交
 	 */
-	bindFormSubmit: async function () {
-		if (!AdminBiz.isAdmin(this)) return;
-
-		let formContent = this.selectComponent("#contentEditor").getNodeList();
-
-		await cloudHelper.transRichEditorTempPics(formContent, 'setup/', this.data.key, 'admin/setup_set_content');
-
-		let callback = () => {
-			wx.navigateBack();
-		}
-		pageHelper.showSuccToast('修改成功', 1500, callback);
-
-	},
+    bindFormSubmit: async function () {
+        if (!AdminBiz.isAdmin(this) || this.data.saving) return;
+        this.setData({saving:true});
+        const confirmed=await new Promise(resolve=>wx.showModal({title:'发布服务信息',content:'确认保存并更新游客端服务信息？',confirmColor:'#146C60',success:r=>resolve(r.confirm),fail:()=>resolve(false)}));
+        if(!confirmed){this.setData({saving:false});return;}
+        this.setData({saving:true});
+        try {
+            const formContent=this.selectComponent('#contentEditor').getNodeList();
+            await cloudHelper.transRichEditorTempPics(formContent,'setup/',this.data.key,'admin/setup_set_content',true);
+            pageHelper.showSuccToast('修改成功',1500,()=>wx.navigateBack());
+        } catch(err) { pageHelper.showNoneToast(err.msg||err.message||'保存失败，请重试'); }
+        finally { this.setData({saving:false}); }
+    },
 
 })

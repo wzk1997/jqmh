@@ -1,0 +1,2 @@
+function display(id, urls) { return urls && urls[id] || id; }
+module.exports = {display: display};

@@ -1,2 +1,2 @@
-@import "../../../../../style/public/detail.wxss"; 
-@import "../../../style/skin.wxss"; 
+@import "../../../style/ui_common.wxss";
+@import "../../../style/travel_content.wxss";

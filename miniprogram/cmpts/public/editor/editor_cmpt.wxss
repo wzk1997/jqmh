@@ -140,7 +140,9 @@
 	color: #c0c4cc;
 }
 
+.editor-format{display:flex;align-items:center;flex-wrap:wrap;gap:8rpx;padding:12rpx 0;border-bottom:1rpx solid #edf2ef;margin-bottom:12rpx}.editor-format-label{width:100%;font-size:23rpx;color:#738780}.editor-format-button{min-width:76rpx;min-height:80rpx;line-height:80rpx;padding:0 16rpx;margin:0;background:#f2f6f4;color:#31564d;border-radius:12rpx;font-size:24rpx}.editor-format-button:after{border:0}.editor-format-button.active{background:#e0f1e9;color:#146c60}.editor-format-bold{font-weight:600}.editor-format-italic{font-style:italic}.editor-format-underline{text-decoration:underline}
 .editor-image {
 	display: block;
 	width: 100%;
 }
+.editor-tab-inline{position:static;width:100%;z-index:auto;height:auto;min-height:88rpx;margin:0 0 16rpx;gap:16rpx}.editor-mode-button{font-size:26rpx;line-height:88rpx;min-height:88rpx;padding:0 28rpx;margin:0;border-radius:44rpx;background:#edf4f1;color:#789087}.editor-mode-active{background:#146c60;color:white}.editor-mode-button:after{border:0}.editor-node-wrapper.cur{animation:none;box-shadow:none;border-color:#2e8b7f}.editor-delete{z-index:10}

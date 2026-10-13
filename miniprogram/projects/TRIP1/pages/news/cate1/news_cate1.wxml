@@ -1,7 +1,9 @@
-<import src="../../../../../tpls/project/news_index_tpl.wxml" />
-<template is="newsIndexTpl" data="{{showUp:false,upImg:'',dataList,_params,search:search||'',listMode:listMode,isTotalMenu:true,sortMenus:sortMenus||[],sortItems:sortItems||[]}}" />
-
-<block wx:if="{{skin.IS_SUB}}">
-	<import src="../../tpls/menu_tpl.wxml" />
-	<template is="menuTpl" data="{{curMenu:'news_cate1',returnHome:false}}" />
+<wxs module="media" src="../../../../../wxs/media.wxs"/>
+<scenic-nav-bar title="景区资讯" bind:layout="bindScenicLayout"/>
+<view wx:if="{{!_params}}" class="wt-state">正在加载资讯…</view>
+<block wx:else>
+  <cmpt-comm-list topOffset="{{uiChrome.height}}" heading="{{newsHeading}}" headingSubtitle="{{newsSubtitle}}" headingImage="/projects/TRIP1/images/home/b4.jpg" headerHeight="240" filterMenus="{{newsFilters}}" filterValue="{{newsCategory}}" bind:filter="bindNewsCategory" type="news-list" search="{{search || ''}}" _params="{{_params}}" route="news/list" topBottom="120" placeholder="搜索资讯标题" bind:list="bindCommListCmpt">
+    <view class="news-list"><button class="news-card wt-card-button" wx:for="{{dataList.list}}" wx:key="id" bindtap="url" data-url="../../news/detail/news_detail?id={{item.id}}"><image wx:if="{{item.pic && item.pic!='/images/cover.gif'}}" class="news-cover" src="{{media.display(item.pic,mediaUrls)}}" mode="aspectFill" lazy-load /><view wx:else class="news-cover news-placeholder"><text class="icon-news"></text></view><view class="news-copy"><text class="news-title content-cut-two">{{item.title}}</text><text wx:if="{{item.desc}}" class="news-desc content-cut-two">{{item.desc}}</text><view class="news-meta"><text>{{item.ext}}</text><text class="icon-right"></text></view></view></button></view>
+    <import src="../../../../../tpls/public/list_load_tpl.wxml" /><template is="listLoadTpl" data="{{skin:'load-project',dataList,noHint:'暂无符合条件的内容，试试其他分类或搜索词'}}" />
+  </cmpt-comm-list>
 </block>

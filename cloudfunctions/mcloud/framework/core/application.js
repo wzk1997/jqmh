@@ -108,13 +108,20 @@ async function app(event, context) {
 				result = appUtil.handlerSucc(r); // 无数据返回
 			else
 				result = appUtil.handlerData(result, r); // 有数据返回
+			if (PID === 'TRIP1' && result.data) {
+				const media = require('../../project/TRIP1/service/public_media_service.js');
+				const mediaUrls = await media.urls(r, result.data, event.params || {});
+				if (Object.keys(mediaUrls).length) result.mediaUrls = mediaUrls;
+				const adminMediaUrls = await media.adminUrls(r, result.data, event.params || {});
+				if (Object.keys(adminMediaUrls).length) result.adminMediaUrls = adminMediaUrls;
+			}
 		}
 
 
 		console.log('------');
 		time = timeUtil.time('Y-M-D h:m:s');
 		timeTicks = timeUtil.time() - timeTicks;
-		console.log(`【${time}】【Return Base↗↗↗】\n【↗Route =***${r}】\n【↗Duration = ${timeTicks}ms】\n【↗↗OUT DATA】= `, result);
+		console.log(`【${time}】【Return Base↗↗↗】\n【↗Route =***${r}】\n【↗Duration = ${timeTicks}ms】\n【↗请求完成】`);
 		console.log('▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦▦');
 		console.log('');
 		console.log('');
@@ -172,7 +179,7 @@ function beforeApp(method) {
 
 // 展示当前输入数据
 function showEvent(event) {
-	console.log(event);
+	console.log('Invalid request route:', event && event.route);
 }
 
 module.exports = {

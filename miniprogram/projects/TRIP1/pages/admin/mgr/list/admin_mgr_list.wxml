@@ -1,5 +1,6 @@
+<scenic-nav-bar title="管理员管理" bind:layout="bindScenicLayout"/>
 <block wx:if="{{isAdmin}}">
-	<cmpt-comm-list source='admin' type="admin-mgr" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/mgr_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索账号，姓名，手机" bind:list="bindCommListCmpt">
+	<cmpt-comm-list topOffset="{{uiChrome.height}}" source='admin' type="admin-mgr" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/mgr_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索账号，姓名，手机" bind:list="bindCommListCmpt">
 
 		<view slot="searchEnd">
 			<button bindtap="url" data-url="../add/admin_mgr_add" class="btn radius bg-admin text-white  margin-right-s"><text class="icon-roundadd margin-right-xxs"></text>添加管理员</button>

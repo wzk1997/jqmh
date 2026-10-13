@@ -1,6 +1,8 @@
 {
-	"usingComponents": { 
-	}, 
-	"disableScroll": true, 
-	"navigationBarTitleText": "景点"
+  "usingComponents": {},
+  "disableScroll": true,
+  "navigationBarTitleText": "景区导览",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

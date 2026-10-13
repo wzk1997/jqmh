@@ -1,3 +1,4 @@
+<scenic-nav-bar title="单页文章" bind:layout="bindScenicLayout"/>
 <!-- List Begin -->
 <view class="main-admin" wx:if="{{isAdmin}}">
 	<view class="admin-comm-list">

@@ -1,4 +1,4 @@
-@import "../../../style/skin.wxss"; 
+@import "../../../style/skin.wxss";
 .submit-line {
 	width: 100%;
 }
@@ -17,3 +17,5 @@
 	text-align: left;
 	font-size:28rpx;
 }
+.main { padding: 32rpx !important; align-items: stretch; }
+.form-box { margin-bottom: 24rpx; }

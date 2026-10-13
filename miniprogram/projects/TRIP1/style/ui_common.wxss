@@ -1,0 +1,48 @@
+/* Shared WeTravel surfaces and controls. Business selectors remain unchanged. */
+.wt-page { padding: 32rpx; padding-bottom: 64rpx; }
+.wt-heading { margin: 8rpx 0 32rpx; }
+.wt-heading-title { display: block; font-size: 42rpx; font-weight: 600; line-height: 1.4; }
+.wt-heading-subtitle { display: block; color: var(--wt-muted); font-size: 26rpx; margin-top: 12rpx; line-height: 1.7; }
+.wt-hero { position: relative; height: 320rpx; background: #254c43; color: white; overflow: hidden; }
+.wt-hero-image { position: absolute; width: 100%; height: 100%; }
+.wt-hero-shade { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(8,34,27,.04), rgba(8,34,27,.75)); }
+.wt-hero-copy { position: absolute; left: 32rpx; right: 32rpx; bottom: 40rpx; }
+.wt-hero-title { display: block; font-size: 44rpx; font-weight: 600; line-height: 1.4; }
+.wt-hero-subtitle { display: block; margin-top: 10rpx; font-size: 25rpx; line-height: 1.6; color: #edf5f0; }
+.wt-section-heading { display: flex; align-items: center; justify-content: space-between; margin: 40rpx 0 24rpx; }
+.wt-section-title { font-size: 34rpx; font-weight: 600; }
+.wt-tag { font-size: 22rpx; background: var(--wt-brand-soft); color: var(--wt-brand); border-radius: 8rpx; padding: 6rpx 12rpx; }
+.wt-menu { background: var(--wt-surface); border-radius: 24rpx; overflow: hidden; margin-bottom: 24rpx; }
+.wt-menu-row { display: flex; align-items: center; text-align: left; width: 100%; margin: 0; border-radius: 0; background: white; padding: 24rpx; min-height: 104rpx; line-height: 1.5; color: var(--wt-ink); font-size: 28rpx; }
+.wt-menu-row::after { border: 0; }
+.wt-menu-row + .wt-menu-row { border-top: 1rpx solid var(--wt-border); }
+.wt-menu-icon { display: flex; justify-content: center; align-items: center; width: 56rpx; height: 56rpx; font-size: 32rpx; color: var(--wt-brand); background: var(--wt-brand-soft); border-radius: 16rpx; margin-right: 20rpx; flex-shrink: 0; }
+.wt-menu-label { flex: 1; min-width: 0; }
+.wt-menu-row .icon-right { color: var(--wt-muted); font-size: 22rpx; margin-left: 12rpx; }
+.wt-card-button { background: transparent; padding: 0; margin: 0; text-align: left; line-height: inherit; font-weight: inherit; font-size: inherit; color: inherit; }
+.wt-card-button::after { border: 0; }
+.wt-state { text-align: center; padding: 64rpx 32rpx; color: var(--wt-muted); font-size: 27rpx; line-height: 1.8; }
+.wt-state-icon { display: block; font-size: 60rpx; color: var(--wt-brand); margin-bottom: 24rpx; }
+.wt-state button { margin-top: 24rpx; color: var(--wt-brand); background: var(--wt-brand-soft); font-size: 27rpx; border-radius: 44rpx; }
+.wt-state button::after { border: 0; }
+.wt-footer { text-align: center; color: var(--wt-muted); font-size: 22rpx; padding: 40rpx 0; }
+/* Forms use existing bindings and validation. */
+.form-box { overflow: hidden; background: white; border-radius: 24rpx; border: 1rpx solid var(--wt-border); box-shadow: none; }
+.form-group { padding: 24rpx; min-height: 104rpx; border-bottom-color: var(--wt-border); }
+.form-group .title { color: var(--wt-ink); font-size: 28rpx; }
+.form-group input, .form-group textarea { font-size: 28rpx; color: var(--wt-ink); }
+.form-group textarea { background: var(--wt-background); border-radius: 16rpx; padding: 20rpx; line-height: 1.7; }
+.hint-desc.error { color: #a43d31; font-size: 25rpx; padding: 12rpx 24rpx; }
+.btn-base, .btn-project, .btn-main { background: var(--wt-brand); color: white; border-radius: 44rpx; font-size: 29rpx; box-shadow: none; }
+.btn-base { margin-top: 32rpx; }
+button::after { border-color: var(--wt-border); }
+.button-hover { opacity: .82; }
+.shadow-project { box-shadow: none; }
+.tab-bar { border-top: 1rpx solid var(--wt-border); background: white; }
+.tab-bar-item { min-height: 100rpx; padding-top: 16rpx; }
+.tab-bar-item .tab-icon { width: 44rpx; height: 44rpx; margin-bottom: 8rpx; }
+.tab-bar-item .tab-text { font-size: 22rpx !important; }
+
+.demo-notice{padding:16rpx 20rpx;background:#fff5e5;color:#8b652b;border-radius:12rpx;font-size:23rpx;line-height:1.65;margin:16rpx 0}.demo-tag{color:#927036;background:#fff5e5;padding:2rpx 10rpx;border-radius:8rpx;font-size:21rpx;line-height:1.5}
+
+.demo-notice{padding:10rpx 16rpx;margin:12rpx 0;font-size:22rpx;line-height:1.5}

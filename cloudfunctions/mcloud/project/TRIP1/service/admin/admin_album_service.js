@@ -1,3 +1,4 @@
+const CmsService = require('./admin_cms_service.js');
 /**
  * Notes: 相册后台管理
  * Ver : CCMiniCloud Framework 2.0.1 ALL RIGHTS RESERVED BY cclinux0730 (wechat)
@@ -17,7 +18,7 @@ class AdminAlbumService extends BaseProjectAdminService {
 
 	/** 推荐首页SETUP */
 	async vouchAlbumSetup(id, vouch) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return this.vouchAlbum(id, vouch);
 	}
 
 	/**添加 */
@@ -30,12 +31,12 @@ class AdminAlbumService extends BaseProjectAdminService {
 	}) {
 
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().saveLegacy('album', {title,cateId,cateName,order,forms}, '', true);
 	}
 
 	/**删除数据 */
 	async delAlbum(id) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().remove('album', id);
 
 	}
 
@@ -44,7 +45,7 @@ class AdminAlbumService extends BaseProjectAdminService {
 		let fields = '*';
 
 		let where = {
-			_id: id
+			_id: id, ALBUM_DELETED: ['<>',true]
 		}
 		let album = await AlbumModel.getOne(where, fields);
 		if (!album) return null;
@@ -57,7 +58,7 @@ class AdminAlbumService extends BaseProjectAdminService {
 		id,
 		hasImageForms
 	}) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().patchLegacy('album', id, 'forms', hasImageForms);
 	}
 
 
@@ -71,7 +72,7 @@ class AdminAlbumService extends BaseProjectAdminService {
 		forms,
 	}) {
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().saveLegacy('album', {id,title,cateId,cateName,order,forms}, '', true);
 	}
 
 	/**取得分页列表 */
@@ -95,6 +96,7 @@ class AdminAlbumService extends BaseProjectAdminService {
 
 		let where = {};
 		where.and = {
+			ALBUM_DELETED: ['<>',true],
 			_pid: this.getProjectId() //复杂的查询在此处标注PID
 		};
 
@@ -134,17 +136,17 @@ class AdminAlbumService extends BaseProjectAdminService {
 
 	/**修改状态 */
 	async statusAlbum(id, status) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		if (![0,1].includes(status)) this.AppError('状态不正确'); return new CmsService().setState('album', id, status === 1 ? 'published' : 'offline');
 	}
 
 	/**置顶与排序设定 */
 	async sortAlbum(id, sort) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().sort('album', id, sort);
 	}
 
 	/**首页设定 */
 	async vouchAlbum(id, vouch) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		if (![0,1].includes(vouch)) this.AppError('推荐状态不正确'); await new CmsService().detail('album', id); await AlbumModel.edit(id, {ALBUM_VOUCH:vouch}); return {id};
 	}
 }
 

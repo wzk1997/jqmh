@@ -3,11 +3,16 @@ const pageHelper = require('../../../../../helper/page_helper.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 
 Page({
+    selectTab(e){this.setData({detailTab:e.currentTarget.dataset.tab});},
+    photoChange(e){this.setData({photoIndex:e.detail.current});},
+    previewPhoto(e){const media=require('../../../../../helper/media_helper.js');wx.previewImage({current:media.display(e.currentTarget.dataset.url),urls:this.data.photos.map(media.display)});},
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
 		isLoad: false,
+        detailTab:'intro',photos:[],photoIndex:0,
 	},
 
 	/**
@@ -33,7 +38,7 @@ Page({
 			title: 'bar'
 		};
 		let product = await cloudHelper.callCloudData('product/view', params, opt);
-		if (!product) {
+		if (!product || !product._id) {
 			this.setData({
 				isLoad: null
 			})
@@ -43,6 +48,7 @@ Page({
 		this.setData({
 			isLoad: true,
 			product,
+            photos:((product.PRODUCT_OBJ.album||[]).length?product.PRODUCT_OBJ.album:(product.PRODUCT_OBJ.cover||[])).filter(src=>src&&src!=='/images/cover.gif'),
 		});
 
 	},
@@ -91,9 +97,10 @@ Page({
 	},
 
 	onShareAppMessage: function (res) {
+        if (!this.data.product) return { title: 'WeTravel' };
 		return {
 			title: this.data.product.PRODUCT_TITLE,
-			imageUrl: this.data.product.PRODUCT_OBJ.cover[0]
+			imageUrl: (this.data.product.PRODUCT_OBJ.cover || [])[0] || ''
 		}
 	}
 })

@@ -13,6 +13,11 @@ Component({
 	 * 组件的属性列表
 	 */
 	properties: {
+        mediaUrls:{type:Object,value:{}},
+        inlineToolbar:{type:Boolean,value:false},
+        formatting:{type:Boolean,value:false},
+        imageMaxMB: {type:Number,value:20},
+        textMaxLength: {type:Number,value:-1},
 		nodeList: { // [{type:'text/img',val:'txt/cloudId'}]
 			type: Array,
 			value: [{
@@ -57,6 +62,19 @@ Component({
 	 * 组件的方法列表
 	 */
 	methods: {
+        formatParagraph(e) {
+            if(!this.data.formatting||this.data.isView)return;
+            const index=Number(e.currentTarget.dataset.idx),key=e.currentTarget.dataset.format;
+            const list=this.data.nodeList,node=list[index];
+            if(!Number.isInteger(index)||!node||node.type!=='text')return;
+            const format={...(node.format||{})};
+            if(['bold','italic','underline'].includes(key))format[key]=!format[key];
+            else if(key==='align')format.align=format.align==='center'?'right':format.align==='right'?'left':'center';
+            else if(key==='clear'){delete node.format;this.setData({nodeList:list});return;}
+            else return;
+            node.format=format;this.setData({nodeList:list});
+        },
+        switchMode(e){this.setData({isView:e.currentTarget.dataset.view===true||e.currentTarget.dataset.view==='true'});},
 		url: function (e) {
 			pageHelper.url(e, this);
 		},
@@ -103,7 +121,7 @@ Component({
 							return pageHelper.showNoneToast('只能上传png、jpg、jpeg格式', 3000);
 						}
 
-						let maxSize = 20; //TODO setting
+						let maxSize = this.data.imageMaxMB;
 						let imageMaxSize = 1024 * 1000 * maxSize;
 						console.log('IMGX SIZE=' + size + 'Byte,' + size / 1024 + 'K');
 						if (!contentCheckHelper.imgSizeCheck(size, imageMaxSize)) {

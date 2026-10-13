@@ -1,5 +1,5 @@
 @import "../../../../../style/public/article_list.wxss";
-@import "../../../style/skin.wxss"; 
+@import "../../../style/skin.wxss";
 
 .text-pic-list-box .item {
 	padding: 20rpx 30rpx 20rpx 40rpx;
@@ -33,7 +33,7 @@
 }
 
 .btn.mid {
-	padding: 0 30rpx;  
+	padding: 0 30rpx;
 }
 
 .text-pic-list-box .item .author {
@@ -60,3 +60,5 @@
 	color: #ccc;
 }
 
+
+@import "../../../style/ui_common.wxss";

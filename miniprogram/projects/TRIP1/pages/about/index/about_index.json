@@ -1,5 +1,8 @@
 {
-	"usingComponents": { 
-	  },
-	"enablePullDownRefresh": true 
-  }
+  "usingComponents": {},
+  "enablePullDownRefresh": true,
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationBarTitleText": "景区简介",
+  "navigationStyle": "custom"
+}

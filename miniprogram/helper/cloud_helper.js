@@ -12,6 +12,7 @@ const contentCheckHelper = require('../helper/content_check_helper.js');
 const pageHelper = require('../helper/page_helper.js');
 const timeHelper = require('../helper/time_helper.js');
 const setting = require('../setting/setting.js');
+const mediaHelper = require('./media_helper.js');
 
 const CODE = {
 	SUCC: 200,
@@ -128,7 +129,7 @@ function callCloud(route, params = {}, options) {
 					wx.reLaunch({
 						url: pageHelper.fmtURLByPID('/pages/admin/index/login/admin_login'),
 					});
-					//reject(res.result);
+					reject(res.result);
 					return;
 				} else if (res.result.code != CODE.SUCC) {
 					if (hint) {
@@ -142,6 +143,8 @@ function callCloud(route, params = {}, options) {
 					return;
 				}
 
+				if (res.result.mediaUrls) mediaHelper.remember(res.result.mediaUrls);
+				if (res.result.adminMediaUrls) mediaHelper.rememberAdmin(res.result.adminMediaUrls);
 				resolve(res.result);
 			},
 			fail: function (err) {
@@ -278,7 +281,7 @@ async function getTempFileURLOne(fileID) {
 	return '';
 }
 
-async function transTempPics(imgList, dir, id, prefix = '') {
+async function transTempPics(imgList, dir, id, prefix = '', strict = false) {
 	if (setting.IS_DEMO) return imgList; 
 
 	if (prefix && !prefix.endsWith('_')) prefix += '_';
@@ -304,6 +307,7 @@ async function transTempPics(imgList, dir, id, prefix = '') {
 			}).catch(error => {
 				// handle error TODO:剔除图片
 				console.error(error);
+                if(strict)throw error;
 			})
 		}
 	}
@@ -311,7 +315,7 @@ async function transTempPics(imgList, dir, id, prefix = '') {
 	return imgList;
 }
 
-async function transRichEditorTempPics(content, dir, id, route) {
+async function transRichEditorTempPics(content, dir, id, route, strict = false) {
 
 	let imgList = [];
 	for (let k = 0; k < content.length; k++) {
@@ -321,7 +325,7 @@ async function transRichEditorTempPics(content, dir, id, route) {
 	}
 
 	// 图片上传到云空间
-	imgList = await transTempPics(imgList, dir, id, 'rich');
+	imgList = await transTempPics(imgList, dir, id, 'rich', strict);
 
 	// 更新图片地址
 	let imgIdx = 0;
@@ -343,6 +347,7 @@ async function transRichEditorTempPics(content, dir, id, route) {
 		return content;
 	} catch (e) {
 		console.error(e);
+        if(strict)throw e;
 	}
 
 	return [];

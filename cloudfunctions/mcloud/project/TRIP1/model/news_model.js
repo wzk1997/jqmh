@@ -15,6 +15,9 @@ class NewsModel extends BaseProjectModel {
 NewsModel.CL = BaseProjectModel.C('news');
 
 NewsModel.DB_STRUCTURE = {
+    _id: 'string|false',
+    NEWS_DEMO: 'bool|false|default=false',
+    NEWS_DRAFT: 'object|false|default={}',
 	_pid: 'string|true',
 	NEWS_ID: 'string|true',  
 
@@ -42,6 +45,15 @@ NewsModel.DB_STRUCTURE = {
 	NEWS_EDIT_TIME: 'int|true',
 	NEWS_ADD_IP: 'string|false',
 	NEWS_EDIT_IP: 'string|false',
+    NEWS_ACTIVITY_START: 'string|false',
+    NEWS_ACTIVITY_END: 'string|false',
+    NEWS_CMS_STATE: 'string|false|default=|comment=draft/published/offline/deleted',
+    NEWS_PUBLISH_TIME: 'int|false|default=0',
+    NEWS_DELETED: 'bool|false|default=false',
+    NEWS_DELETED_TIME: 'int|false|default=0',
+    NEWS_EDIT_ADMIN: 'string|false',
+    NEWS_REVISION: 'int|false|default=0',
+
 };
 
 // 字段前缀

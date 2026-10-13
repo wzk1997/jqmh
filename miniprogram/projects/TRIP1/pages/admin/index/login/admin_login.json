@@ -1,8 +1,9 @@
 {
-	"usingComponents": {
-		"cmpt-foot": "/cmpts/biz/foot/foot_cmpt"
-	},
-	"disableScroll": true,
-	"navigationBarBackgroundColor": "#ffffff",
-	"navigationBarTextStyle": "black"
+  "usingComponents": {
+    "cmpt-foot": "/cmpts/biz/foot/foot_cmpt"
+  },
+  "disableScroll": true,
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

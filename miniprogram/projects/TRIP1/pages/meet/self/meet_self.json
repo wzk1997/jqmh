@@ -1,5 +1,6 @@
 {
-	"usingComponents": {  
-	}, 
-	"navigationBarTitleText": "自助签到"
+	"usingComponents": {},
+	"navigationBarTitleText": "自助签到",
+	"navigationBarBackgroundColor": "#ffffff",
+	"navigationBarTextStyle": "black"
 }

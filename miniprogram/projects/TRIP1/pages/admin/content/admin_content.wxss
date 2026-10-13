@@ -33,3 +33,4 @@
 	border-top: 1rpx solid #ccc;
 	z-index: 99999;
 }
+@import "../../../style/admin_ui.wxss";

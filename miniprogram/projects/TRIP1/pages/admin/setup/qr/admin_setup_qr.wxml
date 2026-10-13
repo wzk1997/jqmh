@@ -1,3 +1,4 @@
+<scenic-nav-bar title="小程序码" bind:layout="bindScenicLayout"/>
 <view wx:if="{{!isLoad}}" class="margin-top load loading text-l text-grey"></view>
 
 

@@ -1,7 +1,9 @@
+<scenic-nav-bar title="完善资料" bind:layout="bindScenicLayout"/>
 <view wx:if="{{isLoad===null}}" class="margin-top load notexist text-l load-project"></view>
 <view wx:if="{{isLoad===false}}" class="margin-top load loading text-l load-project"></view>
 
 <view wx:if="{{isLoad}}" class="main padding-project">
-	<include src="../edit/user_form.wxml" /> 
+	<view class="wt-heading"><text class="wt-heading-title">完善个人资料</text><text class="wt-heading-subtitle">留下昵称，收藏旅途中的美好</text></view>
+	<include src="/projects/TRIP1/ui/user_form.wxml" /> 
 	<button bindtap="bindSubmitTap" class="btn-base btn-project">提交注册</button>
 </view>

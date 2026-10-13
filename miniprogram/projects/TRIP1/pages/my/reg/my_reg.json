@@ -1,7 +1,10 @@
 {
-	"usingComponents": { 
-		"cmpt-form-show": "/cmpts/public/form/form_show/form_show_cmpt"  
-	},
-	"enablePullDownRefresh": true, 
-	"navigationBarTitleText": "注册"
+  "usingComponents": {
+    "cmpt-form-show": "/cmpts/public/form/form_show/form_show_cmpt"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "注册",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

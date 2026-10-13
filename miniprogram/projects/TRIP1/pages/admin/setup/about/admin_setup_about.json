@@ -1,9 +1,10 @@
 {
-	"usingComponents": {
-		"cmpt-editor": "/cmpts/public/editor/editor_cmpt"
-	},
-	"navigationBarBackgroundColor": "#2499f2",
-	"navigationBarTextStyle": "white",
-	"enablePullDownRefresh": true, 
-	"navigationBarTitleText": "编辑"
+  "usingComponents": {
+    "cmpt-editor": "/cmpts/public/editor/editor_cmpt"
+  },
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "编辑",
+  "navigationStyle": "custom"
 }

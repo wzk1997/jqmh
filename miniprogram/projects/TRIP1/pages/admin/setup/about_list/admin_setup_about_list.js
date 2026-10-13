@@ -1,13 +1,16 @@
+const {getChrome}=require('../../../../ui/navigation_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const projectSetting = require('../../../../public/project_setting.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
 
 Page({
+    bindScenicLayout(e){this.setData({uiChrome:e.detail});},
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        uiChrome:getChrome(),
 
 	},
 

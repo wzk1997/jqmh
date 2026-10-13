@@ -19,6 +19,7 @@ class AlbumController extends BaseProjectController {
 			sortType: 'string|name=搜索类型',
 			sortVal: 'name=搜索类型值',
 			orderBy: 'object|name=排序', 
+            sortMode: 'string|name=攻略排序模式',
 			page: 'must|int|default=1',
 			size: 'int',
 			isTotal: 'bool',

@@ -1,7 +1,10 @@
 {
-	"usingComponents": { 
-		"cmpt-detail": "/cmpts/biz/detail/detail_cmpt"
-	},
-	"enablePullDownRefresh": true, 
-	"navigationBarTitleText": "攻略详情"
+  "usingComponents": {
+    "cmpt-detail": "/cmpts/biz/detail/detail_cmpt"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "攻略详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

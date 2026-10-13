@@ -7,6 +7,7 @@ Component({
 	 * 组件的属性列表
 	 */
 	properties: {
+        mediaUrls:{type:Object,value:{}},
 		imgList: {
 			type: Array,
 			value: []
@@ -128,8 +129,8 @@ Component({
 
 		bindPreviewImgTap: function (e) {
 			wx.previewImage({
-				urls: this.data.imgList,
-				current: e.currentTarget.dataset.url
+				urls: this.data.imgList.map(id=>require('../../../helper/media_helper.js').display(id,this.data.mediaUrls)),
+				current: require('../../../helper/media_helper.js').display(e.currentTarget.dataset.url,this.data.mediaUrls)
 			});
 		},
 

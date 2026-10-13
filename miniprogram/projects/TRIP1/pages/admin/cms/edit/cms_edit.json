@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "cms-state": "/cmpts/biz/cms_state/cms_state",
+    "cmpt-editor": "/cmpts/public/editor/editor_cmpt",
+    "cmpt-img-upload": "/cmpts/public/img/img_upload_cmpt",
+    "scenic-info-editor": "/cmpts/biz/scenic_info_editor/scenic_info_editor"
+  }
+}

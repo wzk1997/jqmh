@@ -16,7 +16,7 @@ class ProductService extends BaseProjectService {
 		let fields = '*';
 
 		let where = {
-			_id: id,
+			_id: id, PRODUCT_DELETED: ['<>',true],
 			PRODUCT_STATUS: ProductModel.STATUS.COMM
 		}
 		let product = await ProductModel.getOne(where, fields);
@@ -24,7 +24,9 @@ class ProductService extends BaseProjectService {
 
 		ProductModel.inc(id, 'PRODUCT_VIEW_CNT', 1);
 
-		return product;
+		delete product.PRODUCT_DRAFT;
+        delete product.PRODUCT_EDIT_ADMIN;
+        return product;
 	}
 
 
@@ -44,10 +46,11 @@ class ProductService extends BaseProjectService {
 			'PRODUCT_ORDER': 'asc',
 			'PRODUCT_ADD_TIME': 'desc'
 		};
-		let fields = 'PRODUCT_VIEW_CNT,PRODUCT_TITLE,PRODUCT_CATE_ID,PRODUCT_ADD_TIME,PRODUCT_ORDER,PRODUCT_STATUS,PRODUCT_CATE_NAME,PRODUCT_OBJ';
+		let fields = 'PRODUCT_DEMO,PRODUCT_VIEW_CNT,PRODUCT_TITLE,PRODUCT_CATE_ID,PRODUCT_ADD_TIME,PRODUCT_ORDER,PRODUCT_STATUS,PRODUCT_CATE_NAME,PRODUCT_OBJ';
 
-		let where = {};
+		let where = { PRODUCT_DELETED: ['<>',true] };
 		where.and = {
+			PRODUCT_DELETED: ['<>',true],
 			_pid: this.getProjectId() //复杂的查询在此处标注PID
 		};
 
@@ -57,8 +60,11 @@ class ProductService extends BaseProjectService {
 		if (util.isDefined(search) && search) {
 			where.or = [
 				{ PRODUCT_TITLE: ['like', search] },
+                { 'PRODUCT_OBJ.desc': ['like', search] },
+                { 'PRODUCT_OBJ.subtitle': ['like', search] },
 			];
-		} else if (sortType && util.isDefined(sortVal)) {
+		}
+        if (sortType && util.isDefined(sortVal)) {
 			// 搜索菜单
 			switch (sortType) {
 				case 'cateId': {

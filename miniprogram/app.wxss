@@ -1,2 +1,5 @@
 @import "style/base/comm.wxss";
 @import "style/public/project.wxss"; 
+
+@import "projects/TRIP1/style/ui_tokens.wxss";
+@import "projects/TRIP1/style/ui_common.wxss";

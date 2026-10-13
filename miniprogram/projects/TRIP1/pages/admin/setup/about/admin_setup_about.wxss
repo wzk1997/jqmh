@@ -1,5 +1,5 @@
 @import '../../../../../../style/public/admin.wxss';
- 
+
 .main-admin {
 	width: 100%;
 	box-sizing: border-box;
@@ -11,7 +11,8 @@
 	padding: 1rpx 1rpx;
 	overflow: hidden;
 }
-  
+
 .btn-bottom-admin>view {
     width: 100%;
 }
+@import "../../../../style/admin_ui.wxss";

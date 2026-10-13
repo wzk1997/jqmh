@@ -1,5 +1,5 @@
 @import "../../../../../style/public/comm_box_list.wxss";
-@import "../../../style/skin.wxss";  
+@import "../../../style/skin.wxss";
 
 
 .main {
@@ -72,7 +72,7 @@
 .top-area .top-menu .item {
 	padding: 0 20rpx;
 	position: relative;
-} 
+}
 
 .top-area .top-menu .item.cur::after {
 	position: absolute;
@@ -101,7 +101,7 @@
 	width: 100%;
 	padding: 0;
 	margin-top: 193rpx;
-	display: flex; 
+	display: flex;
 }
 
 /*** 详情盒子 ***/
@@ -177,7 +177,7 @@
 }
 
 .article-box .article .pics image {
-	width:100%; 
+	width:100%;
 	border-radius: 10rpx;
 	margin-bottom: 20rpx;
 }
@@ -211,7 +211,7 @@
 
 .vertical-nav.nav .item {
 	width: 100%;
-	text-align: center; 
+	text-align: center;
 	margin: 0;
 	border: none;
 	height: 50px;
@@ -224,7 +224,7 @@
 
 .vertical-nav.nav .item.cur {
 	background-color: #f1f1f1;
-	font-weight: bold; 
+	font-weight: bold;
 }
 
 .vertical-nav.nav .item.cur::after {
@@ -284,14 +284,14 @@
 	justify-content: center;
 	align-items: center;
 	font-size: 28rpx;
-	color: #333; 
+	color: #333;
 	width: 50%;
 	text-align: center;
 	padding: 10rpx 10rpx;
 }
 
 .vertical-main .text-list .item .time-text {
-	width:100%;  
+	width:100%;
 	border-radius: 15rpx;
 	border: 1rpx solid #ccc;
 	background-color: #f8f8f8;
@@ -299,7 +299,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center; 
+	justify-content: center;
 	font-size: 28rpx;
 	color:#000;
 }
@@ -318,4 +318,5 @@
 	font-size: 24rpx;
 	color: #999;
 }
- 
+
+@import "../../../style/ui_common.wxss";

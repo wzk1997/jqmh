@@ -14,13 +14,8 @@ class FootBiz extends BaseBiz {
 
 	static getFootList() {
 		let foot = cacheHelper.get(CACHE_FOOT);
-		if (foot) {
-			for (let i = 0; i < foot.length; i++) {
-				foot[i].time = timeHelper.timestamp2Time(foot[i].time);
-			}
-		}
-
-		return foot;
+		if (!Array.isArray(foot)) return [];
+		return foot.map(item => ({...item, time:typeof item.time === 'number' ? timeHelper.timestamp2Time(item.time) : item.time}));
 	}
 
 	/**添加足迹缓存

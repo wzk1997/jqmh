@@ -1,3 +1,6 @@
+const passwordUtil = require('./admin_password.js');
+const crypto = require('crypto');
+const v = require('../cms_validation.js');
 /**
  * Notes: 管理员管理
  * Ver : CCMiniCloud Framework 2.0.1 ALL RIGHTS RESERVED BY cclinux0730 (wechat)
@@ -20,20 +23,20 @@ class AdminMgrService extends BaseProjectAdminService {
 		// 判断是否存在
 		let where = {
 			ADMIN_STATUS: 1,
-			ADMIN_NAME: name,
-			ADMIN_PASSWORD: md5Lib.md5(password)
+			ADMIN_NAME: name, ADMIN_DELETED: ['<>',true]
 		}
-		let fields = 'ADMIN_ID,ADMIN_NAME,ADMIN_DESC,ADMIN_TYPE,ADMIN_LOGIN_TIME,ADMIN_LOGIN_CNT';
+		let fields = 'ADMIN_ID,ADMIN_NAME,ADMIN_DESC,ADMIN_TYPE,ADMIN_LOGIN_TIME,ADMIN_LOGIN_CNT,ADMIN_PASSWORD,ADMIN_PERMISSIONS';
 		let admin = await AdminModel.getOne(where, fields);
-		if (!admin)
+		if (!admin || !passwordUtil.verify(password,admin.ADMIN_PASSWORD))
 			this.AppError('管理员不存在或者已停用');
 
 		let cnt = admin.ADMIN_LOGIN_CNT;
 
 		// 生成token
-		let token = dataUtil.genRandomString(32);
+		let token = crypto.randomBytes(32).toString('hex');
 		let tokenTime = timeUtil.time();
 		let data = {
+			ADMIN_PASSWORD: passwordUtil.hash(password),
 			ADMIN_TOKEN: token,
 			ADMIN_TOKEN_TIME: tokenTime,
 			ADMIN_LOGIN_TIME: timeUtil.time(),
@@ -52,7 +55,8 @@ class AdminMgrService extends BaseProjectAdminService {
 			name: admin.ADMIN_NAME,
 			type,
 			last,
-			cnt
+			cnt,
+            permissions: admin.ADMIN_PERMISSIONS || {}
 		}
 
 	}
@@ -123,7 +127,8 @@ class AdminMgrService extends BaseProjectAdminService {
 
 		let where = {};
 		where.and = {
-			_pid: this.getProjectId() //复杂的查询在此处标注PID
+			ADMIN_DELETED: ['<>',true],
+            _pid: this.getProjectId() //复杂的查询在此处标注PID
 		};
 		if (util.isDefined(search) && search) {
 			where.or = [{
@@ -153,27 +158,25 @@ class AdminMgrService extends BaseProjectAdminService {
 		return await AdminModel.getList(where, fields, orderBy, page, size, isTotal, oldTotal);
 	}
 
-	/** 删除管理员 */
-	async delMgr(id, myAdminId) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
-	}
-
-	/** 添加新的管理员 */
-	async insertMgr({
-		name,
-		desc,
-		phone,
-		password
-	}) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
-
-	}
-
-	/** 修改状态 */
-	async statusMgr(id, status, myAdminId) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
-	} 
- 
+    async delMgr(id,myAdminId){
+        if(id===myAdminId)this.AppError('不能删除当前登录管理员');
+        const admin=await AdminModel.getOne(v.id(id));if(!admin)this.AppError('管理员不存在');
+        if(admin.ADMIN_TYPE===1)this.AppError('不能删除超级管理员');
+        await AdminModel.edit(id,{ADMIN_STATUS:0,ADMIN_TOKEN:'',ADMIN_TOKEN_TIME:0,ADMIN_DELETED:true});
+    }
+    async insertMgr(input){
+        const name=v.text(input.name,'账号',30,true),desc=v.text(input.desc,'姓名',30,true),phone=v.phone(input.phone);
+        if(!/^[a-zA-Z0-9_-]{5,30}$/.test(name))this.AppError('账号需为5至30位字母、数字或下划线');
+        if(typeof input.password!=='string'||input.password.length<6||input.password.length>30)this.AppError('密码长度需为6至30位');
+        if(await AdminModel.getOne({ADMIN_NAME:name}))this.AppError('账号已存在');
+        return AdminModel.insert({ADMIN_NAME:name,ADMIN_DESC:desc,ADMIN_PHONE:phone,ADMIN_PASSWORD:passwordUtil.hash(input.password),ADMIN_TYPE:0});
+    }
+    async statusMgr(id,status,myAdminId){
+        if(![0,1].includes(status))this.AppError('状态不正确');
+        const admin=await AdminModel.getOne(v.id(id));if(!admin||admin.ADMIN_DELETED)this.AppError('管理员不存在');
+        if(id===myAdminId||admin.ADMIN_TYPE===1)this.AppError('不能停用当前管理员或超级管理员');
+        await AdminModel.edit(id,{ADMIN_STATUS:status,ADMIN_TOKEN:'',ADMIN_TOKEN_TIME:0});
+    }
 
 	/** 获取管理员信息 */
 	async getMgrDetail(id) {
@@ -185,36 +188,34 @@ class AdminMgrService extends BaseProjectAdminService {
 		let mgr = await AdminModel.getOne(where, fields);
 		if (!mgr) return null;
 
-		return mgr;
+		if (mgr) { delete mgr.ADMIN_PASSWORD; delete mgr.ADMIN_TOKEN; }
+        return mgr;
 	}
 
-	/** 修改管理员 */
-	async editMgr(id, {
-		name,
-		desc,
-		phone,
-		password
-	}) {
+    async editMgr(id,input){
+        const admin=await AdminModel.getOne(v.id(id));if(!admin||admin.ADMIN_DELETED)this.AppError('管理员不存在');
+        const name=v.text(input.name,'账号',30,true),desc=v.text(input.desc,'姓名',30,true),phone=v.phone(input.phone);
+        if(!/^[a-zA-Z0-9_-]{5,30}$/.test(name))this.AppError('账号格式不正确');
+        const duplicate=await AdminModel.getOne({ADMIN_NAME:name});if(duplicate&&duplicate._id!==id)this.AppError('账号已存在');
+        const data={ADMIN_NAME:name,ADMIN_DESC:desc,ADMIN_PHONE:phone};
+        if(input.password){if(input.password.length<6||input.password.length>30)this.AppError('密码长度不正确');data.ADMIN_PASSWORD=passwordUtil.hash(input.password);data.ADMIN_TOKEN='';data.ADMIN_TOKEN_TIME=0;}
+        await AdminModel.edit(id,data);
+    }
+    async pwdtMgr(adminId,oldPassword,password){
+        const admin=await AdminModel.getOne(adminId);
+        if(!admin||!passwordUtil.verify(oldPassword,admin.ADMIN_PASSWORD))this.AppError('旧密码错误');
+        if(typeof password!=='string'||password.length<6||password.length>30)this.AppError('密码长度不正确');
+        return AdminModel.edit(adminId,{ADMIN_PASSWORD:passwordUtil.hash(password),ADMIN_TOKEN:'',ADMIN_TOKEN_TIME:0});
+    }
+    async setPermissions(id,permissions,myAdminId){
+        const admin=await AdminModel.getOne(v.id(id));if(!admin||admin.ADMIN_DELETED)this.AppError('管理员不存在');
+        if(id===myAdminId||admin.ADMIN_TYPE===1)this.AppError('超级管理员权限不能修改');
+        const modules=['scenic','news','album','product','merchant','panorama','feedback'];
+        if(!permissions||typeof permissions!=='object'||Array.isArray(permissions)||Object.keys(permissions).some(k=>!modules.includes(k)))this.AppError('权限配置不正确');
+        const clean={};for(const module of modules){const ops=permissions[module]||[];if(!Array.isArray(ops)||ops.some(op=>!['read','write','publish','delete'].includes(op)))this.AppError('权限操作不正确');clean[module]=[...new Set(ops)];}
+        await AdminModel.edit(id,{ADMIN_PERMISSIONS:clean,ADMIN_TOKEN:'',ADMIN_TOKEN_TIME:0});
+    }
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
-	}
-
-	/** 修改自身密码 */
-	async pwdtMgr(adminId, oldPassword, password) {
-
-		let where = {
-			_id: adminId,
-			ADMIN_PASSWORD: md5Lib.md5(oldPassword),
-		}
-		let admin = await AdminModel.getOne(where);
-		if (!admin)
-			this.AppError('旧密码错误');
-
-		let data = {
-			ADMIN_PASSWORD: md5Lib.md5(password),
-		}
-		return await AdminModel.edit(adminId, data);
-	}
 }
 
 module.exports = AdminMgrService;

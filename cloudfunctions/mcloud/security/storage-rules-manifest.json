@@ -1,0 +1,21 @@
+{
+  "status": "live-owner-only-preserved-template-not-applied",
+  "source": "https://docs.cloudbase.net/storage/security-rules",
+  "ruleFile": "storage-rules.json",
+  "project": "TRIP1",
+  "feedback": "New feedback files are uploaded by authenticated mcloud handlers. Direct client writes to feedback paths are denied. Authorized owner/admin APIs provide temporary attachment URLs.",
+  "cms": "Listed scenic content asset directories are publicly readable when a file ID is known. Record drafts remain protected by database rules and controller authorization. This template does not provide file-level privacy for CMS draft images.",
+  "legacy": "Owner reads outside content directories are retained. Client writes are restricted to explicitly listed TRIP1 content, user and meet directories; inventory other active upload directories before applying. Feedback paths are not in the write allowlist.",
+  "deployment": "Back up existing rules before applying. Verify private feedback access, temporary URLs and existing covers in a separate test environment. No live storage rules have been changed.",
+  "syntax": "Explicit regex expressions only; no regex groups or negated .test(), matching the documented CloudBase rule grammar.",
+  "liveRule": {
+    "collection": "cloud storage",
+    "observedPreset": "仅创建者可读写",
+    "observedRadioValue": 1,
+    "changed": false,
+    "source": "WeChat developer tools cloud console / Storage / Permissions",
+    "screenshot": "artifacts/ui-audit-20261013/storage-rule-before.png"
+  },
+  "publicMedia": "Published content query responses append mediaUrls; original cloud IDs are preserved. URLs are scoped to the matching content record directory. Feedback and arbitrary client file ID signing are excluded.",
+  "administratorMedia": "Authorized CMS read/upload and portal read handlers append adminMediaUrls with a requested 900-second expiry. Draft image URLs remain in the receiving management/administrator preview pages and are excluded from the shared visitor cache."
+}

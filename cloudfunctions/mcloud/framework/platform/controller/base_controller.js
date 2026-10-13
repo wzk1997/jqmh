@@ -35,8 +35,7 @@ class BaseController {
 		this._timestamp = timeUtil.time();
 		let time = timeUtil.time('Y-M-D h:m:s');
 
-		console.log('------------------------');
-		console.log(`【${time}】【Request -- ↘↘↘】\n【↘Token = ${this._token}】\n【↘USER-ID = ${userId}】\n【↘↘IN DATA】=\n`, JSON.stringify(this._request, null, 4));
+		console.log('Request route:', route);
 
 	}
 

@@ -1,5 +1,6 @@
+<scenic-nav-bar title="后台-攻略" bind:layout="bindScenicLayout"/>
 <block wx:if="{{isAdmin}}">
-    <cmpt-comm-list source='admin' type="admin-album-list" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/album_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索标题" bind:list="bindCommListCmpt"> 
+    <cmpt-comm-list topOffset="{{uiChrome.height}}" source='admin' type="admin-album-list" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/album_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索标题" bind:list="bindCommListCmpt"> 
 
         <view slot="searchEnd">
             <button bindtap="url" data-url="../add/admin_album_add" class="btn radius bg-admin text-white margin-right-s"><text class="icon-roundadd margin-right-xxs"></text>添加新攻略</button>

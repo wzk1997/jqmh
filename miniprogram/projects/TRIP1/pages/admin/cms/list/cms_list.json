@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "cms-state": "/cmpts/biz/cms_state/cms_state"
+  }
+}

@@ -1,0 +1,14 @@
+@import "ui_tokens.wxss";
+@import "ui_common.wxss";
+page { --adminColor: #087f70; --adminRedColor: #a43d31; }
+.main-admin { padding: 32rpx; background: var(--wt-background); }
+.main-admin .form-box, .main-admin .comm-list.menu, .main-admin .comm-list.grid { border-radius: 24rpx; overflow: hidden; box-shadow: none; background: white; }
+.main-admin .form-box { margin-bottom: 24rpx; }
+.main-admin .form-group { padding: 24rpx; }
+.main-admin .bar { border-radius: 16rpx; font-size: 28rpx; }
+.main-admin .btn, .modal-admin .btn { border-radius: 16rpx; box-shadow: none; }
+.main-admin .btn-base { border-radius: 44rpx; }
+.main-admin .text-blue, .main-admin .text-green, .main-admin .text-darkgreen, .main-admin .text-cyan, .main-admin .text-purple { color: var(--wt-brand) !important; }
+.main-admin .bg-admin.light, .main-admin .bg-blue.light { background: var(--wt-brand-soft) !important; }
+.main-admin .hint-desc { line-height: 1.7; font-size: 25rpx; }
+.admin-list .item, .main-admin .list .item { border-radius: 20rpx; box-shadow: none; border-color: var(--wt-border); }

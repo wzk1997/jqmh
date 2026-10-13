@@ -15,3 +15,4 @@ page {
 .admin-comm-list .item .header .left {
 	font-size: 32rpx !important;
 }
+@import "../../../../style/admin_ui.wxss";

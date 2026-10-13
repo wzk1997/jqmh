@@ -39,7 +39,7 @@ class FavController extends BaseProjectController {
 		let input = this.validateData(rules);
 
 		let service = new FavService();
-		return await service.updateFav(this._userId, input.oid);
+		return await service.delFav(this._userId, input.oid);
 	}
 
 

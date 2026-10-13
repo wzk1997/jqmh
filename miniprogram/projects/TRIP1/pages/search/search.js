@@ -3,6 +3,7 @@ const ProjectBiz = require('../../biz/project_biz.js');
 const pageHelper = require('../../../../helper/page_helper.js');
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 
 	behaviors: [behavior],
 
@@ -14,8 +15,8 @@ Page({
 		if (!curPage) return;
 		if (curPage.options && curPage.options.source == 'admin') {
 			wx.setNavigationBarColor({ //管理端顶部
-				backgroundColor: '#2499f2',
-				frontColor: '#ffffff',
+				backgroundColor: '#ffffff',
+				frontColor: '#000000',
 			});
 		}
 

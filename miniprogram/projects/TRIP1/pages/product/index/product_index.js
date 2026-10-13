@@ -1,12 +1,15 @@
 const ProjectBiz = require('../../../biz/project_biz.js');
 const pageHelper = require('../../../../../helper/page_helper.js');
+const {normalizeContent}=require('../../../ui/content_ui.js');
+const config=require('../../../ui/scene_config.js');
 const ProductBiz = require('../../../biz/product_biz.js');
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 	/**
 	 * 页面的初始数据
 	 */
-	data: {
+	data: { mapImage:config.mapImage, mapMode:true, guideItems:[], selected:null, mapScale:1, guideTab:'spots',
 
 	},
 
@@ -45,6 +48,7 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: async function () {
+        ProjectBiz.syncTabBar(this, 1);
 
 	},
 
@@ -68,6 +72,10 @@ Page({
 
 	bindCommListCmpt: function (e) {
 		pageHelper.commListListener(this, e);
+        const points=[{x:27,y:24},{x:60,y:33},{x:39,y:49},{x:71,y:61},{x:23,y:70},{x:58,y:80}];
+        const list=((e.detail.dataList||e.detail.data||{}).list||((this.data.dataList||{}).list)||[]).map(i=>normalizeContent(i,'product')).filter(i=>i.id);
+        const guideItems=list.slice(0,6).map((item,index)=>({...item,...points[index]}));
+        this.setData({guideItems,selected:guideItems.find(i=>this.data.selected&&i.id===this.data.selected.id)||guideItems[0]||null});
 	},
 
 
@@ -75,6 +83,11 @@ Page({
 
 	},
 
+    bindMapMode(){this.setData({mapMode:!this.data.mapMode});},
+    bindPin(e){this.setData({selected:this.data.guideItems.find(i=>i.id===e.currentTarget.dataset.id)||null});},
+    bindZoom(){this.setData({mapScale:this.data.mapScale===1?1.45:1});},
+    bindReset(){this.setData({mapScale:1});},
+    bindGuideTab(e){this.setData({guideTab:e.currentTarget.dataset.tab});},
 	_getSearchMenu: function () {
 		ProductBiz.setCateTitle();
 

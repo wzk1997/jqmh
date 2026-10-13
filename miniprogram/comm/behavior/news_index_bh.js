@@ -7,6 +7,7 @@ module.exports = Behavior({
 	},
 
 	methods: {
+        bindNewsCategory(e) { this._setCate(this.data.newsCateList, {}, e.detail.value); },
 		/**
 			* 生命周期函数--监听页面加载
 			*/
@@ -62,7 +63,15 @@ module.exports = Behavior({
 				}
 			} 
 
-			this.setData({
+            const selected = cateList.find(item => String(item.id) === String(cateId));
+            const newsHeading = !selected ? '景区资讯' : (String(cateId) === '1' ? '活动资讯' : selected.title);
+            this.setData({
+                newsCateList: cateList,
+                newsCategory: String(cateId),
+                newsHeading,
+                newsSubtitle: String(cateId) === '2' ? '发现旅途中的地方风味' : String(cateId) === '3' ? '把地方好物带回家' : '阅读景区故事，了解最新动态',
+                newsFilters: [{ label: '全部', value: '0' }].concat(cateList.map(item => ({ label: item.title, value: String(item.id) }))),
+                listMode: 'leftpic',
 				_params: {
 					cateId,
 				}

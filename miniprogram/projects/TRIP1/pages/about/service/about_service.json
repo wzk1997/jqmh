@@ -1,4 +1,8 @@
 {
-	"usingComponents": {},
-	"navigationBarTitleText": "服务"
+  "usingComponents": {},
+  "navigationBarTitleText": "吃住行",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true
 }

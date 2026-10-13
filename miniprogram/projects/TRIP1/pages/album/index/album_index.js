@@ -1,98 +1,11 @@
-const ProjectBiz = require('../../../biz/project_biz.js');
-const pageHelper = require('../../../../../helper/page_helper.js');
-const AlbumBiz = require('../../../biz/album_biz.js');
-
-Page({
-	/**
-	 * 页面的初始数据
-	 */
-	data: {
-
-	},
-
-	/**
-		 * 生命周期函数--监听页面加载
-		 */
-	onLoad: async function (options) {
-		ProjectBiz.initPage(this); 
-
-		this._getSearchMenu();
-
-		if (options && options.id) {
-			this.setData({
-				_params: {
-					sortType: 'cateId',
-					sortVal: options.id,
-				}
-			});
-		} else {
-			this.setData({
-
-				_params: {
-					sortType: 'cateId',
-					sortVal: '',
-				}
-			});
-		}
-	},
-
-	/**
-	 * 生命周期函数--监听页面初次渲染完成
-	 */
-	onReady: function () { },
-
-	/**
-	 * 生命周期函数--监听页面显示
-	 */
-	onShow: async function () {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面隐藏
-	 */
-	onHide: function () {
-
-	},
-
-	/**
-	 * 生命周期函数--监听页面卸载
-	 */
-	onUnload: function () {
-
-	},
-
-	url: async function (e) {
-		pageHelper.url(e, this);
-	},
-
-	bindCommListCmpt: function (e) {
-		pageHelper.commListListener(this, e);
-	},
-
-
-	onShareAppMessage: function () {
-
-	},
-
-	_getSearchMenu: function () {
-		AlbumBiz.setCateTitle();
-
-		let sortItem1 = [{
-			label: '全部',
-			type: 'cateId',
-			value: ''
-		}];
-
-		sortItem1 = sortItem1.concat(AlbumBiz.getCateList());
-
-		let sortItems = [];
-		let sortMenus = sortItem1;
-		this.setData({
-			sortItems,
-			sortMenus
-		})
-
-	}
-
-})
+const cloudHelper=require('../../../../../helper/cloud_helper.js');
+const ProjectBiz=require('../../../biz/project_biz.js');
+const pageHelper=require('../../../../../helper/page_helper.js');
+const {normalizeContent}=require('../../../ui/content_ui.js');
+Page({data:{items:[],loading:false,error:false,page:0,hasMore:false,category:'1',sort:'recommend',sorts:[{id:'recommend',name:'推荐攻略'},{id:'new',name:'最新发布'},{id:'popular',name:'最受欢迎'}],entries:[{id:'route',name:'经典路线',icon:'icon-album',color:'green'},{id:'spots',name:'必玩景点',icon:'icon-location',color:'orange'},{id:'tips',name:'游玩贴士',icon:'icon-roundcheckfill',color:'blue'},{id:'photo',name:'拍照打卡',icon:'icon-camera',color:'cyan'}]},
+ bindScenicLayout(e){this.setData({uiChrome:e.detail});},onLoad(o={}){ProjectBiz.initPage(this);this.setData({category:o.id||'1'});this.load();},onShow(){ProjectBiz.syncTabBar(this,2);},
+ async load(more=false){if(more===true&&this.data.loading)return;const serial=this.serial=(this.serial||0)+1,page=more===true?this.data.page+1:1;const orderBy=this.data.sort==='new'?{ALBUM_ADD_TIME:'desc'}:this.data.sort==='popular'?{ALBUM_VIEW_CNT:'desc',ALBUM_ADD_TIME:'desc'}:{ALBUM_ORDER:'asc',ALBUM_ADD_TIME:'desc'};this.setData({loading:true,error:false,...(more===true?{}:{items:[],hasMore:false})});try{const res=await cloudHelper.callCloudSumbit('album/list',{page,size:20,sortType:'cateId',sortVal:this.data.category,orderBy,...(this.data.sort==='new'?{sortMode:'latest'}:{})},{title:'bar'});if(serial!==this.serial)return;const rows=(res.data.list||[]).map(row=>({...normalizeContent(row,'album'),duration:row.ALBUM_DURATION||'',spotCount:(row.ALBUM_OBJ&&row.ALBUM_OBJ.spots||[]).length}));this.setData({items:page===1?rows:this.data.items.concat(rows),page,hasMore:page*20<res.data.total});}catch(_){if(serial===this.serial)this.setData({error:true});}finally{if(serial===this.serial)this.setData({loading:false});}},
+ clearCategory(){this.setData({category:'1'});this.load();},
+ sort(e){this.setData({sort:e.currentTarget.dataset.id});this.load();},entry(e){const id=e.currentTarget.dataset.id;if(id==='spots'){wx.switchTab({url:'/projects/TRIP1/pages/product/index/product_index'});return;}if(id==='route'){this.setData({category:'1'});this.load();return;}if(id==='tips'){wx.navigateTo({url:'/projects/TRIP1/pages/search/portal/portal_search?scope=guide&type=news&browse=1'});return;}this.search('摄影');},
+ search(query=''){if(typeof query!=='string')query='';wx.navigateTo({url:'/projects/TRIP1/pages/search/portal/portal_search?scope=guide&query='+encodeURIComponent(query)});},detail(e){wx.navigateTo({url:'/projects/TRIP1/pages/album/detail/album_detail?id='+e.currentTarget.dataset.id});},onReachBottom(){if(this.data.hasMore&&!this.data.error)this.load(true);},onPullDownRefresh(){this.load().finally(()=>wx.stopPullDownRefresh());},url(e){pageHelper.url(e,this);}
+});

@@ -3,6 +3,7 @@ const pageHelper = require('../../../../../helper/page_helper.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 	/**
 	 * 页面的初始数据
 	 */
@@ -33,16 +34,19 @@ Page({
 			title: 'bar'
 		};
 		let album = await cloudHelper.callCloudData('album/view', params, opt);
-		if (!album) {
+		if (!album || !album._id) {
 			this.setData({
 				isLoad: null
 			})
 			return;
 		}
 
-		this.setData({
+		const spots=album.ALBUM_SPOTS||[];
+        this.setData({
+            spots,introText:((album.ALBUM_OBJ.detail||[]).find(n=>n.type==='text')||{val:album.ALBUM_OBJ.desc||''}).val.split('\n\n')[0],
 			isLoad: true,
 			album,
+            highlights:spots.filter(s=>s.cover&&s.cover!=='/images/cover.gif').slice(0,4),
 		});
 
 	},
@@ -91,9 +95,10 @@ Page({
 	},
 
 	onShareAppMessage: function (res) {
+        if (!this.data.album) return { title: 'WeTravel' };
 		return {
 			title: this.data.album.ALBUM_TITLE,
-			imageUrl: this.data.album.ALBUM_OBJ.cover[0]
+			imageUrl: (this.data.album.ALBUM_OBJ.cover || [])[0] || ''
 		}
 	}
 })

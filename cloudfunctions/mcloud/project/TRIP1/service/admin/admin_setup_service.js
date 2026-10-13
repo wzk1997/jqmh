@@ -15,7 +15,13 @@ class AdminSetupService extends BaseProjectAdminService {
 
 	// 通用setup
 	async setSetup(key, val, type = '') {
-		await setupUtil.set(key, val, type);
+		const allowed = ['SETUP_CONTENT_ABOUT','SETUP_CONTENT_BUS','SETUP_CONTENT_PARKING','SETUP_CONTENT_TOLIET','SETUP_CONTENT_LXS','SETUP_CONTENT_DY','SETUP_CONTENT_WEATHER'];
+        if (!allowed.includes(key) || type !== 'content') this.AppError('不能修改此配置');
+        const content = require('../cms_validation.js').content(val);
+        const previous = await setupUtil.get(key) || [];
+        const previousImages = Array.isArray(previous) ? previous.filter(n=>n.type==='img').map(n=>n.val) : [];
+        await new (require('./admin_cms_service.js'))().checkImages('setup', key, content.filter(n=>n.type==='img').map(n=>n.val),previousImages);
+        await setupUtil.set(key, content, type);
 	}
 
 	/** 小程序码 */

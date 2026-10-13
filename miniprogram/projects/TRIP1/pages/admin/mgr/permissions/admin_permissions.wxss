@@ -1,0 +1,2 @@
+@import "../../../../style/cms.wxss";
+.permission-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16rpx}.permission-option{display:flex;align-items:center;gap:14rpx;font-size:27rpx;min-height:88rpx;margin:0;padding:0 20rpx;background:#f7f8f5;color:#687d72;border-radius:12rpx}.permission-option:after{border:1rpx solid #e5ebe5}.permission-option.selected{color:#146c60;background:#e5f4ed}

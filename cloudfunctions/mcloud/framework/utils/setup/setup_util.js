@@ -94,7 +94,21 @@ async function remove(key, fuzzy = false) {
 	await SetupModel.del(where);
 }
 
+// Configuration objects must replace the entire value. Nested updates cannot
+// replace a null with an object and otherwise leave removed nested keys behind.
+async function replace(key, val, type = '') {
+    const row = await SetupModel.getOne({ SETUP_KEY: key }, '_id');
+    if (!row) return set(key, val, type);
+    const dbUtil = require('../../database/db_util.js');
+    return dbUtil.edit(SetupModel.CL, row._id, {
+        SETUP_TYPE: type,
+        SETUP_VALUE: dbUtil.getCmd().set({ val }),
+        SETUP_EDIT_TIME: Date.now()
+    });
+}
+
 module.exports = {
+    replace,
 	set,
 	get,
 	remove

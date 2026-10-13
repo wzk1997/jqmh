@@ -1,0 +1,21 @@
+<scenic-nav-bar title="客户反馈" bind:layout="bindScenicLayout"/>
+<view class="feedback-page">
+  <view class="feedback-heading"><text class="feedback-title">客户反馈</text><text class="feedback-subtitle">分享你的体验与建议，帮助我们改善景区服务。</text></view>
+  <view class="feedback-tabs"><button class="{{tab=='form'?'active':''}}" data-tab="form" bindtap="bindTab">提交反馈</button><button class="{{tab=='records'?'active':''}}" data-tab="records" bindtap="bindTab">我的反馈</button></view>
+  <block wx:if="{{tab=='form'}}">
+    <view wx:if="{{submitted}}" class="feedback-panel success-panel"><text class="icon-roundcheck success-icon"></text><text class="success-title">反馈已提交</text><text class="feedback-subtitle">感谢你的建议。可在“我的反馈”中查看反馈与回复。</text><button class="submit-button" bindtap="writeAnother">继续反馈</button><button class="secondary-button" data-tab="records" bindtap="bindTab">查看我的反馈</button></view>
+    <view wx:else class="feedback-panel">
+      <view class="field-label">反馈类型 <text class="required">*</text></view><picker range="{{categories}}" value="{{categoryIndex<0?0:categoryIndex}}" bindchange="bindCategory" disabled="{{submitting}}"><view class="picker-value {{categoryIndex<0?'placeholder':''}}">{{categoryIndex<0?'请选择反馈类型':categories[categoryIndex]}}<text class="icon-unfold"></text></view></picker>
+      <view class="field-label">反馈内容 <text class="required">*</text></view><textarea class="feedback-textarea" value="{{content}}" data-field="content" bindinput="bindInput" maxlength="500" placeholder="请描述你的体验、遇到的问题或建议（至少5字）" disabled="{{submitting}}" /><view class="character-count">{{content.length}} / 500</view>
+      <view class="field-label">补充图片 <text class="optional">选填，最多3张</text></view><view class="image-grid"><view wx:for="{{images}}" wx:key="path" class="image-item"><image src="{{item.path}}" mode="aspectFill" data-url="{{item.path}}" bindtap="previewImage"/><button class="remove-image" data-index="{{index}}" bindtap="removeImage" disabled="{{submitting}}" aria-label="删除图片">×</button></view><button wx:if="{{images.length<3}}" class="add-image" bindtap="chooseImages" disabled="{{submitting || choosing}}" aria-label="添加反馈图片"><text class="icon-cameraadd"></text><text>添加图片</text></button></view>
+      <view class="field-label">联系电话 <text class="optional">选填，便于联系你</text></view><input class="phone-input" value="{{phone}}" data-field="phone" bindinput="bindInput" type="number" maxlength="11" placeholder="请输入手机号码" disabled="{{submitting}}" />
+      <text class="privacy-note">联系方式仅用于本次反馈沟通。请勿上传身份证、银行卡等敏感资料。</text><text wx:if="{{error}}" class="error-note">{{error}}</text><button class="submit-button" bindtap="submit" loading="{{submitting}}" disabled="{{submitting || choosing}}">{{submitting?'正在提交':'提交反馈'}}</button>
+    </view>
+  </block>
+  <view wx:else>
+    <view wx:if="{{loadError}}" class="feedback-panel"><text class="feedback-subtitle">反馈记录加载失败，请重试。</text><button class="secondary-button" bindtap="loadRecords">重新加载</button></view>
+    <view wx:elif="{{!records.length}}" class="feedback-panel empty-panel">{{loading?'正在加载…':'你还没有提交反馈'}}</view>
+    <view wx:for="{{records}}" wx:key="_id" class="feedback-panel record-panel"><view class="record-heading"><text>{{item.FEEDBACK_CATEGORY}}</text><text class="status-tag">{{item.FEEDBACK_STATUS==1?'已处理':item.FEEDBACK_STATUS==2?'处理中':'待处理'}}</text></view><text class="record-date">{{item.date}}</text><text class="record-content">{{item.FEEDBACK_CONTENT}}</text><view class="record-images"><image wx:for="{{item.FEEDBACK_IMAGES}}" wx:for-item="photo" wx:for-index="photoIndex" wx:key="*this" src="{{photo}}" mode="aspectFill" data-id="{{item._id}}" data-index="{{photoIndex}}" bindtap="previewRecord" /></view><view wx:if="{{item.FEEDBACK_REPLY}}" class="record-reply"><text class="reply-label">景区回复</text><text>{{item.FEEDBACK_REPLY}}</text></view></view>
+    <button wx:if="{{hasMore}}" class="secondary-button" data-more="{{true}}" bindtap="loadRecords" loading="{{loading}}" disabled="{{loading}}">加载更多</button>
+  </view>
+</view>

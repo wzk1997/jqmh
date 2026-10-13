@@ -1,3 +1,4 @@
+const {getChrome}=require('../../../../ui/navigation_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
 const cloudHelper = require('../../../../../../helper/cloud_helper.js');
@@ -5,11 +6,13 @@ const fileHelper = require('../../../../../../helper/file_helper.js');
 const projectSetting = require('../../../../public/project_setting.js');
 
 Page({
+    bindScenicLayout(e){this.setData({uiChrome:e.detail});},
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        uiChrome:getChrome(),
 		url: '',
 		time: '',
 		condition: '',

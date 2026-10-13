@@ -17,6 +17,7 @@ AdminModel.CL = BaseModel.C('admin');
 AdminModel.DB_STRUCTURE = {
 	_pid: 'string|true',
 	ADMIN_ID: 'string|true',
+    ADMIN_DELETED: 'bool|false|default=false',
 	ADMIN_NAME: 'string|true', 
 	ADMIN_DESC: 'string|true',
 	ADMIN_PHONE: 'string|false|comment=手机',
@@ -27,6 +28,7 @@ AdminModel.DB_STRUCTURE = {
 	ADMIN_LOGIN_TIME: 'int|true|default=0|comment=最后登录时间',
 	ADMIN_TYPE: 'int|true|default=0|comment=类型 0=普通管理员 1=超级管理员',
 
+	ADMIN_PERMISSIONS: 'object|false|default={}',
 	ADMIN_TOKEN: 'string|false|comment=当前登录token',
 	ADMIN_TOKEN_TIME: 'int|true|default=0|comment=当前登录token time',
 

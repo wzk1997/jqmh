@@ -1,3 +1,4 @@
+const {getChrome}=require('../../../../ui/navigation_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const NewsBiz = require('../../../../biz/news_biz.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
@@ -5,17 +6,22 @@ const cloudHelper = require('../../../../../../helper/cloud_helper.js');
 const projectSetting = require('../../../../public/project_setting.js');
 
 Page({
+    bindScenicLayout(e){this.setData({uiChrome:e.detail});},
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        uiChrome:getChrome(),
 	},
 
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: async function (options) {
+        if (!AdminBiz.isAdmin(this)) return;
+        wx.redirectTo({url:'/projects/TRIP1/pages/admin/cms/list/cms_list?module=news'});
+        return;
 		if (!AdminBiz.isAdmin(this)) return;
 
 		wx.setNavigationBarTitle({

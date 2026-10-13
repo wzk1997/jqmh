@@ -1,3 +1,4 @@
+const CmsService = require('./admin_cms_service.js');
 /**
  * Notes: 产品后台管理
  * Ver : CCMiniCloud Framework 2.0.1 ALL RIGHTS RESERVED BY cclinux0730 (wechat)
@@ -16,7 +17,7 @@ class AdminProductService extends BaseProjectAdminService {
 
 	/** 推荐首页SETUP */
 	async vouchProductSetup(id, vouch) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return this.vouchProduct(id, vouch);
 	}
 
 	/**添加 */
@@ -29,12 +30,12 @@ class AdminProductService extends BaseProjectAdminService {
 	}) {
 
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().saveLegacy('product', {title,cateId,cateName,order,forms}, '', true);
 	}
 
 	/**删除数据 */
 	async delProduct(id) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().remove('product', id);
 
 	}
 
@@ -43,7 +44,7 @@ class AdminProductService extends BaseProjectAdminService {
 		let fields = '*';
 
 		let where = {
-			_id: id
+			_id: id, PRODUCT_DELETED: ['<>',true]
 		}
 		let product = await ProductModel.getOne(where, fields);
 		if (!product) return null;
@@ -56,7 +57,7 @@ class AdminProductService extends BaseProjectAdminService {
 		id,
 		hasImageForms
 	}) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().patchLegacy('product', id, 'forms', hasImageForms);
 	}
 
 
@@ -70,7 +71,7 @@ class AdminProductService extends BaseProjectAdminService {
 		forms,
 	}) {
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().saveLegacy('product', {id,title,cateId,cateName,order,forms}, '', true);
 	}
 
 	/**取得分页列表 */
@@ -94,6 +95,7 @@ class AdminProductService extends BaseProjectAdminService {
 
 		let where = {};
 		where.and = {
+			PRODUCT_DELETED: ['<>',true],
 			_pid: this.getProjectId() //复杂的查询在此处标注PID
 		};
 
@@ -133,18 +135,18 @@ class AdminProductService extends BaseProjectAdminService {
 
 	/**修改状态 */
 	async statusProduct(id, status) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		if (![0,1].includes(status)) this.AppError('状态不正确'); return new CmsService().setState('product', id, status === 1 ? 'published' : 'offline');
 	}
 
 	/**置顶与排序设定 */
 	async sortProduct(id, sort) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().sort('product', id, sort);
 
 	}
 
 	/**首页设定 */
 	async vouchProduct(id, vouch) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		if (![0,1].includes(vouch)) this.AppError('推荐状态不正确'); await new CmsService().detail('product', id); await ProductModel.edit(id, {PRODUCT_VOUCH:vouch}); return {id};
 	}
 }
 

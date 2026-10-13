@@ -1,5 +1,6 @@
+<scenic-nav-bar title="后台-景点管理" bind:layout="bindScenicLayout"/>
 <block wx:if="{{isAdmin}}">
-    <cmpt-comm-list source='admin' type="admin-product-list" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/product_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索标题" bind:list="bindCommListCmpt"> 
+    <cmpt-comm-list topOffset="{{uiChrome.height}}" source='admin' type="admin-product-list" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/product_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索标题" bind:list="bindCommListCmpt"> 
 
         <view slot="searchEnd">
             <button bindtap="url" data-url="../add/admin_product_add" class="btn radius bg-admin text-white margin-right-s"><text class="icon-roundadd margin-right-xxs"></text>添加新景点</button>

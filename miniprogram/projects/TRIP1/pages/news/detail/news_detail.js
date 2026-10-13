@@ -3,10 +3,12 @@ const pageHelper = require('../../../../../helper/page_helper.js');
 const ProjectBiz = require('../../../biz/project_biz.js'); 
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        navActions: [{id:'share',icon:'icon-share',label:'分享资讯',openType:'share'}],
 		isLoad: false, 
 	},
 
@@ -33,7 +35,7 @@ Page({
 			title: 'bar'
 		};
 		let news = await cloudHelper.callCloudData('news/view', params, opt);
-		if (!news) {
+		if (!news || !news._id) {
 			this.setData({
 				isLoad: null
 			})
@@ -102,9 +104,10 @@ Page({
 	 * 用户点击右上角分享
 	 */
 	onShareAppMessage: function (res) {
+        if (!this.data.news) return { title: 'WeTravel' };
 		return {
 			title: this.data.news.NEWS_TITLE,
-			imageUrl: this.data.news.NEWS_PIC[0]
+			imageUrl: (this.data.news.NEWS_PIC || [])[0] || ''
 		} 
 	}
 })

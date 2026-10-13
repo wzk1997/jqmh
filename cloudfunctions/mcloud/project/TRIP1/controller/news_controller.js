@@ -7,6 +7,7 @@
 const BaseProjectController = require('./base_project_controller.js');
 const NewsService = require('../service/news_service.js');
 const timeUtil = require('../../../framework/utils/time_util.js');
+const newsDisplay = require('../service/news_display.js');
 
 class NewsController extends BaseProjectController {
 
@@ -16,11 +17,17 @@ class NewsController extends BaseProjectController {
 		for (let k = 0; k < list.length; k++) {
 			let node = {};
 			node.type = 'news';
+            node.demo=!!list[k].NEWS_DEMO;node.views=list[k].NEWS_VIEW_CNT||0;node.cateId=list[k].NEWS_CATE_ID;node.cateName=list[k].NEWS_CATE_NAME;
 			node.id = list[k]._id;
 			node.title = list[k].NEWS_TITLE;
 			node.desc = list[k].NEWS_DESC;
 			node.ext = list[k].NEWS_ADD_TIME;
-			node.pic = list[k].NEWS_PIC[0];
+			node.pic = (list[k].NEWS_PIC || [])[0] || '';
+            node.activityStart = list[k].NEWS_ACTIVITY_START || '';
+            node.activityEnd = list[k].NEWS_ACTIVITY_END || '';
+            node.activityState = newsDisplay.activityState(node.activityStart, node.activityEnd);
+            node.activityStateLabel = newsDisplay.labels[node.activityState] || '';
+            node.publishDate = list[k].NEWS_PUBLISH_TIME > 0 ? timeUtil.timestamp2Time(list[k].NEWS_PUBLISH_TIME, 'Y-M-D') : '';
 			ret.push(node);
 		}
 		return ret;
@@ -35,7 +42,8 @@ class NewsController extends BaseProjectController {
 			sortType: 'string|name=搜索类型',
 			sortVal: 'name=搜索类型值',
 			orderBy: 'object|name=排序',
-			cateId: 'string',
+			cateGroup: 'string',
+            cateId: 'string',
 			page: 'must|int|default=1',
 			size: 'int',
 			isTotal: 'bool',

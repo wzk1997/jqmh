@@ -1,6 +1,7 @@
 {
-	"usingComponents": { 
-	}, 
-	"disableScroll": true, 
-	"navigationBarTitleText": "预约列表"
+	"usingComponents": {},
+	"disableScroll": true,
+	"navigationBarTitleText": "预约列表",
+	"navigationBarBackgroundColor": "#ffffff",
+	"navigationBarTextStyle": "black"
 }

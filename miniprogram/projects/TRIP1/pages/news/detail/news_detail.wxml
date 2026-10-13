@@ -1,33 +1,13 @@
-<view wx:if="{{isLoad===null}}" class="margin-top load notexist text-l load-project"></view>
-<view wx:if="{{isLoad===false}}" class="margin-top load loading text-l load-project"></view>
-
-<block wx:if="{{isLoad}}">
-	<view class="main padding-project">
-		<view class="article-box margin-top-xs">
-			<!-- article content begin -->
-			<view class="article card-project shadow-project">
-				<view class="title"><text user-select="true">{{news.NEWS_TITLE}}</text></view>
-				<view class="time"> {{news.NEWS_ADD_TIME}} {{news.NEWS_CATE_NAME}} </view> 
-
-
-				<block wx:for="{{news.NEWS_CONTENT}}" wx:key="key">
-					<view class="content" wx:if="{{item.type=='text'}}">
-						<text user-select="{{true}}">{{item.val}}</text>
-					</view>
-
-					<view class="pics" wx:if="{{item.type=='img'}}">
-						<image bindtap="url" data-type='img' data-url="{{item.val}}" show-menu-by-longpress="{{true}}" class="loading" mode='widthFix' lazy-load="true" src="{{item.val}}">
-						</image>
-					</view>
-				</block>
-				<!-- article content end -->
-
-			</view>
-			<!-- article content end -->
-
-		</view>
-
-	</view> 
-
-	<cmpt-detail mode="mode1" topBtnShow="{{topBtnShow}}" oid="{{news._id}}" cate="{{news.NEWS_CATE_NAME}}" title="{{news.NEWS_TITLE}}" cover="{{news.NEWS_PIC[0]}}" qr="{{news.NEWS_QR}}" desc="查看详情"  bg="{{skin.PROJECT_COLOR}}"></cmpt-detail>
+<wxs module="media" src="../../../../../wxs/media.wxs"/>
+<wxs module="rich" src="../../../../../wxs/rich_text.wxs"/>
+<scenic-nav-bar bind:layout="bindScenicLayout" title="资讯详情" actions="{{navActions}}"/>
+<view wx:if="{{isLoad===null}}" class="wt-state"><text class="wt-state-icon icon-info"></text><text>该资讯暂不可查看，请返回选择其他内容。</text><button bindtap="url" data-type="back">返回上一页</button></view>
+<view wx:elif="{{!isLoad}}" class="wt-state">正在加载资讯…</view>
+<block wx:else>
+  <image wx:if="{{news.NEWS_PIC[0] && news.NEWS_PIC[0]!='/images/cover.gif'}}" class="editorial-cover" src="{{media.display(news.NEWS_PIC[0],mediaUrls)}}" mode="aspectFill" bindtap="url" data-type="img" data-url="{{news.NEWS_PIC[0]}}" show-menu-by-longpress/>
+  <view class="editorial-body {{!news.NEWS_PIC[0] || news.NEWS_PIC[0]=='/images/cover.gif'?'no-cover':''}}"><view class="editorial-header"><text class="editorial-label">{{news.NEWS_CATE_NAME}}</text><text class="editorial-title" user-select>{{news.NEWS_TITLE}}</text><text class="editorial-meta">{{news.NEWS_ADD_TIME}}</text></view>
+    <view wx:if="{{news.NEWS_ACTIVITY_START || news.NEWS_ACTIVITY_END}}" class="editorial-text"><text class="icon-time"/> 活动时间：{{news.NEWS_ACTIVITY_START || '待公布'}}{{news.NEWS_ACTIVITY_END?' 至 '+news.NEWS_ACTIVITY_END:''}}</view><block wx:for="{{news.NEWS_CONTENT}}" wx:key="index"><view wx:if="{{item.type=='text'}}" class="editorial-text" style="{{rich.style(item)}}"><text user-select style="{{rich.style(item)}}">{{item.val}}</text></view><view wx:elif="{{item.type=='img'}}" class="editorial-picture"><image src="{{media.display(item.val,mediaUrls)}}" mode="widthFix" lazy-load show-menu-by-longpress bindtap="url" data-type="img" data-url="{{item.val}}"/></view></block>
+    <view class="editorial-note">WeTravel · 阅读风景，收藏旅程</view>
+  </view>
+  <cmpt-detail mode="mode1" topBtnShow="{{topBtnShow}}" oid="{{news._id}}" cate="{{news.NEWS_CATE_NAME}}" title="{{news.NEWS_TITLE}}" cover="{{news.NEWS_PIC[0]}}" qr="{{news.NEWS_QR}}" desc="查看详情" bg="{{skin.PROJECT_COLOR}}" />
 </block>

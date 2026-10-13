@@ -8,6 +8,7 @@ const setting = require('../../../../../setting/setting.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 	/**
 	 * 页面的初始数据
 	 */
@@ -36,7 +37,7 @@ Page({
 		}
 		let user = await cloudHelper.callCloudData('passport/my_detail', {}, opts);
 		if (user) {
-			return wx.redirectTo({ url: '../index/my_index' });
+			return wx.switchTab({ url: pageHelper.fmtURLByPID('/pages/my/index/my_index') });
 		}
 
 		this.setData({

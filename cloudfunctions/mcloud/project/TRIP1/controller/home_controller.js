@@ -8,6 +8,8 @@ const BaseProjectController = require('./base_project_controller.js');
 const HomeService = require('../service/home_service.js');
 
 class HomeController extends BaseProjectController {
+    async portal(){return new (require("../service/home_portal_service.js"))().portal();}
+
 
 	async getSetup() {
 		// 数据校验

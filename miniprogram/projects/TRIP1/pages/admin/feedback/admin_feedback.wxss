@@ -1,0 +1,2 @@
+@import "../../../style/cms.wxss";
+.cms-feedback-excerpt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:27rpx;line-height:1.7;margin:18rpx 0;text-align:left}

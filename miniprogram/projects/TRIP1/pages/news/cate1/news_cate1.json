@@ -1,6 +1,8 @@
 {
-	"usingComponents": { 
-	}, 
-	"disableScroll": true, 
-	"navigationBarTitleText": "资讯"
+  "usingComponents": {},
+  "disableScroll": true,
+  "navigationBarTitleText": "资讯",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

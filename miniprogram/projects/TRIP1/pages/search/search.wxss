@@ -1,2 +1,13 @@
-@import "../../style/skin.wxss"; 
-@import "../../../../style/project/search_style.wxss";
+@import "../../style/skin.wxss";
+.search-toolbar { display: flex; align-items: center; margin-top: 32rpx; }
+.search-input { display: flex; align-items: center; min-width: 0; flex: 1; background: white; border-radius: 48rpx; padding: 0 20rpx; height: 96rpx; }
+.search-input > .icon-search { color: var(--wt-brand); font-size: 34rpx; margin-right: 12rpx; }
+.search-input input { flex: 1; min-width: 0; font-size: 28rpx; }
+.search-clear { width: 72rpx; height: 80rpx; display: flex; justify-content: center; align-items: center; font-size: 32rpx; color: var(--wt-muted); }
+.search-action { margin: 0 0 0 16rpx; color: white; background: var(--wt-brand); border-radius: 48rpx; font-size: 28rpx; line-height: 96rpx; padding: 0 28rpx; }
+.search-action::after, .search-history button::after, .search-back::after { border: 0; }
+.search-delete { width: 88rpx; height: 88rpx; display: flex; align-items: center; justify-content: center; color: var(--wt-muted); font-size: 32rpx; }
+.search-history { display: flex; flex-wrap: wrap; }
+.search-history button { background: white; font-size: 26rpx; color: var(--wt-brand); border-radius: 36rpx; padding: 0 24rpx; margin: 0 16rpx 16rpx 0; }
+.search-empty { font-size: 26rpx; color: var(--wt-muted); padding: 40rpx 0; }
+.search-back { background: transparent; color: var(--wt-muted); font-size: 26rpx; margin-top: 48rpx; }

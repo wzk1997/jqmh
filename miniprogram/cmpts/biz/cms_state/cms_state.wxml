@@ -1,0 +1,1 @@
+<view wx:if="{{loading}}" class="cms-state">正在加载…</view><view wx:elif="{{error}}" class="cms-state"><text>加载失败，请重试</text><button class="cms-retry" bindtap="retry">重新加载</button></view><view wx:elif="{{empty}}" class="cms-state"><text class="icon-pic cms-empty-icon"/><text>{{emptyText}}</text></view>

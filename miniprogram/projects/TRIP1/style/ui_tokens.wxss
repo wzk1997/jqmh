@@ -1,0 +1,30 @@
+/* WeTravel UI 2.0: shared across all project pages and UI components. */
+page {
+  --wt-brand: #087f70;
+  --wt-brand-soft: #eaf4f0;
+  --wt-ink: #182f2b;
+  --wt-muted: #687b76;
+  --wt-background: #f7faf8;
+  --wt-surface: #ffffff;
+  --wt-border: #e4ece7;
+  --wt-radius-card: 24rpx;
+  --wt-radius-small: 16rpx;
+  --wt-space-page: 32rpx;
+  --wt-space-section: 48rpx;
+  --wt-font-small: 24rpx;
+  --wt-font-body: 28rpx;
+  --wt-font-title: 36rpx;
+  /* Align existing utility classes with the same brand and text palette. */
+  --projectColor: #087f70;
+  --projectColorLight: #eaf4f0;
+  --green: #087f70;
+  --darkgreen: #087f70;
+  --greenLight: #eaf4f0;
+  --grey: #687b76;
+  --darkGray: #687b76;
+  --black: #182f2b;
+  --ghostWhite: #f7faf8;
+  background: var(--wt-background);
+  color: var(--wt-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+}

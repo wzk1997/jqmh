@@ -15,6 +15,11 @@ class AlbumModel extends BaseProjectModel {
 AlbumModel.CL = BaseProjectModel.C('album');
 
 AlbumModel.DB_STRUCTURE = {
+    _id: 'string|false',
+    ALBUM_DEMO: 'bool|false|default=false',
+    ALBUM_DURATION: 'string|false|default=',
+    ALBUM_ROUTE: 'array|false|default=[]',
+    ALBUM_DRAFT: 'object|false|default={}',
     _pid: 'string|true',
     ALBUM_ID: 'string|true',
 
@@ -37,6 +42,13 @@ AlbumModel.DB_STRUCTURE = {
     ALBUM_EDIT_TIME: 'int|true',
     ALBUM_ADD_IP: 'string|false',
     ALBUM_EDIT_IP: 'string|false',
+    ALBUM_CMS_STATE: 'string|false|default=|comment=draft/published/offline/deleted',
+    ALBUM_PUBLISH_TIME: 'int|false|default=0',
+    ALBUM_DELETED: 'bool|false|default=false',
+    ALBUM_DELETED_TIME: 'int|false|default=0',
+    ALBUM_EDIT_ADMIN: 'string|false',
+    ALBUM_REVISION: 'int|false|default=0',
+
 };
 
 // 字段前缀

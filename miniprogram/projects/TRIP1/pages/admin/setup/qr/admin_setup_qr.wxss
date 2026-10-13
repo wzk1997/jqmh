@@ -35,3 +35,4 @@
 	color: var(--adminColor);
 	padding: 20rpx 10rpx;
 }
+@import "../../../../style/admin_ui.wxss";

@@ -71,7 +71,8 @@ class FavService extends BaseProjectService {
 		let effect = await FavModel.del(where);
 
 		return {
-			effect
+			effect,
+			isFav: 0
 		};
 	}
 
@@ -94,7 +95,7 @@ class FavService extends BaseProjectService {
 		let where = {};
 		if (util.isDefined(search) && search) {
 			where.FAV_TITLE = {
-				$regex: '.*' + search,
+				$regex: '.*' + util.escapeRegex(search),
 				$options: 'i'
 			};
 		}

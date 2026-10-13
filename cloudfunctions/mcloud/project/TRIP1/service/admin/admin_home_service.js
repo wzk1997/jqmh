@@ -18,22 +18,19 @@ class AdminHomeService extends BaseProjectAdminService {
 	/**
 	 * 首页数据归集
 	 */
-	async adminHome() {
-		let where = {};
-
-		let userCnt = await UserModel.count(where);
-		let newsCnt = await NewsModel.count(where);
-		let meetCnt = await MeetModel.count(where);
-		let productCnt = await ProductModel.count(where);
-		let albumCnt = await AlbumModel.count(where);
-		return [
-			{ title: '用户数', cnt: userCnt },
-			{ title: '资讯数', cnt: newsCnt },
-			{ title: '预约项目', cnt: meetCnt },
-			{ title: '景点数', cnt: productCnt },
-			{ title: '攻略数', cnt: albumCnt },
-		]
-	}
+    async adminHome() {
+        const Cms = require('./admin_cms_service.js');
+        const Feedback = require('../../model/feedback_model.js');
+        const cms = new Cms();
+        const modules = [['scenic','景区介绍'],['album','攻略数'],['merchant','商家数'],['panorama','全景资源'],['news','资讯数'],['product','景点数']];
+        const results = await Promise.all(modules.map(async ([module,title])=>{
+            const Model=cms.model(module);await cms.ensure(Model);
+            return {title,cnt:await Model.count({[module.toUpperCase()+'_DELETED']:['<>',true]})};
+        }));
+        await cms.ensure(Feedback);
+        results.push({title:'待处理反馈',cnt:await Feedback.count({FEEDBACK_STATUS:['in',[0,2]]})});
+        return results;
+    }
 
 	// 用户数据清理  
 	async clearUserData(userId) {
@@ -46,10 +43,7 @@ class AdminHomeService extends BaseProjectAdminService {
 	async clearVouchData() {
 		await setupUtil.remove(constants.SETUP_HOME_VOUCH_KEY);
 
-		NewsModel.edit({}, { NEWS_VOUCH: 0 }); 
-		MeetModel.edit({}, { MEET_VOUCH: 0 });
-		AlbumModel.edit({}, { ALBUM_VOUCH: 0 });
-		ProductModel.edit({}, { PRODUCT_VOUCH: 0 }); 
+		await Promise.all([NewsModel.edit({}, { NEWS_VOUCH: 0 }), MeetModel.edit({}, { MEET_VOUCH: 0 }), AlbumModel.edit({}, { ALBUM_VOUCH: 0 }), ProductModel.edit({}, { PRODUCT_VOUCH: 0 })]); 
 
 	}
 

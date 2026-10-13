@@ -33,6 +33,7 @@ class AdminSetupController extends BaseProjectAdminController {
 	// 富文本setup
 	async setContentSetup() {
 		await this.isAdmin();
+        this.requirePermission('scenic','publish');
 
 		// 数据校验
 		let rules = {

@@ -12,7 +12,12 @@ const setting = require('../../../../../setting/setting.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
 
 Page({
-	data: { 
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
+    bindScenicAction(e) { if (e.detail.id === 'settings') this.bindSetTap(); },
+	data: {
+        profileDisplayName:'欢迎来到 WeTravel',
+        profileNavMode:'home',
+        navActions: [{id:'settings',icon:'icon-settings',label:'设置',round:true}],
 	},
 
 	/**
@@ -22,10 +27,10 @@ Page({
 		if (PassportBiz.isLogin()) {
 			let user = {};
 			user.USER_NAME = PassportBiz.getUserName();
-			this.setData({ user });
+			this.setData({ user,profileDisplayName:this.displayName(user) });
 		} 
 
-		ProjectBiz.initPage(this);
+		ProjectBiz.initPage(this, {isSetNavColor:false});
 
 	}, 
 
@@ -33,11 +38,14 @@ Page({
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
 	onReady: function () { },
+    onPageScroll(e){const mode=e.scrollTop>200?'page':'home';if(mode!==this.data.profileNavMode)this.setData({profileNavMode:mode});},
+    explore(){wx.switchTab({url:'/projects/TRIP1/pages/album/index/album_index'});},
 
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
-	onShow: async function () { 
+	onShow: async function () {
+        ProjectBiz.syncTabBar(this, 3);
 		PassportBiz.clearToken();
 		PassportBiz.loginSilence(this);
 		
@@ -58,6 +66,7 @@ Page({
 
 	},
 
+    displayName(user){const name=user&&user.USER_NAME||'';return name&&!/^[\s._-]*$/.test(name)?name:(user?'微信用户':'欢迎来到 WeTravel');},
 	_loadUser: async function (e) {
 
 		let opts = {
@@ -66,13 +75,13 @@ Page({
 		let user = await cloudHelper.callCloudData('passport/my_detail', {}, opts);
 		if (!user) {
 			this.setData({
-				user: null
+				user: null,profileDisplayName:'欢迎来到 WeTravel'
 			});
 			return;
 		}
 
 		this.setData({
-			user
+			user,profileDisplayName:this.displayName(user)
 		})
 	},
 
@@ -102,17 +111,18 @@ Page({
 	},
 
 	bindSetTap: function (e, skin) {
-		let itemList = ['清除缓存', '后台管理'];
+		let itemList = ['个人资料', '清除缓存', '后台管理'];
 		wx.showActionSheet({
 			itemList,
 			success: async res => {
 				let idx = res.tapIndex;
-				if (idx == 0) {
+				if(idx===0){wx.navigateTo({url:this.data.user?'../edit/my_edit':'../reg/my_reg'});}
+				if (idx == 1) {
 					cacheHelper.clear();
 					pageHelper.showNoneToast('清除缓存成功');
 				}
 
-				if (idx == 1) {
+				if (idx == 2) {
 					if (setting.IS_SUB) {
 						AdminBiz.adminLogin(this, 'admin', '123456');
 					} else {

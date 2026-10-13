@@ -153,3 +153,10 @@
 .cmpt-biz-detail-mode-right .fixed-btn .text-t{ 
 	font-size: 22rpx;  
 }
+.cmpt-biz-detail-mode1 { background: white; color: #182f2b; border-top: 1rpx solid #e4ece7; box-shadow: none; font-size: 28rpx; }
+.cmpt-biz-detail-mode1 .btn-inner { padding: 28rpx 0; min-height: 100rpx; border-right-color: #e4ece7; }
+.cmpt-biz-detail-mode1 .btn-inner .share { margin-top: 0 !important; }
+.cmpt-fixed-home-btn { background: white; color: #087f70; border: 1rpx solid #e4ece7; box-shadow: 0 6rpx 20rpx rgba(24,47,43,.08); left: 24rpx; }
+.cmpt-biz-detail-mode2 { box-shadow: none; border-top: 1rpx solid #e4ece7; }
+
+.guide-favorite-bar{position:fixed;bottom:0;left:0;right:0;padding:20rpx 32rpx calc(20rpx + env(safe-area-inset-bottom));background:white;z-index:70}.guide-favorite-button{background:#0f7469;color:#fff;border-radius:50rpx;line-height:96rpx;min-height:96rpx;font-size:30rpx;font-weight:600}.guide-favorite-button:after,.compact-favorite:after{border:0}.compact-favorite{width:88rpx;height:88rpx;min-height:88rpx;padding:0;margin:0;background:transparent;color:#143d3e;font-size:42rpx;line-height:88rpx}

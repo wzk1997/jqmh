@@ -1,0 +1,13 @@
+<wxs module="media" src="../../../wxs/media.wxs"/>
+<view class="waterfall">
+  <view wx:for="{{columns}}" wx:key="index" wx:for-item="column" class="waterfall-column">
+    <button wx:for="{{column}}" wx:key="key" class="waterfall-card" bindtap="url" data-url="{{item.path}}" aria-label="阅读：{{item.title}}">
+      <view class="waterfall-photo" style="height:{{item.imageHeight}}rpx;">
+        <image class="waterfall-image" wx:if="{{item.pic}}" src="{{media.display(item.pic,mediaUrls)}}" mode="aspectFill" lazy-load bindload="imageLoaded" data-key="{{item.key}}"/>
+        <view wx:else class="waterfall-placeholder"><view class="paper-mountain one"></view><view class="paper-mountain two"></view><text class="placeholder-icon icon-news"></text><text class="placeholder-word">{{item.type=='album'?'旅行灵感':item.type=='product'?'山水之间':'景区故事'}}</text></view>
+        <text class="waterfall-label">{{item.demo?'演示 · ':''}}{{item.activityStateLabel || item.label}}</text>
+      </view>
+      <view class="waterfall-copy"><text class="waterfall-title">{{item.title}}</text><text wx:if="{{item.desc}}" class="waterfall-desc">{{item.desc}}</text><view class="waterfall-meta {{item.activityDate?'waterfall-meta-activity':''}}"><text class="waterfall-date">{{item.activityDate || item.date || item.label}}</text><text wx:if="{{item.views}}" class="waterfall-views">{{item.views}} 次浏览</text><text wx:elif="{{!item.activityDate}}" class="read-icon">↗</text></view></view>
+    </button>
+  </view>
+</view>

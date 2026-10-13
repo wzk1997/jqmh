@@ -34,7 +34,7 @@
 }
 
 .modal-rules .item.cur {
-	background-color: #f2f2f2; 
+	background-color: #f2f2f2;
 	font-weight: bold;
 }
 
@@ -70,3 +70,4 @@ cmpt-picker-multi {
 .form-group .desc-textarea {
 	height: 100rpx;
 }
+@import "../../../../style/admin_ui.wxss";

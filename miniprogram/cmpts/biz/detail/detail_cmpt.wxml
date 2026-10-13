@@ -1,4 +1,6 @@
-<view style="height:200rpx"></view>
+<view wx:if="{{mode!='compact'}}" style="height:{{mode==='guide'?150:200}}rpx"></view>
+<view wx:if="{{mode==='guide'}}" class="guide-favorite-bar"><button class="guide-favorite-button" bindtap="bindFavTap" disabled="{{isFav===-1}}"><text class="icon-{{isFav>0?'favorfill':'favor'}}"/> {{isFav>0?'已收藏攻略':'收藏攻略'}}</button></view>
+<button wx:if="{{mode==='compact'}}" class="compact-favorite" bindtap="bindFavTap" disabled="{{isFav===-1}}" aria-label="{{isFav>0?'取消收藏景点':'收藏景点'}}"><text class="icon-{{isFav>0?'favorfill':'favor'}}"/></button>
 
 <view wx:if="{{doHome&&mode!='right'}}" bindtap="bindHomeTap" class="cmpt-fixed-home-btn"><text class="icon-home"></text><text style="font-size:22rpx;">首页</text></view>
 

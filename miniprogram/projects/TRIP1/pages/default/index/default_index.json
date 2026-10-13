@@ -1,8 +1,11 @@
 {
-	"usingComponents": { 
-		"cmpt-swiper": "/cmpts/public/swiper/swiper_cmpt"
-	},  
-	"enablePullDownRefresh": true, 
-	"navigationStyle": "custom",
-	"navigationBarTitleText": "首页"
+  "usingComponents": {
+    "cmpt-swiper": "/cmpts/public/swiper/swiper_cmpt",
+    "news-waterfall": "/cmpts/biz/news_waterfall/news_waterfall"
+  },
+  "enablePullDownRefresh": true,
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "WeTravel",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black"
 }

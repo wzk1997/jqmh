@@ -1,1 +1,5 @@
-<include src="../../../../../tpls/project/my_fav_tpl.wxml" />
+<scenic-nav-bar title="我的收藏" bind:layout="bindScenicLayout"/>
+<cmpt-comm-list id="favList" topOffset="{{uiChrome.height}}" type="my-fav" heading="我的收藏" headingSubtitle="把喜欢的风景与故事留在这里" headerHeight="160" search="{{search||''}}" _menus="{{sortMenus||[]}}" _items="{{sortItems||[]}}" route="fav/my_list" topBottom="120" placeholder="搜索收藏标题" returnUrl="/pages/my/fav/my_fav" bind:list="myCommListListener">
+  <view class="saved-list"><view wx:for="{{dataList.list}}" wx:key="FAV_OID" class="saved-card"><button class="saved-content wt-card-button" bindtap="url" data-url="{{item.FAV_PATH}}"><text class="saved-icon icon-favor"></text><view><text class="saved-title">{{item.FAV_TITLE}}</text><text class="saved-meta">{{item.FAV_TYPE}} · {{item.FAV_ADD_TIME}}</text></view><text class="icon-right"></text></button><button class="saved-delete wt-card-button" catchtap="bindDelTap" data-oid="{{item.FAV_OID}}" aria-label="移除收藏：{{item.FAV_TITLE}}"><text class="icon-delete"></text>移除收藏</button></view></view>
+  <import src="../../../../../tpls/public/list_load_tpl.wxml"/><template is="listLoadTpl" data="{{skin:'load-project',dataList,noHint:'还没有收藏，去景点或攻略详情收藏喜欢的内容吧'}}"/>
+</cmpt-comm-list>

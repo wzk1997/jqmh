@@ -187,3 +187,4 @@
 	line-height: 2.6;
 	font-size: 36rpx;
 }
+@import "../../../../style/admin_ui.wxss";

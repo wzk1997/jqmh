@@ -1,10 +1,11 @@
+<scenic-nav-bar title="编辑" bind:layout="bindScenicLayout"/>
 <view wx:if="{{!isLoad}}" class="margin-top load loading text-l text-grey"></view>
 
 <block wx:if="{{isAdmin&&isLoad}}">
 	<view class="main-admin">
 		<view class="form-box shadow">
 			<view class="form-group" style="width: 100%;">
-				<cmpt-editor nodeList="{{formContent}}" viewMode="{{true}}" style="width: 100%;" id="contentEditor"></cmpt-editor>
+				<cmpt-editor inlineToolbar="{{true}}" imageMaxMB="{{5}}" textMaxLength="{{10000}}" nodeList="{{formContent}}" viewMode="{{true}}" style="width: 100%;" id="contentEditor"></cmpt-editor>
 			</view>
 		</view>
 	</view>

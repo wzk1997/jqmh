@@ -16,7 +16,7 @@ class NewsService extends BaseProjectService {
 		let fields = '*';
 
 		let where = {
-			_id: id,
+			_id: id, NEWS_DELETED: ['<>',true],
 			NEWS_STATUS: 1
 		}
 		let news = await NewsModel.getOne(where, fields);
@@ -24,7 +24,9 @@ class NewsService extends BaseProjectService {
 
 
 
-		return news;
+		delete news.NEWS_DRAFT;
+        delete news.NEWS_EDIT_ADMIN;
+        return news;
 	}
 
 
@@ -34,7 +36,8 @@ class NewsService extends BaseProjectService {
 		sortType, // 搜索菜单
 		sortVal, // 搜索菜单
 		orderBy, // 排序
-		cateId, //附加查询条件
+		cateGroup,
+        cateId, //附加查询条件
 		page,
 		size,
 		isTotal = true,
@@ -45,16 +48,22 @@ class NewsService extends BaseProjectService {
 			'NEWS_ORDER': 'asc',
 			'NEWS_ADD_TIME': 'desc'
 		};
-		let fields = 'NEWS_PIC,NEWS_VIEW_CNT,NEWS_TITLE,NEWS_DESC,NEWS_CATE_ID,NEWS_ADD_TIME,NEWS_ORDER,NEWS_STATUS,NEWS_CATE_NAME,NEWS_OBJ';
+		let fields = 'NEWS_DEMO,NEWS_PIC,NEWS_VIEW_CNT,NEWS_TITLE,NEWS_DESC,NEWS_CATE_ID,NEWS_ADD_TIME,NEWS_ORDER,NEWS_STATUS,NEWS_CATE_NAME,NEWS_OBJ,NEWS_ACTIVITY_START,NEWS_ACTIVITY_END,NEWS_PUBLISH_TIME';
 
-		let where = {};
+		let where = { NEWS_DELETED: ['<>',true] };
 		where.NEWS_STATUS = 1; // 状态 
 
-		if (cateId && cateId !== '0') where.NEWS_CATE_ID = cateId;
+		if(cateGroup==='scenic'){
+            const categories=await require('./cms_service.js').categories('news');
+            const ids=categories.map(c=>c.id).filter(id=>!['2','3'].includes(id));
+            // A category selection narrows the scenic group, including an empty intersection.
+            where.NEWS_CATE_ID=['in',cateId&&cateId!=='0'?ids.filter(id=>id===cateId):ids];
+        }
+        else if (cateId && cateId !== '0') where.NEWS_CATE_ID = cateId;
 
 		if (util.isDefined(search) && search) {
 			where.NEWS_TITLE = {
-				$regex: '.*' + search,
+				$regex: '.*' + util.escapeRegex(search),
 				$options: 'i'
 			};
 		} else if (sortType && util.isDefined(sortVal)) {

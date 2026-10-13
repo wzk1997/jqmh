@@ -263,8 +263,8 @@ function delImage(that, idx, imgListName = 'imgList') {
 function previewImage(that, url, imgListName = 'imgList') {
 	// 图片预览
 	wx.previewImage({
-		urls: that.data[imgListName],
-		current: url
+		urls: that.data[imgListName].map(id=>require('./media_helper.js').display(id,that.data.mediaUrls)),
+		current: require('./media_helper.js').display(url,that.data.mediaUrls)
 	});
 }
 
@@ -649,8 +649,8 @@ function url(e, that) {
 				urls = e.currentTarget.dataset.imgs;
 
 			wx.previewImage({
-				current: url, // 当前显示图片的http链接
-				urls
+				current: require('./media_helper.js').display(url,that.data.mediaUrls), // 保留业务文件ID，仅转换预览地址
+				urls: urls.map(id=>require('./media_helper.js').display(id,that.data.mediaUrls))
 			})
 			break;
 		}

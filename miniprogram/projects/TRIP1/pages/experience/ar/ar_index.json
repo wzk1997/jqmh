@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "AR 实景导航",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "white",
+  "navigationStyle": "custom",
+  "usingComponents": {}
+}

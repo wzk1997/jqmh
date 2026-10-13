@@ -1,3 +1,4 @@
+<scenic-nav-bar title="添加管理员" bind:layout="bindScenicLayout"/>
  <view class="main-admin" wx:if="{{isAdmin}}">
 	<!-- edit form begin -->
 	<view class="form-box shadow">

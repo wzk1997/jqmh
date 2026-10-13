@@ -16,15 +16,23 @@ class AlbumService extends BaseProjectService {
 		let fields = '*';
 
 		let where = {
-			_id: id,
+			_id: id, ALBUM_DELETED: ['<>',true],
 			ALBUM_STATUS: AlbumModel.STATUS.COMM
 		}
 		let album = await AlbumModel.getOne(where, fields);
 		if (!album) return null; 
 
+        const linked=(album.ALBUM_OBJ && album.ALBUM_OBJ.spots)||[];
+        if(linked.length){
+            const ProductModel=require('../model/product_model.js');
+            const rows=await Promise.all(linked.map(spotId=>ProductModel.getOne({_id:spotId,PRODUCT_STATUS:1,PRODUCT_DELETED:['<>',true]},'_id,PRODUCT_TITLE,PRODUCT_OBJ,PRODUCT_CATE_NAME')));
+            album.ALBUM_SPOTS=rows.filter(Boolean).map(spot=>{const node=(album.ALBUM_ROUTE||[]).find(n=>n.spotId===spot._id)||{};return {_id:spot._id,PRODUCT_TITLE:spot.PRODUCT_TITLE,PRODUCT_OBJ:spot.PRODUCT_OBJ||{},duration:node.duration||'',note:node.note||'',highlight:node.highlight||'',cover:((spot.PRODUCT_OBJ||{}).cover||[])[0]||''};});
+        }else album.ALBUM_SPOTS=[];
 		AlbumModel.inc(id, 'ALBUM_VIEW_CNT', 1);
 
-		return album;
+		delete album.ALBUM_DRAFT;
+        delete album.ALBUM_EDIT_ADMIN;
+        return album;
 	}
 
 
@@ -34,20 +42,32 @@ class AlbumService extends BaseProjectService {
 		sortType, // 搜索菜单
 		sortVal, // 搜索菜单
 		orderBy, // 排序 
+        sortMode,
 		page,
 		size,
 		isTotal = true,
 		oldTotal
 	}) {
 
+        if(sortMode && sortMode!=='latest')require('./cms_validation.js').fail('攻略排序模式不正确');
+
+        if(orderBy){
+            const valid=['ALBUM_ORDER','ALBUM_VIEW_CNT','ALBUM_ADD_TIME','ALBUM_EDIT_TIME','ALBUM_TITLE','ALBUM_STATUS'];
+            const normalized={};
+            for(const key of Object.keys(orderBy))if(!valid.includes(key)||!['asc','desc'].includes(orderBy[key]))require('./cms_validation.js').fail('攻略排序不正确');
+            // Cloud transport may canonicalize object keys. Rebuild semantic precedence on the server.
+            for(const key of valid)if(orderBy[key])normalized[key]=orderBy[key];
+            orderBy=Object.keys(normalized).length?normalized:undefined;
+        }
 		orderBy = orderBy || {
 			'ALBUM_ORDER': 'asc',
 			'ALBUM_ADD_TIME': 'desc'
 		};
-		let fields = 'ALBUM_OBJ,ALBUM_VIEW_CNT,ALBUM_TITLE,ALBUM_CATE_ID,ALBUM_ADD_TIME,ALBUM_ORDER,ALBUM_STATUS,ALBUM_CATE_NAME';
+		let fields = 'ALBUM_DEMO,ALBUM_DURATION,ALBUM_ROUTE,ALBUM_OBJ,ALBUM_VIEW_CNT,ALBUM_TITLE,ALBUM_CATE_ID,ALBUM_ADD_TIME,ALBUM_PUBLISH_TIME,ALBUM_ORDER,ALBUM_STATUS,ALBUM_CATE_NAME';
 
-		let where = {};
+		let where = { ALBUM_DELETED: ['<>',true] };
 		where.and = {
+			ALBUM_DELETED: ['<>',true],
 			_pid: this.getProjectId() //复杂的查询在此处标注PID
 		};
 
@@ -57,8 +77,10 @@ class AlbumService extends BaseProjectService {
 		if (util.isDefined(search) && search) {
 			where.or = [
 				{ ALBUM_TITLE: ['like', search] },
+                { 'ALBUM_OBJ.desc': ['like', search] },
 			];
-		} else if (sortType && util.isDefined(sortVal)) {
+		}
+        if (sortType && util.isDefined(sortVal)) {
 			// 搜索菜单
 			switch (sortType) {
 				case 'cateId': {
@@ -72,6 +94,11 @@ class AlbumService extends BaseProjectService {
 			}
 		}
 
+        if(sortMode==='latest') {
+            const dbUtil=require('../../../framework/database/db_util.js'),v=require('./cms_validation.js'),a=dbUtil.getCmd().aggregate;
+            const effective=a.cond({if:a.gt([a.ifNull(['$ALBUM_PUBLISH_TIME',0]),0]),then:'$ALBUM_PUBLISH_TIME',else:'$ALBUM_ADD_TIME'});
+            return dbUtil.getListComputed(AlbumModel.CL,where,fields,{__publishSort:effective},{__publishSort:'desc',_id:'asc'},v.integer(page,'页码',1,10000,1),v.integer(size,'每页数量',1,50,20),isTotal,oldTotal);
+        }
 		return await AlbumModel.getList(where, fields, orderBy, page, size, isTotal, oldTotal);
 	}
 

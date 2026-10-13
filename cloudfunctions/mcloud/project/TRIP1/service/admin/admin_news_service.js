@@ -1,3 +1,4 @@
+const CmsService = require('./admin_cms_service.js');
 /**
  * Notes: 资讯后台管理
  * Ver : CCMiniCloud Framework 2.0.1 ALL RIGHTS RESERVED BY cclinux0730 (wechat)
@@ -17,7 +18,7 @@ class AdminNewsService extends BaseProjectAdminService {
 
 	/** 推荐首页SETUP */
 	async vouchNewsSetup(id, vouch) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return this.vouchNews(id, vouch);
 	}
 
 	/**添加资讯 */
@@ -31,12 +32,12 @@ class AdminNewsService extends BaseProjectAdminService {
 	}) {
 
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().saveLegacy('news', {title,cateId,cateName,order,desc,forms}, '', true);
 	}
 
 	/**删除资讯数据 */
 	async delNews(id) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().remove('news', id);
 	}
 
 	/**获取资讯信息 */
@@ -44,7 +45,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		let fields = '*';
 
 		let where = {
-			_id: id
+			_id: id, NEWS_DELETED: ['<>',true]
 		}
 		let news = await NewsModel.getOne(where, fields);
 		if (!news) return null;
@@ -57,7 +58,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		id,
 		hasImageForms
 	}) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().patchLegacy('news', id, 'forms', hasImageForms);
 	}
 
 
@@ -70,7 +71,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		content // 富文本数组
 	}) {
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().patchLegacy('news', id, 'content', content);
 
 	}
 
@@ -83,7 +84,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		imgList // 图片数组
 	}) {
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().patchLegacy('news', id, 'pic', imgList);
 
 	}
 
@@ -99,7 +100,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		forms
 	}) {
 
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().saveLegacy('news', {id,title,cateId,cateName,order,desc,forms}, '', true);
 	}
 
 	/**取得资讯分页列表 */
@@ -123,6 +124,7 @@ class AdminNewsService extends BaseProjectAdminService {
 
 		let where = {};
 		where.and = {
+			NEWS_DELETED: ['<>',true],
 			_pid: this.getProjectId() //复杂的查询在此处标注PID
 		};
 
@@ -163,17 +165,17 @@ class AdminNewsService extends BaseProjectAdminService {
 
 	/**修改资讯状态 */
 	async statusNews(id, status) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		if (![0,1].includes(status)) this.AppError('状态不正确'); return new CmsService().setState('news', id, status === 1 ? 'published' : 'offline');
 	}
 
 	/**置顶与排序设定 */
 	async sortNews(id, sort) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		return new CmsService().sort('news', id, sort);
 	}
 
 	/**首页设定 */
 	async vouchNews(id, vouch) {
-		this.AppError('该功能暂不开放，如有需要请加作者微信：cclinux0730');
+		if (![0,1].includes(vouch)) this.AppError('推荐状态不正确'); await new CmsService().detail('news', id); await NewsModel.edit(id, {NEWS_VOUCH:vouch}); return {id};
 	}
 }
 

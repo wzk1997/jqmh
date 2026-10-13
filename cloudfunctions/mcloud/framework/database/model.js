@@ -17,7 +17,7 @@ class Model {
 		return await dbUtil.getOne(this.CL, where, fields, orderBy);
 	}
 
-	static async edit(where, data) {
+	static async edit(where, data, replaceFields = []) {
 
 		if (this.UPDATE_TIME) {
 			let editField = this.FIELD_PREFIX + 'EDIT_TIME';
@@ -34,6 +34,13 @@ class Model {
 		}
 
 		data = this.clearEditData(data);
+
+		// Opt in after schema validation: ordinary nested updates merge objects,
+		// so empty drafts and removed content keys require an explicit replacement.
+		for (const field of replaceFields) {
+			if (Object.prototype.hasOwnProperty.call(data, field) && data[field] && data[field].constructor === Object)
+				data[field] = dbUtil.getCmd().set(data[field]);
+		}
 
 		return await dbUtil.edit(this.CL, where, data);
 	}

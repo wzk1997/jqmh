@@ -1,6 +1,9 @@
 {
-	"usingComponents": { 
-	}, 
-	"disableScroll": true,
-	"navigationBarTitleText": "攻略"
+  "usingComponents": {},
+  "disableScroll": false,
+  "navigationBarTitleText": "园区攻略",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
+  "enablePullDownRefresh": true
 }

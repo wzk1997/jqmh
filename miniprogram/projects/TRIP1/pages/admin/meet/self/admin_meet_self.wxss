@@ -1,5 +1,5 @@
 @import '../../../../../../style/public/admin.wxss';
- 
+
 .form-box .checkin {
 	width: 100%;
 	padding: 40rpx 40rpx 80rpx;
@@ -35,10 +35,11 @@
 	margin: 30rpx 0rpx;
 }
 
-.form-box .checkin .oprt { 
+.form-box .checkin .oprt {
 	margin-top: 0rpx;
 	text-align: center;
 	font-size: 30rpx;
-	color: var(--adminColor); 
-	padding: 20rpx 10rpx; 
+	color: var(--adminColor);
+	padding: 20rpx 10rpx;
 }
+@import "../../../../style/admin_ui.wxss";

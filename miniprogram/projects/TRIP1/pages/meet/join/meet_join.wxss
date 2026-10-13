@@ -1,5 +1,5 @@
 @import "../../../../../style/public/detail.wxss";
-@import "../../../style/skin.wxss"; 
+@import "../../../style/skin.wxss";
 
 .form-group .line-desc {
 	font-size: 28rpx;
@@ -11,3 +11,4 @@
 .submit-line {
 	width: 100%;
 }
+@import "../../../style/ui_common.wxss";

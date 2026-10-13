@@ -1,13 +1,23 @@
-<view class="editor-tab" wx:if="{{viewMode}}">
-	<button catchtap="url" data-type="bool" data-url="isView" class="btn round {{!isView?'bg-blue':'bg-grey light'}}  margin-right-xs">编辑</button>
-	<button catchtap="url" data-type="bool" data-url="isView" class="btn {{isView?'bg-blue':'bg-grey light'}} round">预览</button>
+<wxs module="media" src="../../../wxs/media.wxs"/>
+<wxs module="rich" src="../../../wxs/rich_text.wxs"/>
+<view class="editor-tab {{inlineToolbar?'editor-tab-inline':''}}" wx:if="{{viewMode}}">
+	<button catchtap="switchMode" data-view="{{false}}" class="editor-mode-button {{!isView?'editor-mode-active':''}}">编辑</button>
+	<button catchtap="switchMode" data-view="{{true}}" class="editor-mode-button {{isView?'editor-mode-active':''}}">预览</button>
 </view>
 
-<view enableBackToTop scrollY class="editor-wrapper" style="min-height: 400px;{{viewMode?'margin-top:50rpx':''}}">
+<view enableBackToTop scrollY class="editor-wrapper" style="min-height: 400px;{{viewMode&&!inlineToolbar?'margin-top:50rpx':''}}">
 	<block wx:for="{{nodeList}}" wx:for-item="node" wx:key="index">
 		<view class="editor-node-wrapper {{cur==index?'cur':''}} {{isView?'is-view':''}}">
-			<textarea disabled="{{isView}}" id="editor-node-{{index}}" wx:if="{{node.type==='text'}}" auto-height="true" cursor-spacing="60" bindinput="bindTextareaInput" class="editor-textarea" data-idx="{{index}}" maxlength="-1" value="{{node.val}}"></textarea>
-			<image bindtap="url" data-type="image" data-url="{{node.val}}"  id="editor-node-{{index}}" wx:if="{{node.type==='img'}}" mode="widthFix" class="loading editor-image" src="{{node.val}}" lazy-load="true"></image>
+            <view wx:if="{{formatting&&!isView&&node.type==='text'}}" class="editor-format">
+                <text class="editor-format-label">段落格式</text>
+                <button catchtap="formatParagraph" data-idx="{{index}}" data-format="bold" class="editor-format-button {{node.format.bold?'active':''}}" aria-label="段落加粗" aria-pressed="{{!!node.format.bold}}"><text class="editor-format-bold">B</text></button>
+                <button catchtap="formatParagraph" data-idx="{{index}}" data-format="italic" class="editor-format-button {{node.format.italic?'active':''}}" aria-label="段落斜体" aria-pressed="{{!!node.format.italic}}"><text class="editor-format-italic">I</text></button>
+                <button catchtap="formatParagraph" data-idx="{{index}}" data-format="underline" class="editor-format-button {{node.format.underline?'active':''}}" aria-label="段落下划线" aria-pressed="{{!!node.format.underline}}"><text class="editor-format-underline">U</text></button>
+                <button catchtap="formatParagraph" data-idx="{{index}}" data-format="align" class="editor-format-button" aria-label="切换段落对齐方式">{{node.format.align==='center'?'居中':node.format.align==='right'?'右齐':'左齐'}}</button>
+                <button catchtap="formatParagraph" data-idx="{{index}}" data-format="clear" class="editor-format-button" aria-label="清除段落格式">清除</button>
+            </view>
+			<textarea disabled="{{isView}}" id="editor-node-{{index}}" wx:if="{{node.type==='text'}}" auto-height="true" cursor-spacing="60" bindinput="bindTextareaInput" class="editor-textarea" style="{{rich.style(node)}}" data-idx="{{index}}" maxlength="{{textMaxLength}}" value="{{node.val}}"></textarea>
+			<image bindtap="url" data-type="image" data-url="{{node.val}}"  id="editor-node-{{index}}" wx:if="{{node.type==='img'}}" mode="widthFix" class="loading editor-image" src="{{media.display(node.val,mediaUrls)}}" lazy-load="true"></image>
 
 			<view class="editor-delete" wx:if="{{!isView}}">
 				<!--<view bindtap="bindTopTap" class="iconfont icon-top" data-idx="{{index}}" wx:if="{{index>1}}"></view>-->

@@ -2,6 +2,7 @@ const behavior = require('../../../../../comm/behavior/my_foot_bh.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 
 	behaviors: [behavior],
 

@@ -4,6 +4,7 @@ const projectSetting = require('../../../public/project_setting.js');
 
 
 Page({
+    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 	behaviors: [behavior],
 
 	onLoad: function (options) {

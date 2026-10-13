@@ -12,6 +12,8 @@ const timeUtil = require('../../../../framework/utils/time_util.js');
 const contentCheck = require('../../../../framework/validate/content_check.js');
 
 class AdminMgrController extends BaseProjectAdminController {
+    async permissions(){await this.isSuperAdmin();const input=this._request||{};await new AdminMgrService().setPermissions(input.id,input.permissions,this._adminId);await this.logSys('修改管理员权限 '+input.id);}
+
 	// 管理员登录  
 	async adminLogin() {
 
@@ -160,7 +162,8 @@ class AdminMgrController extends BaseProjectAdminController {
 		await contentCheck.checkTextMultiAdmin(input);
 
 		let service = new AdminMgrService();
-		await service.pwdtMgr(this._adminId, input.oldPassword, input.password);
+		if(input.password!==input.password2)require('../../service/cms_validation.js').fail('两次密码不一致');
+        await service.pwdtMgr(this._adminId, input.oldPassword, input.password);
 	}
 
 	/** 获取管理员信息用于编辑修改 */

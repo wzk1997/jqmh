@@ -1,5 +1,5 @@
 @import '../../../../../../style/public/admin.wxss';
- 
+
 .form-box .title-desc {
 	padding-bottom: 10rpx;
 	border: 0;
@@ -10,3 +10,4 @@
 .btn-admin{
 	margin-bottom: 20rpx;
 }
+@import "../../../../style/admin_ui.wxss";

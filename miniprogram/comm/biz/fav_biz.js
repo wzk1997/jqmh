@@ -43,6 +43,7 @@ class FavBiz extends BaseBiz {
 		}
 		try {
 			let result = await cloudHelper.callCloudSumbit('fav/update', params, opts);
+			require('./public_biz.js').removeCacheList('my-fav');
 			that.setData({
 				isFav: result.data.isFav,
 			});

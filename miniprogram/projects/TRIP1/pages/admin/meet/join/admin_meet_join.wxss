@@ -148,3 +148,4 @@ page {
 	text-align: right;
 	font-size: 24rpx;
 }
+@import "../../../../style/admin_ui.wxss";

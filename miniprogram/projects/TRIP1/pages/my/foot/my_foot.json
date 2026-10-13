@@ -1,5 +1,8 @@
 {
-	"usingComponents": {},
-	"enablePullDownRefresh": true,
-	"navigationBarTitleText": "历史浏览"
+  "usingComponents": {},
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "历史浏览",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom"
 }

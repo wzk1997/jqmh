@@ -44,7 +44,10 @@ function sleep(time) {
 
 
 
+function escapeRegex(value){return String(value).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+
 module.exports = {
+    escapeRegex,
 	getProjectId,
 	isDefined, //判断变量，参数，对象属性是否定义  
 	sleep,

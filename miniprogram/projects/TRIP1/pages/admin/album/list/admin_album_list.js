@@ -1,14 +1,17 @@
+const {getChrome}=require('../../../../ui/navigation_ui.js');
 const AdminBiz = require('../../../../../../comm/biz/admin_biz.js');
 const AlbumBiz = require('../../../../biz/album_biz.js');
 const pageHelper = require('../../../../../../helper/page_helper.js');
 const cloudHelper = require('../../../../../../helper/cloud_helper.js');
 
 Page({
+    bindScenicLayout(e){this.setData({uiChrome:e.detail});},
 
 	/**
 	 * 页面的初始数据
 	 */
 	data: {
+        uiChrome:getChrome(),
 		isLoad: false,
 	},
 
@@ -16,6 +19,9 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: async function (options) {
+        if (!AdminBiz.isAdmin(this)) return;
+        wx.redirectTo({url:'/projects/TRIP1/pages/admin/cms/list/cms_list?module=album'});
+        return;
 		if (!AdminBiz.isAdmin(this)) return; 
 
 		//设置搜索菜单

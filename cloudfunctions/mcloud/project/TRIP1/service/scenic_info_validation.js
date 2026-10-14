@@ -12,14 +12,6 @@ module.exports=function(info,images){
   out[key]=rows.map(row=>{if(!row||typeof row!=='object')v.fail('内容卡片不正确');const index=v.integer(row.imageIndex,'图片序号',0,10,0);if(index>images.length)v.fail('图片序号超出展示图片范围');return {title:v.text(row.title,'卡片标题',80,true),desc:v.text(row.desc,'卡片描述',2000),imageIndex:index};});
  }
  const tags=info.galleryTags===undefined?[]:info.galleryTags;if(!Array.isArray(tags)||tags.length>10)v.fail('相册分类不正确');out.galleryTags=tags.map(tag=>v.text(tag,'图片分类',30));
- const seasons=info.seasons===undefined?[]:info.seasons,seen=new Set();
- if(!Array.isArray(seasons)||seasons.length>4)v.fail('四季风景最多四项');
- out.seasons=seasons.map(row=>{
-  if(!row||!['spring','summer','autumn','winter'].includes(row.season)||seen.has(row.season))v.fail('季节不正确或重复');
-  seen.add(row.season);const index=v.integer(row.imageIndex,'四季图片序号',0,10,0);
-  if(index>images.length)v.fail('四季图片序号超出展示图片范围');
-  return {season:row.season,title:v.text(row.title,'四季标题',80,true),desc:v.text(row.desc,'四季说明',2000),imageIndex:index};
- });
  const lat=info.latitude, lng=info.longitude;
  if(lat!==undefined&&lat!==''&&lat!==null||lng!==undefined&&lng!==''&&lng!==null){
   if(lat===undefined||lng===undefined||lat===''||lng===''||lat===null||lng===null||!['string','number'].includes(typeof lat)||!['string','number'].includes(typeof lng))v.fail('请填写完整坐标');

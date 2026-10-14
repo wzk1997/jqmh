@@ -11,7 +11,7 @@ Page({
 	 */
 	data: {mediaUrls:{},
         homeNavMode:'home',
-        heroRender:true,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:[],seasons:[],practical:[],scenicAboutUrl:'/projects/TRIP1/pages/about/index/about_index',
+        heroRender:true,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:[],practical:[],scenicAboutUrl:'/projects/TRIP1/pages/about/index/about_index',
         heroIndex: 0,
         heroImage: sceneConfig.heroImage,
         heroPlaying: true,
@@ -70,7 +70,7 @@ Page({
         return root+(routes[ref.module]||ref.module+'/detail/'+ref.module+'_detail')+'?id='+encodeURIComponent(ref.id);
     },
     applyPortal(portal){
-        const scenic=portal.scenic,info=scenic&&scenic.SCENIC_INFO||{},images=scenic&&scenic.SCENIC_IMAGES||[];
+        const scenic=portal.scenic,info=scenic&&scenic.SCENIC_INFO||{};
         const slides=(portal.slides||[]).map(row=>({...row,label:row.title,path:this.referenceUrl(row.target)}));
         const featured=(portal.featured||[]).map(row=>{
             const module=row.type||Object.keys(row).find(k=>/_NAME$/.test(k))?.split('_')[0].toLowerCase();
@@ -79,7 +79,7 @@ Page({
             return {id,title:row.title||row[p+'NAME'],desc:row.desc||row[p+'DESC']||'',pic:row.pic||(row[p+'IMAGES']||row[p+'COVER']||[])[0]||'',demo:!!(row.demo||row[p+'DEMO']),path:this.referenceUrl({module,id})};
         }).filter(Boolean);
         const practical=[{title:'开放时间',text:scenic&&scenic.SCENIC_HOURS,icon:'time'},{title:'景区地址',text:scenic&&scenic.SCENIC_ADDRESS,icon:'location'},{title:'交通指南',text:[info.selfDrive,info.transit].filter(Boolean).join(' / '),icon:'taxi'},{title:'游客服务',text:info.services||info.centerService,icon:'service'},{title:'建议游玩时长',text:info.visitDuration,icon:'time'},{title:'温馨提示',text:info.tips,icon:'info'}].filter(row=>row.text);
-        this.setData({heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,seasons:(info.seasons||[]).map(row=>({...row,image:images[row.imageIndex-1]||''})),practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'自然为伴',subtitle:'探索自然 · 美好出发'}],heroIndex:0});
+        this.setData({heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'自然为伴',subtitle:'探索自然 · 美好出发'}],heroIndex:0});
     },
     retryHero(){this.setData({heroRender:false,heroImagesLoaded:{},heroImageErrors:{}});wx.nextTick(()=>this.setData({heroRender:true}));},
     heroImageLoaded(e){this.setData({['heroImagesLoaded.'+e.currentTarget.dataset.index]:true});},

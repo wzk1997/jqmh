@@ -9,12 +9,10 @@ Page({
         const info=record&&record.SCENIC_INFO||{},images=record&&record.SCENIC_IMAGES||[];
         const sections=['highlights','reasons','nature','culture'].map(key=>({key,items:(info[key]||[]).map(card=>({...card,image:images[card.imageIndex-1]||''}))}));
         const gallery=images.map((image,index)=>({image,category:(info.galleryTags||[])[index]||'风景'}));
-        const seasonNames={spring:'春',summer:'夏',autumn:'秋',winter:'冬'};
-        const seasons=(info.seasons||[]).map(item=>({...item,label:seasonNames[item.season],image:images[item.imageIndex-1]||''}));
         const facts=[{value:info.rating,label:'景区等级'},{value:info.altitude,label:'海拔'},{value:info.history,label:'人文历史'}].filter(item=>item.value);
         const traffic=[{title:'自驾',text:info.selfDrive},{title:'公共交通',text:info.transit},{title:'停车信息',text:info.parking}].filter(item=>item.text);
         const serviceItems=[{key:'centerService',title:'游客中心',icon:'location'},{key:'toiletService',title:'卫生间',icon:'service'},{key:'restService',title:'休息区',icon:'home'},{key:'foodService',title:'餐饮服务',icon:'shop'}].filter(item=>info[item.key]).map(item=>({...item,desc:info[item.key]}));
-        this.setData({info,sections,seasons,facts,traffic,serviceItems,gallery,displayGallery:gallery,galleryFilter:'全部',galleryCategories:['全部',...new Set(gallery.map(item=>item.category))],mapMarkers:typeof info.latitude==='number'&&typeof info.longitude==='number'?[{id:1,latitude:info.latitude,longitude:info.longitude,title:record.SCENIC_NAME,width:28,height:36}]:[]});
+        this.setData({info,sections,facts,traffic,serviceItems,gallery,displayGallery:gallery,galleryFilter:'全部',galleryCategories:['全部',...new Set(gallery.map(item=>item.category))],mapMarkers:typeof info.latitude==='number'&&typeof info.longitude==='number'?[{id:1,latitude:info.latitude,longitude:info.longitude,title:record.SCENIC_NAME,width:28,height:36}]:[]});
     },
     onPageScroll(e){
         const mode=e.scrollTop>250?'page':'immersive';if(mode!==this.data.navMode)this.setData({navMode:mode});

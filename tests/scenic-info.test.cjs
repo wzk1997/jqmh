@@ -9,6 +9,8 @@ test('scenic actions use real gallery photos, saved address and zero-safe coordi
 });
 test('scenic editor preserves optional fields, typed photo selections and entered album tags',()=>{
  let def;vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/cmpts/biz/scenic_info_editor/scenic_info_editor.js'),'utf8'),{Component:c=>def=c,wx:{showToast(){}}});const c={...def.methods,data:{...structuredClone(def.data),info:{tagline:'自然为伴',highlights:[{title:'森林',desc:'介绍',imageIndex:1}],galleryTags:['森林']},images:['one.jpg']},setData(p){for(const[key,val]of Object.entries(p)){const parts=key.split('.');let obj=this.data;for(const part of parts.slice(0,-1))obj=obj[part];obj[parts.at(-1)]=val;}}};def.observers.info.call(c,c.data.info);c.field({currentTarget:{dataset:{key:'tips'}},detail:{value:'注意天气变化'}});c.card({currentTarget:{dataset:{group:'highlights',index:0,key:'imageIndex'}},detail:{value:'0'}});c.tag({currentTarget:{dataset:{index:0}},detail:{value:'自然'}});const out=c.getValue();assert.equal(out.tips,'注意天气变化');assert.equal(out.highlights[0].imageIndex,0);assert.equal(out.galleryTags[0],'自然');assert.equal(out.tagline,'自然为伴');
+ assert.equal(def.data.groups.map(group=>group.key).join(','),'highlights,culture');
+ assert.equal(def.data.fields.some(field=>/Quote|Description/.test(field.key)),false);
 });
 test('removed four-season metadata is discarded while remaining practical fields still validate',()=>{
  const validate=require('../cloudfunctions/mcloud/project/TRIP1/service/scenic_info_validation.js');

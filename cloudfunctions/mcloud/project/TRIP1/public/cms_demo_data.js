@@ -420,12 +420,6 @@ module.exports=[
       "body": "WeTravel 以自然为伴，带你在山水之间发现沿途的风景。森林、云海、湖泊与奇峰，是这组演示内容的四个主题。\n\n本景区免费开放，不提供支付、订单或商业预订功能。\n\n【演示数据】请在后台维护真实景区信息后再用于正式展示。",
       "info": {
         "tagline": "山水相拥 · 心归自然",
-        "coverQuote": "在这里，遇见更好的自己",
-        "coverDescription": "云海翻涌，山风拂面。每一处风景，都值得你停下脚步。",
-        "overviewQuote": "山不见我\n我自去见山",
-        "highlightsQuote": "山水之间\n总有一处风景\n触动你的心",
-        "galleryQuote": "每一张照片\n都是一段美好的回忆",
-        "closingQuote": "旅途不止于目的地\n更在于沿途的风景",
         "highlights": [
           {
             "title": "观景台",
@@ -446,40 +440,6 @@ module.exports=[
             "title": "奇峰怪石",
             "desc": "沿观景步道探索山峰与地形之美。",
             "imageIndex": 1
-          }
-        ],
-        "reasons": [
-          {
-            "title": "自然风光",
-            "desc": "四季皆景，景色往复",
-            "imageIndex": 0
-          },
-          {
-            "title": "生态环境",
-            "desc": "森林与湖泊，自在呼吸",
-            "imageIndex": 0
-          },
-          {
-            "title": "人文体验",
-            "desc": "在沿途发现山水故事",
-            "imageIndex": 0
-          },
-          {
-            "title": "休闲体验",
-            "desc": "慢行、摄影与亲子同行",
-            "imageIndex": 0
-          }
-        ],
-        "nature": [
-          {
-            "title": "云海奇观",
-            "desc": "【演示介绍】山间云海与晨光交织，呈现柔和的山水画面。",
-            "imageIndex": 1
-          },
-          {
-            "title": "原始森林",
-            "desc": "【演示介绍】穿行林间，听风声与鸟鸣。",
-            "imageIndex": 2
           }
         ],
         "culture": [

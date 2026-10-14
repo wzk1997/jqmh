@@ -1,1 +1,2 @@
 @import "../../../../style/cms.wxss";
+.cms-system-row[disabled]{opacity:1;color:inherit}

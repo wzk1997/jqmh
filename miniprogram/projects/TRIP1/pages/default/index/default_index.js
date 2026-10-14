@@ -11,16 +11,11 @@ Page({
 	 */
 	data: {mediaUrls:{},
         homeNavMode:'home',
-        heroRender:true,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:[],practical:[],scenicAboutUrl:'/projects/TRIP1/pages/about/index/about_index',
+        heroRender:true,heroLoading:true,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:[],practical:[],scenicAboutUrl:'/projects/TRIP1/pages/about/index/about_index',
         heroIndex: 0,
         heroImage: sceneConfig.heroImage,
         heroPlaying: true,
-        heroSlides: [
-            { image: sceneConfig.heroImage, label: '山水相伴', subtitle: '探索自然 · 感受生活 · 从这里出发' },
-            { image: '/projects/TRIP1/images/home/b3.jpg', label: '漫步青山', subtitle: '放慢脚步 · 发现旅途中的美好' },
-            { image: '/projects/TRIP1/images/design/ar-forest-v3.jpg', label: '林间有清风', subtitle: '绿意相随 · 开启自在旅程' },
-            { image: '/projects/TRIP1/images/home/b5.jpg', label: '遇见星光', subtitle: '山水之间 · 收藏每一刻风景' }
-        ],
+        heroSlides: [],
         waterfallItems: [],
         homeNewsLimit: 6,
         hot1List: [],
@@ -79,7 +74,7 @@ Page({
             return {id,title:row.title||row[p+'NAME'],desc:row.desc||row[p+'DESC']||'',pic:row.pic||(row[p+'IMAGES']||row[p+'COVER']||[])[0]||'',demo:!!(row.demo||row[p+'DEMO']),path:this.referenceUrl({module,id})};
         }).filter(Boolean);
         const practical=[{title:'开放时间',text:scenic&&scenic.SCENIC_HOURS,icon:'time'},{title:'景区地址',text:scenic&&scenic.SCENIC_ADDRESS,icon:'location'},{title:'交通指南',text:[info.selfDrive,info.transit].filter(Boolean).join(' / '),icon:'taxi'},{title:'建议游玩时长',text:info.visitDuration,icon:'time'},{title:'温馨提示',text:info.tips,icon:'info'}].filter(row=>row.text);
-        this.setData({heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'自然为伴',subtitle:'探索自然 · 美好出发'}],heroIndex:0});
+        this.setData({heroLoading:false,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'自然为伴',subtitle:'探索自然 · 美好出发'}],heroIndex:0});
     },
     retryHero(){this.setData({heroRender:false,heroImagesLoaded:{},heroImageErrors:{}});wx.nextTick(()=>this.setData({heroRender:true}));},
     heroImageLoaded(e){this.setData({['heroImagesLoaded.'+e.currentTarget.dataset.index]:true});},
@@ -96,7 +91,7 @@ Page({
             const portal=results[0].status==='fulfilled'?results[0].value.data:null;
             let recommendations=[];
             if(portal&&portal.configured){this.applyPortal(portal);recommendations=portal.featured||[];}
-            else {const res=await cloudHelper.callCloudSumbit('home/list', {}, {title:'bar'});recommendations=Array.isArray(res.data)?res.data:[];}
+            else {this.applyPortal({slides:[],featured:[],scenic:null});const res=await cloudHelper.callCloudSumbit('home/list', {}, {title:'bar'});recommendations=Array.isArray(res.data)?res.data:[];}
             const newsList=recommendations.filter(item=>item.type==='news');
             const latest=results[1].status==='fulfilled'?((results[1].value.data||{}).list||[]):[];
             this.setData({newsList,hasHomeLoaded:true,homeError:results[1].status==='rejected',waterfallItems:mergeContent(latest.map(item=>normalizeContent(item,'news')),newsList.map(item=>normalizeContent(item,'news'))).slice(0,this.data.homeNewsLimit)});

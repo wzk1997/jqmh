@@ -55,8 +55,8 @@ class NewsService extends BaseProjectService {
 
 		if(cateGroup==='scenic'){
             const categories=await require('./cms_service.js').categories('news');
-            const ids=categories.map(c=>c.id).filter(id=>!['2','3'].includes(id));
-            // A category selection narrows the scenic group, including an empty intersection.
+            const ids=categories.map(c=>c.id);
+            // A category selection narrows the published category group.
             where.NEWS_CATE_ID=['in',cateId&&cateId!=='0'?ids.filter(id=>id===cateId):ids];
         }
         else if (cateId && cateId !== '0') where.NEWS_CATE_ID = cateId;

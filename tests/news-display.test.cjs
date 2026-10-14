@@ -10,11 +10,12 @@ test('activity status respects inclusive dates and China midnight, without inven
  assert.equal(display.activityState(start,end,Date.parse('2026-10-15T16:00:00Z')),'ended');
  assert.equal(display.activityState(start,''),'');assert.equal(display.activityState(end,start),'');
 });
-test('news scenic group intersects selected category and retains pagination and search',async()=>{
+test('news category group uses every published category and retains pagination and search',async()=>{
  let query;const Service=load('cloudfunctions/mcloud/project/TRIP1/service/news_service.js',{'./base_project_service.js':class{},'../model/news_model.js':{getList:async(...args)=>{query=args;return {list:[],total:0};}},'./cms_service.js':{categories:async()=>[{id:'activity'},{id:'tips'},{id:'2'}]}});
  const input={cateGroup:'scenic',cateId:'activity',page:3,size:6,search:'山水'};
  await new Service().getNewsList(input);assert.deepEqual(query[0].NEWS_CATE_ID,['in',['activity']]);assert.equal(query[0].NEWS_STATUS,1);assert.equal(query[3],3);assert.equal(query[4],6);assert(query[1].includes('NEWS_ACTIVITY_START'));assert(query[0].NEWS_TITLE);
- await new Service().getNewsList({...input,cateId:'2'});assert.deepEqual(query[0].NEWS_CATE_ID,['in',[]]);
+ await new Service().getNewsList({...input,cateId:'2'});assert.deepEqual(query[0].NEWS_CATE_ID,['in',['2']]);
+ await new Service().getNewsList({...input,cateId:'0'});assert.deepEqual(query[0].NEWS_CATE_ID,['in',['activity','tips','2']]);
 });
 test('news list keeps legacy keys and adds dates without requiring new fields on old records',()=>{
  const Controller=load('cloudfunctions/mcloud/project/TRIP1/controller/news_controller.js',{'./base_project_controller.js':class{},'../service/news_service.js':class{}}),c=new Controller();

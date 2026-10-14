@@ -2,7 +2,6 @@ const ProjectBiz = require('../../../biz/project_biz.js');
 const pageHelper = require('../../../../../helper/page_helper.js');
 const {normalizeContent}=require('../../../ui/content_ui.js');
 const config=require('../../../ui/scene_config.js');
-const ProductBiz = require('../../../biz/product_biz.js');
 
 Page({
     bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
@@ -16,27 +15,9 @@ Page({
 	/**
 		 * 生命周期函数--监听页面加载
 		 */
-	onLoad: async function (options) {
+	onLoad: function () {
 		ProjectBiz.initPage(this);
-
-		this._getSearchMenu();
-
-		if (options && options.id) {
-			this.setData({
-				_params: {
-					sortType: 'cateId',
-					sortVal: options.id,
-				}
-			});
-		} else {
-			this.setData({
-
-				_params: {
-					sortType: 'cateId',
-					sortVal: '',
-				}
-			});
-		}
+		this.setData({_params:{}});
 	},
 
 	/**
@@ -86,27 +67,6 @@ Page({
     bindMapMode(){this.setData({mapMode:!this.data.mapMode});},
     bindPin(e){this.setData({selected:this.data.guideItems.find(i=>i.id===e.currentTarget.dataset.id)||null});},
     bindZoom(){this.setData({mapScale:this.data.mapScale===1?1.45:1});},
-    bindReset(){this.setData({mapScale:1});},
-	_getSearchMenu: function () {
-		ProductBiz.setCateTitle();
-
-		let sortItem1 = [{ label: '全部', type: 'cateId', value: '' }];
-
-		sortItem1 = sortItem1.concat(ProductBiz.getCateList());
-
-		let sortItems = [
-			{ label: '排序', type: '', value: '' },
-			{ label: '最新', type: 'sort', value: 'PRODUCT_ADD_TIME|desc' },
-			{ label: '最热', type: 'sort', value: 'PRODUCT_VIEW_CNT|desc' },
-			{ label: '推荐指数', type: 'sort', value: 'PRODUCT_OBJ.star|desc' },
-		];
-		let sortMenus = sortItem1;
-
-		this.setData({
-			sortItems: [sortItems],
-			sortMenus
-		})
-
-	}
+    bindReset(){this.setData({mapScale:1});}
 
 })

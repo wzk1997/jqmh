@@ -1,9 +1,4 @@
 @import "../../../style/skin.wxss";
-.guide-links { display: flex; padding: 24rpx 32rpx 0; }
-.guide-link { flex: 1; display: flex; justify-content: center; align-items: center; padding: 0 8rpx; margin: 0; background: #fff; color: var(--wt-brand); font-size: 24rpx; border-radius: 16rpx; height: 80rpx; line-height: 80rpx; }
-.guide-link + .guide-link { margin-left: 16rpx; }
-.guide-link::after { border: 0; }
-.guide-link > text { margin-right: 8rpx; font-size: 28rpx; }
 .product-list { padding: 24rpx 32rpx 0; }
 .product-list .item { display: flex; width: 100%; padding: 24rpx; margin-bottom: 20rpx; background: white; border-radius: 24rpx; }
 .guide-image { width: 190rpx; height: 224rpx; border-radius: 16rpx; flex-shrink: 0; }

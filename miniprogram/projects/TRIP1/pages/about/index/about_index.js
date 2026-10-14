@@ -4,15 +4,13 @@ const ProjectBiz = require('../../../biz/project_biz.js');
 const projectSetting = require('../../../public/project_setting.js');
 
 Page({
-    data:{navMode:'immersive',activeSection:0,tabs:['概况','特色亮点','景区相册','实用信息'],galleryFilter:'全部',gallery:[],galleryCategories:['全部'],displayGallery:[],info:{}},
+    data:{navMode:'immersive',activeSection:0,tabs:['概况','特色亮点','实用信息'],info:{}},
     prepareScenic(record){
         const info=record&&record.SCENIC_INFO||{},images=record&&record.SCENIC_IMAGES||[];
         const sections=['highlights'].map(key=>({key,items:(info[key]||[]).map(card=>({...card,image:images[card.imageIndex-1]||''}))}));
-        const gallery=images.map((image,index)=>({image,category:(info.galleryTags||[])[index]||'风景'}));
         const facts=[{value:info.rating,label:'景区等级'},{value:info.altitude,label:'海拔'},{value:info.history,label:'人文历史'}].filter(item=>item.value);
         const traffic=[{title:'自驾',text:info.selfDrive},{title:'公共交通',text:info.transit},{title:'停车信息',text:info.parking}].filter(item=>item.text);
-        const serviceItems=[{key:'centerService',title:'游客中心',icon:'location'},{key:'toiletService',title:'卫生间',icon:'service'},{key:'restService',title:'休息区',icon:'home'},{key:'foodService',title:'餐饮服务',icon:'shop'}].filter(item=>info[item.key]).map(item=>({...item,desc:info[item.key]}));
-        this.setData({info,sections,facts,traffic,serviceItems,gallery,displayGallery:gallery,galleryFilter:'全部',galleryCategories:['全部',...new Set(gallery.map(item=>item.category))],mapMarkers:typeof info.latitude==='number'&&typeof info.longitude==='number'?[{id:1,latitude:info.latitude,longitude:info.longitude,title:record.SCENIC_NAME,width:28,height:36}]:[]});
+        this.setData({info,sections,facts,traffic,mapMarkers:typeof info.latitude==='number'&&typeof info.longitude==='number'?[{id:1,latitude:info.latitude,longitude:info.longitude,title:record.SCENIC_NAME,width:28,height:36}]:[]});
     },
     onPageScroll(e){
         const mode=e.scrollTop>250?'page':'immersive';if(mode!==this.data.navMode)this.setData({navMode:mode});
@@ -20,9 +18,7 @@ Page({
         wx.createSelectorQuery().in(this).selectAll('.scenic-section').boundingClientRect(rects=>{this._scrollPending=false;if(!rects)return;let active=0;const top=(this.data.uiChrome&&this.data.uiChrome.height||88)+60;rects.forEach((rect,index)=>{if(rect.top<=top)active=index;});if(active!==this.data.activeSection)this.setData({activeSection:active});}).exec();
     },
     section(e){const index=Number(e.currentTarget.dataset.index);wx.createSelectorQuery().in(this).select('#section-'+index).boundingClientRect().selectViewport().scrollOffset().exec(res=>{if(res[0]&&res[1])wx.pageScrollTo({scrollTop:Math.max(0,res[0].top+res[1].scrollTop-(this.data.uiChrome&&this.data.uiChrome.height||88)-52),duration:300});});},
-    filterGallery(e){const filter=e.currentTarget.dataset.filter;this.setData({galleryFilter:filter,displayGallery:filter==='全部'?this.data.gallery:this.data.gallery.filter(item=>item.category===filter)});},
-    preview(e){const current=e.currentTarget.dataset.src,media=require('../../../../../helper/media_helper.js');const urls=this.data.gallery.map(item=>item.image).includes(current)?this.data.gallery.map(item=>item.image):[current];wx.previewImage({current:media.display(current,this.data.mediaUrls),urls:urls.map(id=>media.display(id,this.data.mediaUrls))});},
-    showService(e){const item=this.data.serviceItems[Number(e.currentTarget.dataset.index)];if(item)wx.showModal({title:item.title,content:item.desc,showCancel:false,confirmText:'知道了',confirmColor:'#146C60'});},
+    preview(e){const current=e.currentTarget.dataset.src,media=require('../../../../../helper/media_helper.js');wx.previewImage({current:media.display(current,this.data.mediaUrls),urls:[media.display(current,this.data.mediaUrls)]});},
     copyAddress(){wx.setClipboardData({data:this.data.scenicRecord.SCENIC_ADDRESS});},
     openMap(){const info=this.data.info;if(typeof info.latitude==='number'&&typeof info.longitude==='number')wx.openLocation({latitude:info.latitude,longitude:info.longitude,name:this.data.scenicRecord.SCENIC_NAME,address:this.data.scenicRecord.SCENIC_ADDRESS||'',scale:15});},
 
@@ -42,7 +38,7 @@ Page({
         const contentItem = projectSetting.SETUP_CONTENT_ITEMS.find(item => item.key === contentKey);
         this.setData({ contentKey, contentTitle: contentItem ? contentItem.title : '景区信息', isScenicAbout: contentKey === 'SETUP_CONTENT_ABOUT' });
         await this.loadAbout();
-        if(options&&/^[0-3]$/.test(options.section||''))wx.nextTick(()=>this.section({currentTarget:{dataset:{index:Number(options.section)}}}));
+        if(options&&/^[0-2]$/.test(options.section||''))wx.nextTick(()=>this.section({currentTarget:{dataset:{index:Number(options.section)}}}));
 	},
 
     async loadAbout(){

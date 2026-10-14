@@ -78,7 +78,7 @@ Page({
             const p=module.toUpperCase()+'_',id=row.id||row._id;
             return {id,title:row.title||row[p+'NAME'],desc:row.desc||row[p+'DESC']||'',pic:row.pic||(row[p+'IMAGES']||row[p+'COVER']||[])[0]||'',demo:!!(row.demo||row[p+'DEMO']),path:this.referenceUrl({module,id})};
         }).filter(Boolean);
-        const practical=[{title:'开放时间',text:scenic&&scenic.SCENIC_HOURS,icon:'time'},{title:'景区地址',text:scenic&&scenic.SCENIC_ADDRESS,icon:'location'},{title:'交通指南',text:[info.selfDrive,info.transit].filter(Boolean).join(' / '),icon:'taxi'},{title:'游客服务',text:info.services||info.centerService,icon:'service'},{title:'建议游玩时长',text:info.visitDuration,icon:'time'},{title:'温馨提示',text:info.tips,icon:'info'}].filter(row=>row.text);
+        const practical=[{title:'开放时间',text:scenic&&scenic.SCENIC_HOURS,icon:'time'},{title:'景区地址',text:scenic&&scenic.SCENIC_ADDRESS,icon:'location'},{title:'交通指南',text:[info.selfDrive,info.transit].filter(Boolean).join(' / '),icon:'taxi'},{title:'建议游玩时长',text:info.visitDuration,icon:'time'},{title:'温馨提示',text:info.tips,icon:'info'}].filter(row=>row.text);
         this.setData({heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'自然为伴',subtitle:'探索自然 · 美好出发'}],heroIndex:0});
     },
     retryHero(){this.setData({heroRender:false,heroImagesLoaded:{},heroImageErrors:{}});wx.nextTick(()=>this.setData({heroRender:true}));},

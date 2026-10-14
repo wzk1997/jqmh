@@ -6,7 +6,7 @@
     </view>
 
 	<!-- search form BEGIN -->
-	<view class="bar search bg-white " style="width:100%">
+	<view wx:if="{{showSearch}}" class="bar search bg-white " style="width:100%">
 		<view class="search-date" wx:if="{{doDate}}">
 			<!--<view class="date-title">日期:</view>-->
 			<!-- 时间段 -->
@@ -58,7 +58,7 @@
 
 		<!-- pulldown detail [LIST] begin-->  
 		<block wx:if="{{pulldownType[index]=='list'}}" wx:for="{{sortItems}}" wx:for-index="index" wx:key="key"> 
-			<view style="top:{{headerHeight+178}}rpx" class='sort' catchtouchmove="move" bindtap='bindSortItemTap' wx:if="{{item.show}}">
+			<view style="top:{{headerHeight+(showSearch?178:68)}}rpx" class='sort' catchtouchmove="move" bindtap='bindSortItemTap' wx:if="{{item.show}}">
 				<scroll-view class="pulldown-scroll-view"  scroll-y="{{true}}" scroll-into-view="pulldown-{{sortIndex}}-{{sortItemIndex-9}}">
 					<view id="pulldown-{{index}}-{{idx}}" class="sort-item  {{idx == sortItemIndex && index == sortIndex ? 'text-orange cur' : ''}}  " wx:for="{{item.items}}" wx:key="key" wx:for-item="its" data-idx="{{idx}}" wx:key="key" wx:for-index="idx"><text wx:if="{{idx==0}}">全部</text>{{its.label}}</view>
 				</scroll-view>
@@ -78,7 +78,7 @@
 	</scroll-view>
 </view>
 
-<view wx:if="{{isTotalMenu}}" class="box-list" style="height:calc(100vh - {{topOffset}}px - {{headerHeight + bottomInset + ((!sortItems.length && !sortMenus.length && !filterMenus.length)? 110 : 190)}}rpx);margin-top:{{headerHeight + ((!sortItems.length && !sortMenus.length && !filterMenus.length)? 110 : 190)}}rpx">
+<view wx:if="{{isTotalMenu}}" class="box-list" style="height:calc(100vh - {{topOffset}}px - {{headerHeight + bottomInset + (showSearch ? ((!sortItems.length && !sortMenus.length && !filterMenus.length) ? 110 : 190) : ((!sortItems.length && !sortMenus.length && !filterMenus.length) ? 0 : 80))}}rpx);margin-top:{{headerHeight + (showSearch ? ((!sortItems.length && !sortMenus.length && !filterMenus.length) ? 110 : 190) : ((!sortItems.length && !sortMenus.length && !filterMenus.length) ? 0 : 80))}}rpx">
 	<scroll-view  refresher-enabled="true" refresher-triggered="{{refresherTriggered}}" scroll-y="true" class="box-list-scroll" bindrefresherrefresh='bindPullDownRefresh' bindscrolltolower='bindReachBottom' scroll-top='{{topNum}}' bindscroll="bindScrollTop">
 		<slot  />    
 	</scroll-view>

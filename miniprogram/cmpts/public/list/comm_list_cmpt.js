@@ -66,6 +66,10 @@ Component({
 			type: Boolean, //是否整个搜索菜单显示
 			value: true
 		},
+		showSearch: {
+			type: Boolean,
+			value: true
+		},
 		_items: { // 下拉菜单基础数据
 			type: Array,
 			value: [],

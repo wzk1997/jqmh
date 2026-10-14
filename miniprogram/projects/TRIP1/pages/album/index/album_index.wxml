@@ -1,2 +1,63 @@
 <wxs module="media" src="../../../../../wxs/media.wxs"/>
-<scenic-nav-bar title="园区攻略" bind:layout="bindScenicLayout"/><view class="guide-page"><view class="guide-hero"><image class="guide-hero-image" src="/projects/TRIP1/images/design/portal-mountains-v3.jpg" mode="aspectFill"/><view class="guide-hero-shade"/><view class="guide-hero-copy"><text class="guide-hero-title">山水之间，自在游览</text><text class="guide-hero-subtitle">山水相拥 · 遇见更美的自己</text></view></view><view class="guide-sheet"><view class="guide-entries"><button wx:for="{{entries}}" wx:key="id" class="guide-entry {{contentMode===item.id?'active':''}}" bindtap="entry" data-id="{{item.id}}"><view class="guide-entry-icon guide-entry-{{item.color}}"><text class="{{item.icon}}"/></view><text>{{item.name}}</text></button></view><view wx:if="{{contentMode==='route'}}" class="guide-sort"><button wx:for="{{sorts}}" wx:key="id" class="guide-sort-button {{sort===item.id?'active':''}}" bindtap="sort" data-id="{{item.id}}">{{item.name}}</button></view><view wx:else class="guide-section-heading"><text>{{contentMode==='spots'?'必玩景点':'游玩贴士'}}</text><text>{{contentMode==='spots'?'发现值得停留的园区风景':'出发前，了解实用的游览建议'}}</text></view><view wx:if="{{contentMode==='route' && category && category!=='1'}}" class="guide-category"><text>已筛选攻略</text><button bindtap="clearCategory">查看全部</button></view><button wx:for="{{items}}" wx:key="id" class="guide-row" bindtap="detail" data-path="{{item.path}}"><view class="guide-cover-wrap"><image wx:if="{{item.pic}}" class="guide-cover" src="{{media.display(item.pic,mediaUrls)}}" mode="aspectFill"/><view wx:else class="guide-cover guide-placeholder"><text class="{{contentMode==='tips'?'icon-info':contentMode==='spots'?'icon-location':'icon-discover'}}"/></view><text wx:if="{{contentMode==='route' && sort==='recommend' && index<3}}" class="guide-rank">TOP{{index+1}}</text></view><view class="guide-row-copy"><text class="guide-row-title">{{item.title}}</text><text class="guide-row-desc">{{item.desc||item.label}}</text><view class="guide-row-meta"><text wx:if="{{item.demo}}" class="demo-tag">演示</text><text wx:if="{{contentMode==='tips'}}">游玩贴士</text><text wx:elif="{{contentMode==='spots'}}">{{item.label}}</text><text wx:if="{{item.spotCount}}"><text class="icon-location"/> {{item.spotCount}} 个景点</text><text wx:if="{{item.distance}}"><text class="icon-location"/> {{item.distance}}</text><text wx:if="{{item.duration}}"><text class="icon-time"/> {{item.duration}}</text><text wx:if="{{item.views}}"><text class="icon-attention"/> {{item.views}} 次浏览</text><text wx:if="{{!item.spotCount&&!item.distance&&!item.duration&&!item.views}}">{{item.date||(contentMode==='tips'?'查看贴士':contentMode==='spots'?'查看景点':'发现更多玩法')}}</text></view></view><text class="icon-right guide-row-arrow"/></button><view wx:if="{{loading}}" class="guide-state">正在加载{{contentMode==='tips'?'游玩贴士':contentMode==='spots'?'景点':'攻略'}}…</view><view wx:elif="{{error}}" class="guide-state"><text>{{contentMode==='tips'?'游玩贴士':contentMode==='spots'?'景点':'攻略'}}暂未加载成功</text><button bindtap="load">重新加载</button></view><view wx:elif="{{!items.length}}" class="guide-state">{{contentMode==='tips'?'暂无游玩贴士':contentMode==='spots'?'暂无已发布景点':'暂无攻略，更多玩法正在整理中'}}</view><view wx:elif="{{hasMore}}" class="guide-state">上拉加载更多</view></view></view>
+<scenic-nav-bar title="园区攻略" bind:layout="bindScenicLayout"/>
+<view class="guide-page">
+    <view class="guide-hero">
+        <image class="guide-hero-image" src="/projects/TRIP1/images/design/portal-mountains-v3.jpg" mode="aspectFill"/>
+        <view class="guide-hero-shade"/>
+        <view class="guide-hero-copy">
+            <text class="guide-hero-title">山水之间，自在游览</text>
+            <text class="guide-hero-subtitle">山水相拥 · 遇见更美的自己</text>
+        </view>
+    </view>
+    <view class="guide-sheet">
+        <view class="guide-entries">
+            <button wx:for="{{entries}}" wx:key="id" class="guide-entry {{contentMode===item.id?'active':''}}" bindtap="entry" data-id="{{item.id}}">
+                <view class="guide-entry-icon guide-entry-{{item.color}}"><text class="{{item.icon}}"/></view>
+                <text>{{item.name}}</text>
+            </button>
+        </view>
+        <block wx:if="{{contentMode==='route'}}">
+            <scroll-view wx:if="{{routeCategories.length}}" class="guide-categories" scroll-x enhanced show-scrollbar="{{false}}">
+                <view class="guide-category-list">
+                    <button wx:for="{{routeCategories}}" wx:key="id" class="guide-category-button {{category===item.id?'active':''}}" bindtap="category" data-id="{{item.id}}">{{item.name}}</button>
+                </view>
+            </scroll-view>
+            <view class="guide-sort">
+                <button wx:for="{{sorts}}" wx:key="id" class="guide-sort-button {{sort===item.id?'active':''}}" bindtap="sort" data-id="{{item.id}}">{{item.name}}</button>
+            </view>
+        </block>
+        <view wx:else class="guide-section-heading">
+            <text>{{contentMode==='spots'?'必玩景点':'游玩贴士'}}</text>
+            <text>{{contentMode==='spots'?'发现值得停留的园区风景':'出发前，了解实用的游览建议'}}</text>
+        </view>
+        <button wx:for="{{items}}" wx:key="id" class="guide-row" bindtap="detail" data-path="{{item.path}}">
+            <view class="guide-cover-wrap">
+                <image wx:if="{{item.pic}}" class="guide-cover" src="{{media.display(item.pic,mediaUrls)}}" mode="aspectFill"/>
+                <view wx:else class="guide-cover guide-placeholder"><text class="{{contentMode==='tips'?'icon-info':contentMode==='spots'?'icon-location':'icon-discover'}}"/></view>
+                <text wx:if="{{contentMode==='route' && sort==='recommend' && index<3}}" class="guide-rank">TOP{{index+1}}</text>
+            </view>
+            <view class="guide-row-copy">
+                <text class="guide-row-title">{{item.title}}</text>
+                <text class="guide-row-desc">{{item.desc||item.label}}</text>
+                <view class="guide-row-meta">
+                    <text wx:if="{{item.demo}}" class="demo-tag">演示</text>
+                    <text wx:if="{{contentMode==='tips'}}">游玩贴士</text>
+                    <text wx:elif="{{contentMode==='spots'}}">{{item.label}}</text>
+                    <text wx:if="{{item.spotCount}}"><text class="icon-location"/> {{item.spotCount}} 个景点</text>
+                    <text wx:if="{{item.distance}}"><text class="icon-location"/> {{item.distance}}</text>
+                    <text wx:if="{{item.duration}}"><text class="icon-time"/> {{item.duration}}</text>
+                    <text wx:if="{{item.views}}"><text class="icon-attention"/> {{item.views}} 次浏览</text>
+                    <text wx:if="{{!item.spotCount&&!item.distance&&!item.duration&&!item.views}}">{{item.date||(contentMode==='tips'?'查看贴士':contentMode==='spots'?'查看景点':'发现更多玩法')}}</text>
+                </view>
+            </view>
+            <text class="icon-right guide-row-arrow"/>
+        </button>
+        <view wx:if="{{loading}}" class="guide-state">正在加载{{contentMode==='tips'?'游玩贴士':contentMode==='spots'?'景点':'攻略'}}…</view>
+        <view wx:elif="{{error}}" class="guide-state">
+            <text>{{contentMode==='tips'?'游玩贴士':contentMode==='spots'?'景点':'攻略'}}暂未加载成功</text>
+            <button bindtap="load">重新加载</button>
+        </view>
+        <view wx:elif="{{!items.length}}" class="guide-state">{{contentMode==='tips'?'暂无游玩贴士':contentMode==='spots'?'暂无已发布景点':'暂无攻略，更多玩法正在整理中'}}</view>
+        <view wx:elif="{{hasMore}}" class="guide-state">上拉加载更多</view>
+    </view>
+</view>

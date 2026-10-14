@@ -6,13 +6,19 @@ const { normalizeContent } = require('../../../ui/content_ui.js');
 Page({
     data: {
         items: [], loading: false, error: false, page: 0, hasMore: false,
-        category: '1', contentMode: 'route', sort: 'recommend',
+        category: '1', routeCategories: [], contentMode: 'route', sort: 'recommend',
         sorts: [{ id: 'recommend', name: '推荐攻略' }, { id: 'new', name: '最新发布' }, { id: 'popular', name: '最受欢迎' }],
         entries: [{ id: 'route', name: '经典路线', icon: 'icon-album', color: 'green' }, { id: 'spots', name: '必玩景点', icon: 'icon-location', color: 'orange' }, { id: 'tips', name: '游玩贴士', icon: 'icon-roundcheckfill', color: 'blue' }]
     },
     bindScenicLayout(e) { this.setData({ uiChrome: e.detail }); },
-    onLoad(options = {}) { ProjectBiz.initPage(this); this.setData({ category: options.id || '1' }); this.load(); },
+    onLoad(options = {}) { ProjectBiz.initPage(this); this.setData({ category: options.id || '1' }); this.loadCategories(); this.load(); },
     onShow() { ProjectBiz.syncTabBar(this, 2); },
+    async loadCategories() {
+        try {
+            const result = await cloudHelper.callCloudSumbit('cms/categories', { module: 'album' }, { hint: false });
+            this.setData({ routeCategories: Array.isArray(result.data) ? result.data : [] });
+        } catch (_) {}
+    },
     async load(more = false) {
         more = more === true;
         if (more && this.data.loading) return;
@@ -52,7 +58,12 @@ Page({
             if (serial === this.serial) this.setData({ loading: false });
         }
     },
-    clearCategory() { this.setData({ category: '1', contentMode: 'route' }); this.load(); },
+    category(e) {
+        const id = String(e.currentTarget.dataset.id || '');
+        if (!id || id === this.data.category || !this.data.routeCategories.some(item => String(item.id) === id)) return;
+        this.setData({ category: id });
+        this.load();
+    },
     sort(e) { if (this.data.contentMode !== 'route') return; this.setData({ sort: e.currentTarget.dataset.id }); this.load(); },
     entry(e) {
         const id = e.currentTarget.dataset.id;

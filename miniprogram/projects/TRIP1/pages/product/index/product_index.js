@@ -56,7 +56,8 @@ Page({
         const points=[{x:27,y:24},{x:60,y:33},{x:39,y:49},{x:71,y:61},{x:23,y:70},{x:58,y:80}];
         const list=((e.detail.dataList||e.detail.data||{}).list||((this.data.dataList||{}).list)||[]).map(i=>normalizeContent(i,'product')).filter(i=>i.id);
         const guideItems=list.slice(0,6).map((item,index)=>({...item,...points[index]}));
-        this.setData({guideItems,selected:guideItems.find(i=>this.data.selected&&i.id===this.data.selected.id)||guideItems[0]||null});
+		const selected=this.data.selected?guideItems.find(i=>i.id===this.data.selected.id)||null:null;
+        this.setData({guideItems,selected});
 	},
 
 
@@ -66,6 +67,7 @@ Page({
 
     bindMapMode(){this.setData({mapMode:!this.data.mapMode});},
     bindPin(e){this.setData({selected:this.data.guideItems.find(i=>i.id===e.currentTarget.dataset.id)||null});},
+	clearPin(){if(this.data.selected)this.setData({selected:null});},
     bindZoom(){this.setData({mapScale:this.data.mapScale===1?1.45:1});},
     bindReset(){this.setData({mapScale:1});}
 

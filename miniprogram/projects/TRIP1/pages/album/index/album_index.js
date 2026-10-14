@@ -24,6 +24,9 @@ Page({
         if (contentMode === 'tips') {
             route = 'news/list';
             params = { page, size: 20, cateId: 'tips' };
+        } else if (contentMode === 'spots') {
+            route = 'product/list';
+            params = { page, size: 20 };
         } else {
             const orderBy = this.data.sort === 'new' ? { ALBUM_ADD_TIME: 'desc' } : this.data.sort === 'popular' ? { ALBUM_VIEW_CNT: 'desc', ALBUM_ADD_TIME: 'desc' } : { ALBUM_ORDER: 'asc', ALBUM_ADD_TIME: 'desc' };
             route = 'album/list';
@@ -34,7 +37,14 @@ Page({
             const result = await cloudHelper.callCloudSumbit(route, params, { title: 'bar' });
             if (serial !== this.serial) return;
             const data = result.data || {};
-            const rows = (data.list || []).map(row => contentMode === 'tips' ? normalizeContent(row, 'news') : { ...normalizeContent(row, 'album'), duration: row.ALBUM_DURATION || '', spotCount: (row.ALBUM_OBJ && row.ALBUM_OBJ.spots || []).length });
+            const rows = (data.list || []).map(row => {
+                if (contentMode === 'tips') return normalizeContent(row, 'news');
+                if (contentMode === 'spots') {
+                    const object = row.PRODUCT_OBJ || {};
+                    return { ...normalizeContent(row, 'product'), distance: object.distance || '', duration: object.duration || object.time || '' };
+                }
+                return { ...normalizeContent(row, 'album'), duration: row.ALBUM_DURATION || '', spotCount: (row.ALBUM_OBJ && row.ALBUM_OBJ.spots || []).length };
+            });
             this.setData({ items: page === 1 ? rows : this.data.items.concat(rows), page, hasMore: page * 20 < (data.total || 0) });
         } catch (_) {
             if (serial === this.serial) this.setData({ error: true });
@@ -46,9 +56,8 @@ Page({
     sort(e) { if (this.data.contentMode !== 'route') return; this.setData({ sort: e.currentTarget.dataset.id }); this.load(); },
     entry(e) {
         const id = e.currentTarget.dataset.id;
-        if (id === 'spots') { wx.switchTab({ url: '/projects/TRIP1/pages/product/index/product_index' }); return; }
-        if (!['route', 'tips'].includes(id)) return;
-        if (id === 'tips' && this.data.contentMode === 'tips') return;
+        if (!['route', 'spots', 'tips'].includes(id)) return;
+        if (id !== 'route' && this.data.contentMode === id) return;
         if (id === 'route' && this.data.contentMode === 'route' && this.data.category === '1') return;
         this.setData({ contentMode: id, ...(id === 'route' ? { category: '1' } : {}) });
         this.load();

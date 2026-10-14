@@ -4,10 +4,10 @@
     <image class="profile-landscape" src="../../../images/design/profile-landscape-v1.jpg" mode="aspectFill"/>
     <view class="profile-mist"/>
     <view class="profile-intro"><text class="profile-poem">山水相逢
-每一次出行都有意义</text><text class="profile-brand">WeTravel · 与美好同行</text></view>
+每一次出行都有意义</text></view>
     <button class="profile-user" bindtap="url" data-url="{{user?'../edit/my_edit':'../reg/my_reg'}}" aria-label="{{user?'编辑个人资料':'完善个人资料'}}">
       <view class="profile-avatar"><image class="profile-avatar-photo" src="../../../images/design/profile-traveler-avatar-v1.jpg" mode="aspectFill"/></view>
-      <view class="profile-user-copy"><text class="profile-name">{{profileDisplayName}}</text><text class="profile-caption" wx:if="{{user && user.USER_STATUS==9}}">账号已禁用</text><text class="profile-caption" wx:elif="{{user && user.USER_STATUS==0}}">资料已提交，等待审核</text><text class="profile-caption" wx:elif="{{user && user.USER_STATUS==8}}">资料审核未通过，请修改</text><text wx:else class="profile-caption">{{user?'去发现更大的世界吧！':'完善资料，记录美好旅程'}}</text></view>
+      <view class="profile-user-copy"><text class="profile-caption" wx:if="{{user && user.USER_STATUS==9}}">账号已禁用</text><text class="profile-caption" wx:elif="{{user && user.USER_STATUS==0}}">资料已提交，等待审核</text><text class="profile-caption" wx:elif="{{user && user.USER_STATUS==8}}">资料审核未通过，请修改</text><text wx:else class="profile-caption">{{user?'去发现更大的世界吧！':'完善资料，记录美好旅程'}}</text></view>
     </button>
     <view class="profile-quote"><text>旅途不止于目的地</text><text>更在于沿途的风景</text><view/></view>
   </view>
@@ -23,7 +23,7 @@
       <button class="profile-service-card" bindtap="url" data-url="../../about/service/about_service"><view class="profile-service-icon is-green"><text class="icon-shop"/></view><view><text>吃住行</text><text>发现周边美食与服务</text></view><text class="icon-right"/></button>
       <button class="profile-service-card" bindtap="url" data-url="../../about/visitor/visitor_index"><view class="profile-service-icon is-blue"><text class="icon-discover"/></view><view><text>游客服务</text><text>实用信息与帮助</text></view><text class="icon-right"/></button>
     </view>
-    <view class="profile-banner"><image src="../../../images/design/profile-landscape-v1.jpg" mode="aspectFill"/><view class="profile-banner-mist"/><view class="profile-banner-copy"><text>让旅行更美好</text><text>WeTravel</text><view/><text>自在山水间，留下你的故事</text></view></view>
+    <view class="profile-banner"><image src="../../../images/design/profile-landscape-v1.jpg" mode="aspectFill"/><view class="profile-banner-mist"/><view class="profile-banner-copy"><text>让旅行更美好</text><view/><text>自在山水间，留下你的故事</text></view></view>
   </view>
 </view>
 <block wx:if="{{skin.IS_SUB}}"><import src="../../tpls/menu_tpl.wxml"/><template is="menuTpl" data="{{curMenu:'my_index',skin,returnHome:false}}"/></block>

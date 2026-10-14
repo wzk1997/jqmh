@@ -39,7 +39,7 @@ test('public information refresh keeps the selected setup key',async()=>{
 test('detail sharing is safe before loading and with records that have no cover',()=>{
     for(const [kind,prefix] of [['product','PRODUCT'],['album','ALBUM'],['news','NEWS']]){
         const config=load('miniprogram/projects/TRIP1/pages/'+kind+'/detail/'+kind+'_detail.js',{require:()=>({})});
-        const instance=page(config);assert.equal(instance.onShareAppMessage().title,'WeTravel');
+        const instance=page(config);assert.equal(Object.keys(instance.onShareAppMessage()).length,0);
         instance.data[kind]={[prefix+'_TITLE']:'真实标题',[prefix+'_OBJ']:{}};
         assert.equal(instance.onShareAppMessage().title,'真实标题');assert.equal(instance.onShareAppMessage().imageUrl,'');
     }

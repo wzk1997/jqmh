@@ -58,7 +58,7 @@ Page({
         this.prepareScenic(null);this.setData({scenicRecord:null});await this._loadDetail(key,projectSetting.SETUP_CONTENT_ITEMS);
     },
     bindExpand(){this.setData({expanded:!this.data.expanded});},
-    onShareAppMessage(){return {title:this.data.adminPreview?'WeTravel · 景区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'WeTravel · 景区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
+    onShareAppMessage(){return {title:this.data.adminPreview?'景区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'景区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
     onPullDownRefresh: async function () {
         try { await this.loadAbout(); }
         finally { wx.stopPullDownRefresh(); }

@@ -5,7 +5,6 @@
   },
   "enablePullDownRefresh": true,
   "navigationStyle": "custom",
-  "navigationBarTitleText": "WeTravel",
   "navigationBarBackgroundColor": "#ffffff",
   "navigationBarTextStyle": "black"
 }

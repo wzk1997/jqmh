@@ -12,7 +12,6 @@
     "backgroundColor": "#f5f8f6",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "WeTravel",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

@@ -15,7 +15,6 @@ Page({
     bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
     bindScenicAction(e) { if (e.detail.id === 'settings') this.bindSetTap(); },
 	data: {
-        profileDisplayName:'欢迎来到 WeTravel',
         profileNavMode:'home',
         navActions: [{id:'settings',icon:'icon-settings',label:'设置',round:true}],
 	},
@@ -27,7 +26,7 @@ Page({
 		if (PassportBiz.isLogin()) {
 			let user = {};
 			user.USER_NAME = PassportBiz.getUserName();
-			this.setData({ user,profileDisplayName:this.displayName(user) });
+				this.setData({ user });
 		} 
 
 		ProjectBiz.initPage(this, {isSetNavColor:false});
@@ -66,7 +65,6 @@ Page({
 
 	},
 
-    displayName(user){const name=user&&user.USER_NAME||'';return name&&!/^[\s._-]*$/.test(name)?name:(user?'微信用户':'欢迎来到 WeTravel');},
 	_loadUser: async function (e) {
 
 		let opts = {
@@ -74,15 +72,11 @@ Page({
 		}
 		let user = await cloudHelper.callCloudData('passport/my_detail', {}, opts);
 		if (!user) {
-			this.setData({
-				user: null,profileDisplayName:'欢迎来到 WeTravel'
-			});
+				this.setData({user: null});
 			return;
 		}
 
-		this.setData({
-			user,profileDisplayName:this.displayName(user)
-		})
+			this.setData({user})
 	},
 
 	/**

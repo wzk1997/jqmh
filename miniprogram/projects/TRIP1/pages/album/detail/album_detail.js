@@ -95,7 +95,7 @@ Page({
 	},
 
 	onShareAppMessage: function (res) {
-        if (!this.data.album) return { title: 'WeTravel' };
+	        if (!this.data.album) return {};
 		return {
 			title: this.data.album.ALBUM_TITLE,
 			imageUrl: (this.data.album.ALBUM_OBJ.cover || [])[0] || ''

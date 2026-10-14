@@ -104,7 +104,7 @@ Page({
 	 * 用户点击右上角分享
 	 */
 	onShareAppMessage: function (res) {
-        if (!this.data.news) return { title: 'WeTravel' };
+	        if (!this.data.news) return {};
 		return {
 			title: this.data.news.NEWS_TITLE,
 			imageUrl: (this.data.news.NEWS_PIC || [])[0] || ''

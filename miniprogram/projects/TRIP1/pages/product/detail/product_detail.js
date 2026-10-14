@@ -97,7 +97,7 @@ Page({
 	},
 
 	onShareAppMessage: function (res) {
-        if (!this.data.product) return { title: 'WeTravel' };
+	        if (!this.data.product) return {};
 		return {
 			title: this.data.product.PRODUCT_TITLE,
 			imageUrl: (this.data.product.PRODUCT_OBJ.cover || [])[0] || ''

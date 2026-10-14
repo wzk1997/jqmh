@@ -7,7 +7,7 @@
   <image wx:if="{{news.NEWS_PIC[0] && news.NEWS_PIC[0]!='/images/cover.gif'}}" class="editorial-cover" src="{{media.display(news.NEWS_PIC[0],mediaUrls)}}" mode="aspectFill" bindtap="url" data-type="img" data-url="{{news.NEWS_PIC[0]}}" show-menu-by-longpress/>
   <view class="editorial-body {{!news.NEWS_PIC[0] || news.NEWS_PIC[0]=='/images/cover.gif'?'no-cover':''}}"><view class="editorial-header"><text class="editorial-label">{{news.NEWS_CATE_NAME}}</text><text class="editorial-title" user-select>{{news.NEWS_TITLE}}</text><text class="editorial-meta">{{news.NEWS_ADD_TIME}}</text></view>
     <view wx:if="{{news.NEWS_ACTIVITY_START || news.NEWS_ACTIVITY_END}}" class="editorial-text"><text class="icon-time"/> 活动时间：{{news.NEWS_ACTIVITY_START || '待公布'}}{{news.NEWS_ACTIVITY_END?' 至 '+news.NEWS_ACTIVITY_END:''}}</view><block wx:for="{{news.NEWS_CONTENT}}" wx:key="index"><view wx:if="{{item.type=='text'}}" class="editorial-text" style="{{rich.style(item)}}"><text user-select style="{{rich.style(item)}}">{{item.val}}</text></view><view wx:elif="{{item.type=='img'}}" class="editorial-picture"><image src="{{media.display(item.val,mediaUrls)}}" mode="widthFix" lazy-load show-menu-by-longpress bindtap="url" data-type="img" data-url="{{item.val}}"/></view></block>
-    <view class="editorial-note">WeTravel · 阅读风景，收藏旅程</view>
+
   </view>
   <cmpt-detail mode="mode1" topBtnShow="{{topBtnShow}}" oid="{{news._id}}" cate="{{news.NEWS_CATE_NAME}}" title="{{news.NEWS_TITLE}}" cover="{{news.NEWS_PIC[0]}}" qr="{{news.NEWS_QR}}" desc="查看详情" bg="{{skin.PROJECT_COLOR}}" />
 </block>

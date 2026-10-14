@@ -118,7 +118,7 @@ Page({
 		let callback = function () {
 			AdminBiz.clearAdminToken();
 			wx.reLaunch({
-				url: pageHelper.fmtURLByPID('/pages/my/index/my_index'),
+				url: pageHelper.fmtURLByPID('/pages/default/index/default_index'),
 			});
 		}
 		pageHelper.showConfirm('您确认退出?', callback);

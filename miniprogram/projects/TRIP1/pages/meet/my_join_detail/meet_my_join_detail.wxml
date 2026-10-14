@@ -26,7 +26,7 @@
 				</view>
 
 				<view class="oprt" wx:if="{{join.JOIN_STATUS==0 || join.JOIN_STATUS==1}}">
-					<view bindtap="url" data-url="../../my/index/my_index" data-type="relaunch" wx:if="{{isShowHome}}" class="btn margin-right-s">返回首页</view>
+					<view bindtap="url" data-url="../../default/index/default_index" data-type="relaunch" wx:if="{{isShowHome}}" class="btn margin-right-s">返回首页</view>
 					<view bindtap="bindCalendarTap" class="btn">加入手机日程</view>
 				</view>
 

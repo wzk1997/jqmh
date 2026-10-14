@@ -16,12 +16,6 @@ const tabs = [
         "text": "园区攻略",
         "icon": "/projects/TRIP1/images/ui/album_v2.png",
         "activeIcon": "/projects/TRIP1/images/ui/album_v2_active.png"
-    },
-    {
-        "path": "/projects/TRIP1/pages/my/index/my_index",
-        "text": "我的",
-        "icon": "/projects/TRIP1/images/ui/profile_v2.png",
-        "activeIcon": "/projects/TRIP1/images/ui/profile_v2_active.png"
     }
 ];
 Component({

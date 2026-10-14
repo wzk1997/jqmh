@@ -50,16 +50,16 @@ test('poster rendering accepts missing cover and QR without changing valid image
     const empty=await module.exports.config1({title:'风景',desc:'介绍',cover:null,qr:undefined});assert.equal(empty.images.length,0);
     const filled=await module.exports.config1({title:'风景',desc:'介绍',cover:'/images/scenic.jpg',qr:'/images/qr.png'});assert.equal(filled.images[0].url,'/images/scenic.jpg');assert.equal(filled.images[1].url,'/images/qr.png');
 });
-test('four registered tabs and their icons exist; public services remain accessible through normal pages',()=>{
-    const app=JSON.parse(fs.readFileSync(path.join(root,'miniprogram/app.json')));assert.deepEqual(app.tabBar.list.map(item=>item.text),['首页','景区导览','园区攻略','我的']);
+test('three visitor tabs and their icons exist; public services remain accessible through normal pages',()=>{
+    const app=JSON.parse(fs.readFileSync(path.join(root,'miniprogram/app.json')));assert.deepEqual(app.tabBar.list.map(item=>item.text),['首页','景区导览','园区攻略']);
     for(const item of app.tabBar.list){assert(app.pages.includes(item.pagePath));for(const key of ['iconPath','selectedIconPath'])assert(fs.existsSync(path.join(root,'miniprogram',item[key].replace(/^\//,''))));}
     assert(!app.tabBar.list.some(item=>item.pagePath.includes('about/service')));
-    for(const file of ['default/index/default_index.wxml','my/index/my_index.wxml'])assert(fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages',file),'utf8').includes('../../about/service/about_service'));
+    assert(fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages/default/index/default_index.wxml'),'utf8').includes('../../about/service/about_service'));
 });
 test('static page links and list routes resolve to existing registered business pages/interfaces',()=>{
     const app=JSON.parse(fs.readFileSync(path.join(root,'miniprogram/app.json'))),routes=require('../cloudfunctions/mcloud/project/TRIP1/public/route.js');
     const registered=app.pages.concat((app.subpackages||[]).flatMap(pack=>pack.pages.map(page=>pack.root+'/'+page)));
-    const pages=['default/index/default_index','product/index/product_index','album/index/album_index','news/index/news_index','news/cate1/news_cate1','news/cate2/news_cate2','about/index/about_index','about/service/about_service','my/index/my_index','my/fav/my_fav','my/foot/my_foot','search/search','product/detail/product_detail','album/detail/album_detail','news/detail/news_detail'];
+    const pages=['default/index/default_index','product/index/product_index','album/index/album_index','news/index/news_index','news/cate1/news_cate1','news/cate2/news_cate2','about/index/about_index','about/service/about_service','my/fav/my_fav','my/foot/my_foot','search/search','product/detail/product_detail','album/detail/album_detail','news/detail/news_detail'];
     for(const name of pages){
         const file='miniprogram/projects/TRIP1/pages/'+name+'.wxml',contents=fs.readFileSync(path.join(root,file),'utf8');
         for(const tag of contents.matchAll(/<(?:view|button|cmpt-comm-list)\b[^>]*>/g)){

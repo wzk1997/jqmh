@@ -53,7 +53,7 @@ Page({
 
 	bindBackTap: function (e) {
 		wx.reLaunch({
-			url: pageHelper.fmtURLByPID('/pages/my/index/my_index'),
+			url: pageHelper.fmtURLByPID('/pages/default/index/default_index'),
 		});
 	},
 

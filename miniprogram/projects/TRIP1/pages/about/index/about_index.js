@@ -2,6 +2,8 @@ const behavior = require('../../../../../comm/behavior/about_bh.js');
 const cloudHelper = require('../../../../../helper/cloud_helper.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 const projectSetting = require('../../../public/project_setting.js');
+const AdminBiz = require('../../../../../comm/biz/admin_biz.js');
+const setting = require('../../../../../setting/setting.js');
 
 Page({
     data:{navMode:'immersive',activeSection:0,tabs:['概况','特色亮点','实用信息'],info:{}},
@@ -21,6 +23,7 @@ Page({
     preview(e){const current=e.currentTarget.dataset.src,media=require('../../../../../helper/media_helper.js');wx.previewImage({current:media.display(current,this.data.mediaUrls),urls:[media.display(current,this.data.mediaUrls)]});},
     copyAddress(){wx.setClipboardData({data:this.data.scenicRecord.SCENIC_ADDRESS});},
     openMap(){const info=this.data.info;if(typeof info.latitude==='number'&&typeof info.longitude==='number')wx.openLocation({latitude:info.latitude,longitude:info.longitude,name:this.data.scenicRecord.SCENIC_NAME,address:this.data.scenicRecord.SCENIC_ADDRESS||'',scale:15});},
+    openAdmin(){if(setting.IS_SUB)return AdminBiz.adminLogin(this,'admin','123456');wx.reLaunch({url:'../../admin/index/login/admin_login'});},
 
     bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 

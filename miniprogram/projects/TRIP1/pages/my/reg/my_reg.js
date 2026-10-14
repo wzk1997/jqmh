@@ -37,7 +37,7 @@ Page({
 		}
 		let user = await cloudHelper.callCloudData('passport/my_detail', {}, opts);
 		if (user) {
-			return wx.switchTab({ url: pageHelper.fmtURLByPID('/pages/my/index/my_index') });
+			return wx.switchTab({ url: pageHelper.fmtURLByPID('/pages/default/index/default_index') });
 		}
 
 		this.setData({

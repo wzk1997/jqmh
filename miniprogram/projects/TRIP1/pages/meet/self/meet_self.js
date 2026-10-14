@@ -27,7 +27,7 @@ Page({
 				await cloudHelper.callCloudSumbit('meet/my_join_checkin', params, opts).then(res => {
 					let cb = () => {
 						wx.reLaunch({
-							url: pageHelper.fmtURLByPID('/pages/my/index/my_index'),
+								url: pageHelper.fmtURLByPID('/pages/default/index/default_index'),
 						});
 					}
 					pageHelper.showModal(res.data.ret, '温馨提示', cb);

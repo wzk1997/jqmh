@@ -1,7 +1,6 @@
 {
   "pages": [
     "projects/TRIP1/pages/default/index/default_index",
-    "projects/TRIP1/pages/my/index/my_index",
     "projects/TRIP1/pages/album/index/album_index",
     "projects/TRIP1/pages/product/index/product_index",
     "cmpts/public/form/form_set/field/form_set_field",
@@ -37,12 +36,6 @@
         "text": "园区攻略",
         "iconPath": "/projects/TRIP1/images/ui/album_v2.png",
         "selectedIconPath": "/projects/TRIP1/images/ui/album_v2_active.png"
-      },
-      {
-        "pagePath": "projects/TRIP1/pages/my/index/my_index",
-        "text": "我的",
-        "iconPath": "/projects/TRIP1/images/ui/profile_v2.png",
-        "selectedIconPath": "/projects/TRIP1/images/ui/profile_v2_active.png"
       }
     ]
   },

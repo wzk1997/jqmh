@@ -8,7 +8,7 @@ Page({
 	/**
 	 * 页面的初始数据
 	 */
-	data: { mapImage:config.mapImage, mapMode:true, guideItems:[], selected:null, mapScale:1,
+	data: { mapImage:config.mapImage, mapMode:true, guideItems:[], selected:null,
 
 	},
 
@@ -67,8 +67,6 @@ Page({
 
     bindMapMode(){this.setData({mapMode:!this.data.mapMode});},
     bindPin(e){this.setData({selected:this.data.guideItems.find(i=>i.id===e.currentTarget.dataset.id)||null});},
-	clearPin(){if(this.data.selected)this.setData({selected:null});},
-    bindZoom(){this.setData({mapScale:this.data.mapScale===1?1.45:1});},
-    bindReset(){this.setData({mapScale:1});}
+	clearPin(){if(this.data.selected)this.setData({selected:null});}
 
 })

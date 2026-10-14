@@ -151,8 +151,8 @@ test('scenic metadata validates cards, gallery references, media and complete co
  const validate=require('../cloudfunctions/mcloud/project/TRIP1/service/scenic_info_validation.js');
  const info=validate({tagline:' 山水相拥 ',highlights:[{title:'云海',desc:'自然景观',imageIndex:1}],galleryTags:['云海'],latitude:'0',longitude:'120',video:'https://media.example.com/scenic.mp4',closingQuote:'美好出发',privateField:'discard'},['/photo.jpg']);
  assert.equal(info.tagline,'山水相拥');assert.equal(info.latitude,0);assert.equal(info.highlights[0].imageIndex,1);assert(!Object.hasOwn(info,'privateField'));
- const legacy=validate({reasons:[{title:'理由'}],nature:[{title:'自然景观'}],coverQuote:'封面寄语',coverDescription:'说明',overviewQuote:'概况寄语',highlightsQuote:'亮点寄语',galleryQuote:'相册寄语',closingQuote:'底部寄语'},[]);for(const key of ['reasons','nature','coverQuote','coverDescription','overviewQuote','highlightsQuote','galleryQuote','closingQuote'])assert(!Object.hasOwn(legacy,key));
- for(const input of [{highlights:[{title:'景点',imageIndex:2}]},{culture:'inject'},{video:'javascript:bad'},{latitude:'91',longitude:'120'},{latitude:'0',longitude:''},{tips:{private:'data'}},{galleryTags:[{}]}])assert.throws(()=>validate(input,['/photo.jpg']));
+ const legacy=validate({reasons:[{title:'理由'}],nature:[{title:'自然景观'}],culture:[{title:'人文故事'}],coverQuote:'封面寄语',coverDescription:'说明',overviewQuote:'概况寄语',highlightsQuote:'亮点寄语',galleryQuote:'相册寄语',closingQuote:'底部寄语'},[]);for(const key of ['reasons','nature','culture','coverQuote','coverDescription','overviewQuote','highlightsQuote','galleryQuote','closingQuote'])assert(!Object.hasOwn(legacy,key));
+ for(const input of [{highlights:[{title:'景点',imageIndex:2}]},{video:'javascript:bad'},{latitude:'91',longitude:'120'},{latitude:'0',longitude:''},{tips:{private:'data'}},{galleryTags:[{}]}])assert.throws(()=>validate(input,['/photo.jpg']));
 });
 test('scenic edits keep published metadata private, preserve omitted fields and promote explicit drafts',async()=>{
  const f=fixture();const {id}=await f.service.save('scenic',{name:'WeTravel',order:1,images:[],content:[],info:{tagline:'初版',highlights:[]}},'admin');

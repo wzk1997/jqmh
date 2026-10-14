@@ -4,10 +4,10 @@ const ProjectBiz = require('../../../biz/project_biz.js');
 const projectSetting = require('../../../public/project_setting.js');
 
 Page({
-    data:{navMode:'immersive',activeSection:0,tabs:['概况','特色亮点','人文故事','景区相册','实用信息'],galleryFilter:'全部',gallery:[],galleryCategories:['全部'],displayGallery:[],info:{}},
+    data:{navMode:'immersive',activeSection:0,tabs:['概况','特色亮点','景区相册','实用信息'],galleryFilter:'全部',gallery:[],galleryCategories:['全部'],displayGallery:[],info:{}},
     prepareScenic(record){
         const info=record&&record.SCENIC_INFO||{},images=record&&record.SCENIC_IMAGES||[];
-        const sections=['highlights','culture'].map(key=>({key,items:(info[key]||[]).map(card=>({...card,image:images[card.imageIndex-1]||''}))}));
+        const sections=['highlights'].map(key=>({key,items:(info[key]||[]).map(card=>({...card,image:images[card.imageIndex-1]||''}))}));
         const gallery=images.map((image,index)=>({image,category:(info.galleryTags||[])[index]||'风景'}));
         const facts=[{value:info.rating,label:'景区等级'},{value:info.altitude,label:'海拔'},{value:info.history,label:'人文历史'}].filter(item=>item.value);
         const traffic=[{title:'自驾',text:info.selfDrive},{title:'公共交通',text:info.transit},{title:'停车信息',text:info.parking}].filter(item=>item.text);
@@ -42,7 +42,7 @@ Page({
         const contentItem = projectSetting.SETUP_CONTENT_ITEMS.find(item => item.key === contentKey);
         this.setData({ contentKey, contentTitle: contentItem ? contentItem.title : '景区信息', isScenicAbout: contentKey === 'SETUP_CONTENT_ABOUT' });
         await this.loadAbout();
-        if(options&&/^[0-4]$/.test(options.section||''))wx.nextTick(()=>this.section({currentTarget:{dataset:{index:Number(options.section)}}}));
+        if(options&&/^[0-3]$/.test(options.section||''))wx.nextTick(()=>this.section({currentTarget:{dataset:{index:Number(options.section)}}}));
 	},
 
     async loadAbout(){

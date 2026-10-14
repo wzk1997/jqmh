@@ -442,13 +442,6 @@ module.exports=[
             "imageIndex": 1
           }
         ],
-        "culture": [
-          {
-            "title": "山水故事",
-            "desc": "【演示介绍】以文字与图片记录地方文化，真实历史资料可在后台替换。",
-            "imageIndex": 3
-          }
-        ],
         "galleryTags": [
           "云海",
           "森林",

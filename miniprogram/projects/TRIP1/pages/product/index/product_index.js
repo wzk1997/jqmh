@@ -9,7 +9,7 @@ Page({
 	/**
 	 * 页面的初始数据
 	 */
-	data: { mapImage:config.mapImage, mapMode:true, guideItems:[], selected:null, mapScale:1, guideTab:'spots',
+	data: { mapImage:config.mapImage, mapMode:true, guideItems:[], selected:null, mapScale:1,
 
 	},
 
@@ -87,7 +87,6 @@ Page({
     bindPin(e){this.setData({selected:this.data.guideItems.find(i=>i.id===e.currentTarget.dataset.id)||null});},
     bindZoom(){this.setData({mapScale:this.data.mapScale===1?1.45:1});},
     bindReset(){this.setData({mapScale:1});},
-    bindGuideTab(e){this.setData({guideTab:e.currentTarget.dataset.tab});},
 	_getSearchMenu: function () {
 		ProductBiz.setCateTitle();
 

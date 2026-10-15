@@ -3,7 +3,7 @@ const Cms=require('./admin/admin_cms_service.js');
 const publicCms=require('./cms_service.js');
 const v=require('./cms_validation.js');
 const KEY='SETUP_HOME_PORTAL';
-const TYPES=['scenic','album','product','news','merchant','panorama'];
+const TYPES=['scenic','album','product','news','merchant'];
 function reference(ref){
  if(!ref||!TYPES.includes(ref.module))v.fail('首页内容类型不正确');
  return {module:ref.module,id:v.id(ref.id)};
@@ -20,10 +20,11 @@ function validate(input){
 class HomePortalService {
  async get(){return await setup.get(KEY)||{draft:null,published:null};}
  async resolve(ref){
+  if(!ref||!TYPES.includes(ref.module))return null;
   const cms=new Cms(),Model=cms.model(ref.module);await cms.ensure(Model);
   const p=ref.module.toUpperCase()+'_',row=await Model.getOne({_id:ref.id,[p+'DELETED']:['<>',true]});
   if(!row||Cms.currentState(ref.module,row)!=='published')return null;
-  if(['scenic','merchant','panorama'].includes(ref.module))return await publicCms.detail(ref.module,ref.id);
+  if(['scenic','merchant'].includes(ref.module))return await publicCms.detail(ref.module,ref.id);
   const obj=row[p+'OBJ']||{};
   return {id:row._id,type:ref.module,title:row[p+'TITLE'],desc:row[p+'DESC']||obj.desc||'',pic:(row[p+'PIC']||obj.cover||[])[0]||'',cateId:row[p+'CATE_ID'],cateName:row[p+'CATE_NAME'],demo:!!row[p+'DEMO']};
  }

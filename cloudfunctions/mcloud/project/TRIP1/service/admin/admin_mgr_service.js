@@ -210,7 +210,7 @@ class AdminMgrService extends BaseProjectAdminService {
     async setPermissions(id,permissions,myAdminId){
         const admin=await AdminModel.getOne(v.id(id));if(!admin||admin.ADMIN_DELETED)this.AppError('管理员不存在');
         if(id===myAdminId||admin.ADMIN_TYPE===1)this.AppError('超级管理员权限不能修改');
-        const modules=['scenic','news','album','product','merchant','panorama','feedback'];
+        const modules=['scenic','news','album','product','merchant','feedback'];
         if(!permissions||typeof permissions!=='object'||Array.isArray(permissions)||Object.keys(permissions).some(k=>!modules.includes(k)))this.AppError('权限配置不正确');
         const clean={};for(const module of modules){const ops=permissions[module]||[];if(!Array.isArray(ops)||ops.some(op=>!['read','write','publish','delete'].includes(op)))this.AppError('权限操作不正确');clean[module]=[...new Set(ops)];}
         await AdminModel.edit(id,{ADMIN_PERMISSIONS:clean,ADMIN_TOKEN:'',ADMIN_TOKEN_TIME:0});

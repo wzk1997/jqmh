@@ -1,0 +1,1 @@
+<web-view wx:if="{{url&&!error}}" src="{{url}}" binderror="fail"/><view wx:else class="wt-state"><text>{{error?'VR导览暂不可打开，请稍后重试':'正在打开VR导览…'}}</text><button wx:if="{{error}}" bindtap="back">返回</button></view>

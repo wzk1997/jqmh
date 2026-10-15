@@ -61,7 +61,7 @@ Page({
     referenceUrl(ref){
         if(!ref)return '';
         const root='/projects/TRIP1/pages/';
-        const routes={scenic:'about/index/about_index',merchant:'about/merchant/merchant_detail',panorama:'experience/panorama/panorama_index'};
+        const routes={scenic:'about/index/about_index',merchant:'about/merchant/merchant_detail'};
         return root+(routes[ref.module]||ref.module+'/detail/'+ref.module+'_detail')+'?id='+encodeURIComponent(ref.id);
     },
     applyPortal(portal){

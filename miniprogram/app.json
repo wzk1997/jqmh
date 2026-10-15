@@ -137,8 +137,7 @@
       "name": "experience",
       "pages": [
         "ar/ar_index",
-        "panorama/panorama_index",
-        "webview/panorama_webview"
+        "webview/vr_webview"
       ]
     },
     {

@@ -1,10 +1,10 @@
 module.exports = {
 	//### 环境相关 
-	CLOUD_ID: 'cloud1-d7g9o14z451e97c40', //云服务id ,本地测试环境 
+	CLOUD_ID: 'iangfang-d0ghwpb2r183e68ca', //云服务id，本地测试环境
 
 	// #### 版本信息 
-	VER: 'build 2022.08.14',
-	COMPANY: '联系作者',
+	VER: 'build 2026.10.15',
+	COMPANY: '王增柯',
 
 	// #### 系统参数 
 	IS_SUB: false, //分包模式 

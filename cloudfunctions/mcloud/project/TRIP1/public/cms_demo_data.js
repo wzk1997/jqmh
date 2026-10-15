@@ -368,45 +368,6 @@ module.exports=[
     }
   },
   {
-    "key": "panorama_1",
-    "module": "panorama",
-    "name": "山水全景",
-    "photo": "hero",
-    "data": {
-      "name": "山水全景",
-      "order": 18,
-      "resourceType": "image",
-      "desc": "【演示图片场景】用于查看大图，非第三方 VR 或实景导航。",
-      "body": "这是已发布的演示图片资源。真实全景链接或第三方场景标识可在后台配置。"
-    }
-  },
-  {
-    "key": "panorama_2",
-    "module": "panorama",
-    "name": "林间漫游",
-    "photo": "forest",
-    "data": {
-      "name": "林间漫游",
-      "order": 19,
-      "resourceType": "image",
-      "desc": "【演示图片场景】用于查看大图，非第三方 VR 或实景导航。",
-      "body": "这是已发布的演示图片资源。真实全景链接或第三方场景标识可在后台配置。"
-    }
-  },
-  {
-    "key": "panorama_3",
-    "module": "panorama",
-    "name": "湖畔风光",
-    "photo": "lake",
-    "data": {
-      "name": "湖畔风光",
-      "order": 20,
-      "resourceType": "image",
-      "desc": "【演示图片场景】用于查看大图，非第三方 VR 或实景导航。",
-      "body": "这是已发布的演示图片资源。真实全景链接或第三方场景标识可在后台配置。"
-    }
-  },
-  {
     "key": "scenic_main",
     "module": "scenic",
     "name": "WeTravel 山水景区",

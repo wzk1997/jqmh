@@ -1,7 +1,7 @@
 module.exports=[
   {
     "key": "product_view",
-    "module": "product",
+    "module": "spot",
     "name": "观景台",
     "photo": "hero",
     "data": {
@@ -19,7 +19,7 @@ module.exports=[
   },
   {
     "key": "product_forest",
-    "module": "product",
+    "module": "spot",
     "name": "原始森林",
     "photo": "forest",
     "data": {
@@ -37,7 +37,7 @@ module.exports=[
   },
   {
     "key": "product_lake",
-    "module": "product",
+    "module": "spot",
     "name": "高山湖泊",
     "photo": "lake",
     "data": {
@@ -55,7 +55,7 @@ module.exports=[
   },
   {
     "key": "product_rock",
-    "module": "product",
+    "module": "spot",
     "name": "奇峰怪石",
     "photo": "hero",
     "data": {
@@ -73,7 +73,7 @@ module.exports=[
   },
   {
     "key": "album_classic",
-    "module": "album",
+    "module": "guide",
     "name": "一日游经典路线",
     "photo": "hero",
     "data": {
@@ -119,7 +119,7 @@ module.exports=[
   },
   {
     "key": "album_family",
-    "module": "album",
+    "module": "guide",
     "name": "亲子游推荐",
     "photo": "lake",
     "data": {
@@ -158,7 +158,7 @@ module.exports=[
   },
   {
     "key": "album_deep",
-    "module": "album",
+    "module": "guide",
     "name": "深度两日游",
     "photo": "hero",
     "data": {
@@ -204,7 +204,7 @@ module.exports=[
   },
   {
     "key": "album_photo",
-    "module": "album",
+    "module": "guide",
     "name": "摄影打卡路线",
     "photo": "lake",
     "data": {

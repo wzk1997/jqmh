@@ -10,6 +10,9 @@ const config = require('../../config/config.js');
  * 获得云实例
  */
 function getCloud() {
+	if (!config.CLOUD_ID) {
+		throw new Error('CLOUD_ID 未配置：本地开发禁止自动连接默认云环境');
+	}
 	const cloud = require('wx-server-sdk');
 	cloud.init({
 		env: config.CLOUD_ID

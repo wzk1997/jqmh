@@ -8,8 +8,8 @@ Page({
 	/**
 	 * 页面的初始数据
 	 */
-	data: {modules:[{id:'scenic',title:'景区简介',icon:'icon-home'},{id:'album',title:'园区攻略',icon:'icon-pic'},{id:'merchant',title:'吃住行',icon:'icon-shop'},{id:'panorama',title:'全景图',icon:'icon-camera'},{id:'news',title:'活动资讯',icon:'icon-form'},{id:'feedback',title:'客户反馈',icon:'icon-edit'}]},
-    openModule(e){const id=e.currentTarget.dataset.id;wx.navigateTo({url:id==='feedback'?'/projects/TRIP1/pages/admin/feedback/admin_feedback':'/projects/TRIP1/pages/admin/cms/list/cms_list?module='+id});},
+	data: {modules:[{id:'scenic',title:'景区简介',icon:'icon-home'},{id:'spot',title:'景点管理',icon:'icon-location'},{id:'guide',title:'园区攻略',icon:'icon-pic'},{id:'merchant',title:'吃住行',icon:'icon-shop'},{id:'panorama',title:'全景图',icon:'icon-camera'},{id:'news',title:'活动资讯',icon:'icon-form'},{id:'reservation',title:'预约管理',icon:'icon-calendar'},{id:'feedback',title:'客户反馈',icon:'icon-edit'}]},
+    openModule(e){const id=e.currentTarget.dataset.id;let url='/projects/TRIP1/pages/admin/cms/list/cms_list?module='+id;if(id==='feedback')url='/projects/TRIP1/pages/admin/feedback/admin_feedback';if(id==='reservation')url='/projects/TRIP1/pages/admin/reservation/list/admin_reservation_list';wx.navigateTo({url});},
 
 	/**
 	 * 生命周期函数--监听页面加载
@@ -34,8 +34,8 @@ Page({
 		this.setData({
 			isLoad: true,
 			admin,
-            modules:this.data.modules.filter(module=>cms.can(admin,module.id,'read')),
-            canProduct:cms.can(admin,'product','read'),canScenic:cms.can(admin,'scenic','read')
+            modules:this.data.modules.filter(module=>module.id==='reservation'||cms.can(admin,module.id,'read')),
+            canSpot:cms.can(admin,'spot','read'),canScenic:cms.can(admin,'scenic','read')
 		});
 
 		try {

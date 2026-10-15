@@ -2,8 +2,8 @@ const Cms = require('./admin/admin_cms_service.js');
 const v = require('./cms_validation.js');
 const DEFAULTS = {
     news:[{id:'activity',name:'景区活动'},{id:'announcement',name:'景区公告'},{id:'tips',name:'旅游资讯'},{id:'1',name:'景区动态'},{id:'2',name:'美食'},{id:'3',name:'特产'}],
-    album:[{id:'1',name:'线路'},{id:'2',name:'吃喝'},{id:'3',name:'住宿'},{id:'4',name:'购物'},{id:'5',name:'其他'}],
-    product:[{id:'1',name:'仙山贡水'},{id:'2',name:'伍家台'},{id:'3',name:'狮子关'},{id:'4',name:'其他景点'}]
+    guide:[{id:'1',name:'线路'},{id:'2',name:'吃喝'},{id:'3',name:'住宿'},{id:'4',name:'购物'},{id:'5',name:'其他'}],
+    spot:[{id:'1',name:'仙山贡水'},{id:'2',name:'伍家台'},{id:'3',name:'狮子关'},{id:'4',name:'其他景点'}]
 };
 async function categories(module) {
     if(!DEFAULTS[module])v.fail('分类模块不正确');

@@ -11,7 +11,7 @@ const BaseProjectService = require('../../service/base_project_service.js');
 class BaseProjectAdminController extends BaseAdminController {
     async isAdmin() {
         await super.isAdmin();
-        const match = this._route.match(/^admin\/(news|album|product|feedback|setup)_/);
+        const match = this._route.match(/^admin\/(news|guide|spot|feedback|setup)_/);
         if (match) {
             const action = this._route.split('_').slice(1).join('_');
             const operation = ['list','detail','search'].includes(action) ? 'read' : action === 'del' ? 'delete' : ['status','vouch'].includes(action) ? 'publish' : 'write';

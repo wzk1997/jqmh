@@ -14,7 +14,7 @@ Page({
   const tab=this.data.serviceTab,serial=this.serial=(this.serial||0)+1;
   const state=more?{...this.data}:{items:[],merchants:[],legacyPage:0,merchantPage:0,legacyHasMore:false,merchantHasMore:false,legacyError:false,merchantError:false};
   const tasks=[];
-  if(tab!=='travel'&&(!more||state.legacyError||!retryOnly&&state.legacyHasMore))tasks.push({kind:'legacy',page:state.legacyPage+1,route:tab==='food'?'news/list':'album/list',params:tab==='food'?{cateId:'2'}:{sortType:'cateId',sortVal:'3'}});
+  if(tab!=='travel'&&(!more||state.legacyError||!retryOnly&&state.legacyHasMore))tasks.push({kind:'legacy',page:state.legacyPage+1,route:tab==='food'?'news/list':'guide/list',params:tab==='food'?{cateId:'2'}:{sortType:'cateId',sortVal:'3'}});
   if(!more||state.merchantError||!retryOnly&&state.merchantHasMore)tasks.push({kind:'merchant',page:state.merchantPage+1,route:'cms/list',params:{module:'merchant',category:tab}});
   if(!tasks.length)return;
   this.setData({...state,loading:true,error:false,partialError:false});
@@ -25,7 +25,7 @@ Page({
    state[kind+'Error']=result.status==='rejected';if(result.status==='rejected')return;
    const data=result.value.data||{},rows=data.list||[];
    state[kind+'Page']=task.page;state[kind+'HasMore']=hasMore(data,task.page);
-   if(kind==='legacy')state.items=merge(state.items,rows.map(row=>normalizeContent(row,tab==='food'?'news':'album')));
+   if(kind==='legacy')state.items=merge(state.items,rows.map(row=>normalizeContent(row,tab==='food'?'news':'guide')));
    else state.merchants=merge(state.merchants,rows.map(row=>({id:row._id,title:row.MERCHANT_NAME,desc:row.MERCHANT_DESC,pic:(row.MERCHANT_IMAGES||[])[0]||'',phone:row.MERCHANT_DEMO?'':row.MERCHANT_PHONE,demo:row.MERCHANT_DEMO,path:'../merchant/merchant_detail?id='+row._id})));
   });
   const failed=state.legacyError||state.merchantError,empty=!state.items.length&&!state.merchants.length;

@@ -5,7 +5,7 @@
   "project": "TRIP1",
   "feedback": "New feedback files are uploaded by authenticated mcloud handlers. Direct client writes to feedback paths are denied. Authorized owner/admin APIs provide temporary attachment URLs.",
   "cms": "Listed scenic content asset directories are publicly readable when a file ID is known. Record drafts remain protected by database rules and controller authorization. This template does not provide file-level privacy for CMS draft images.",
-  "legacy": "Owner reads outside content directories are retained. Client writes are restricted to explicitly listed TRIP1 content, user and meet directories; inventory other active upload directories before applying. Feedback paths are not in the write allowlist.",
+  "legacy": "Owner reads outside content directories are retained. Client writes are restricted to explicitly listed TRIP1 content, user and reservation directories; inventory other active upload directories before applying. Feedback paths are not in the write allowlist.",
   "deployment": "Back up existing rules before applying. Verify private feedback access, temporary URLs and existing covers in a separate test environment. No live storage rules have been changed.",
   "syntax": "Explicit regex expressions only; no regex groups or negated .test(), matching the documented CloudBase rule grammar.",
   "liveRule": {

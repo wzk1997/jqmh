@@ -1,6 +1,6 @@
 <scenic-nav-bar title="用户管理" bind:layout="bindScenicLayout"/>
 <block wx:if="{{isAdmin}}">
-	<cmpt-comm-list topOffset="{{uiChrome.height}}" id="cmpt-comm-list" source='admin' type="admin-meet" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/user_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索" bind:list="bindCommListCmpt">
+	<cmpt-comm-list topOffset="{{uiChrome.height}}" id="cmpt-comm-list" source='admin' type="admin-reservation" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="admin/user_list" sortMenusDefaultIndex="0" topBottom="50" placeholder="搜索" bind:list="bindCommListCmpt">
 
 		<view slot="searchEnd">
 			<button bindtap="url" data-url="../export/admin_user_export?condition={{dataList.condition}}" class="btn mid radius bg-admin text-white margin-right-s"><text class="icon-down margin-right-xxs"></text>导出用户资料</button>

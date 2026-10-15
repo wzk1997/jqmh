@@ -22,7 +22,7 @@ class HomeService extends BaseProjectService {
 		if (!list || !Array.isArray(list)) list = [];
 
         // Cached recommendations are only pointers; resolve current published data.
-        const models={news:NewsModel,album:require('../model/album_model.js'),product:require('../model/product_model.js')};
+        const models={news:NewsModel,guide:require('../model/guide_model.js'),spot:require('../model/spot_model.js')};
         const valid=[];
         for(const node of list){
             if(!node || !models[node.type] || typeof node.id!=='string')continue;

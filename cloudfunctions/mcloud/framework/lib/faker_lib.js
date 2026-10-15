@@ -545,7 +545,7 @@ function getPhone(isNullable = false, ex = '') {
 
 /** 常用英文单词 */
 function getEnWord(isNullable = false, ex = '') {
-	let data = 'earthday,org,suggests,that,every,household,take,time,this,earth,day,to,perform,a,plastic,audit,which,involves,counting,how,many,plastic,containers,wraps,bottles,and,bags,are,purchased,for,at,home,use,it,may,surprise,you,how,many,you,use,until,you,start,counting,while,were,not,saying,that,you,have,to,get,rid,of,every,single,ounce,of,plastic,in,your,home,it,is,important,to,be,aware,of,your,familys,plastic,usage,and,to,take,time,to,research,more,sustainable,products,and,start,to,incorporate,them,into,your,daily,life,simple,swaps2,like,glass,containers,instead,of,plastic,or,stainless3,steel,bottles,instead,of,single,use,plastics,can,go,a,long,way,to,making,a,difference';
+	let data = 'earthday,org,suggests,that,every,household,take,time,this,earth,day,to,perform,a,plastic,audit,which,involves,counting,how,many,plastic,containers,wraps,bottles,and,bags,are,purchased,for,at,home,use,it,may,surprise,you,how,many,you,use,until,you,start,counting,while,were,not,saying,that,you,have,to,get,rid,of,every,single,ounce,of,plastic,in,your,home,it,is,important,to,be,aware,of,your,familys,plastic,usage,and,to,take,time,to,research,more,sustainable,spots,and,start,to,incorporate,them,into,your,daily,life,simple,swaps2,like,glass,containers,instead,of,plastic,or,stainless3,steel,bottles,instead,of,single,use,plastics,can,go,a,long,way,to,making,a,difference';
 
 	return getRnd(data, isNullable, ex);
 }

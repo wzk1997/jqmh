@@ -17,8 +17,8 @@ test('list presentation properties do not change route, search, category, sort o
     let request;
     const config=load('miniprogram/cmpts/public/list/comm_list_cmpt.js',{require:name=>name.includes('cloud_helper')?{dataList:async (component,name,route,params)=>{request={route,params};component.data[name]={page:params.page,count:2,list:[]}}}:name.endsWith('/helper.js')?{isDefined:value=>value!==undefined}:name.includes('public_biz')?{setCacheList(){}}:{}});
     const component=page({data:{...Object.fromEntries(Object.entries(config.properties).map(([name,prop])=>[name,prop.value])),...config.data},...config.methods,triggerEvent(){}});
-    component.setData({heading:'景区导览',headerHeight:220,bottomInset:100,route:'product/list',_params:{sortType:'cateId',sortVal:'2'},search:'山水',sortType:'sort',sortVal:'PRODUCT_VIEW_CNT|desc'});
-    await component._getList(1);assert.equal(request.route,'product/list');assert.equal(JSON.stringify(request.params),JSON.stringify({page:1,sortType:'sort',sortVal:'PRODUCT_VIEW_CNT|desc',search:'山水'}));
+    component.setData({heading:'景区导览',headerHeight:220,bottomInset:100,route:'spot/list',_params:{sortType:'cateId',sortVal:'2'},search:'山水',sortType:'sort',sortVal:'SPOT_VIEW_CNT|desc'});
+    await component._getList(1);assert.equal(request.route,'spot/list');assert.equal(JSON.stringify(request.params),JSON.stringify({page:1,sortType:'sort',sortVal:'SPOT_VIEW_CNT|desc',search:'山水'}));
     component.data._dataList=null;assert.doesNotThrow(()=>component.bindReachBottom());
 });
 test('news filters preserve original cateId and search while switching existing categories',()=>{
@@ -37,7 +37,7 @@ test('public information refresh keeps the selected setup key',async()=>{
     await instance.onLoad({key:'SETUP_CONTENT_BUS'});await instance.onPullDownRefresh();assert.deepEqual(keys,['SETUP_CONTENT_BUS','SETUP_CONTENT_BUS']);
 });
 test('detail sharing is safe before loading and with records that have no cover',()=>{
-    for(const [kind,prefix] of [['product','PRODUCT'],['album','ALBUM'],['news','NEWS']]){
+    for(const [kind,prefix] of [['spot','SPOT'],['guide','GUIDE'],['news','NEWS']]){
         const config=load('miniprogram/projects/TRIP1/pages/'+kind+'/detail/'+kind+'_detail.js',{require:()=>({})});
         const instance=page(config);assert.equal(instance.onShareAppMessage().title,'WeTravel');
         instance.data[kind]={[prefix+'_TITLE']:'真实标题',[prefix+'_OBJ']:{}};
@@ -59,7 +59,7 @@ test('four registered tabs and their icons exist; public services remain accessi
 test('static page links and list routes resolve to existing registered business pages/interfaces',()=>{
     const app=JSON.parse(fs.readFileSync(path.join(root,'miniprogram/app.json'))),routes=require('../cloudfunctions/mcloud/project/TRIP1/public/route.js');
     const registered=app.pages.concat((app.subpackages||[]).flatMap(pack=>pack.pages.map(page=>pack.root+'/'+page)));
-    const pages=['default/index/default_index','product/index/product_index','album/index/album_index','news/index/news_index','news/cate1/news_cate1','news/cate2/news_cate2','about/index/about_index','about/service/about_service','my/index/my_index','my/fav/my_fav','my/foot/my_foot','search/search','product/detail/product_detail','album/detail/album_detail','news/detail/news_detail'];
+    const pages=['default/index/default_index','spot/index/spot_index','guide/index/guide_index','news/index/news_index','news/cate1/news_cate1','news/cate2/news_cate2','about/index/about_index','about/service/about_service','my/index/my_index','my/fav/my_fav','my/foot/my_foot','search/search','spot/detail/spot_detail','guide/detail/guide_detail','news/detail/news_detail'];
     for(const name of pages){
         const file='miniprogram/projects/TRIP1/pages/'+name+'.wxml',contents=fs.readFileSync(path.join(root,file),'utf8');
         for(const tag of contents.matchAll(/<(?:view|button|cmpt-comm-list)\b[^>]*>/g)){

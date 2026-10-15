@@ -1,0 +1,3694 @@
+{
+  "generatedAt": "2026-10-14T15:30:16.056Z",
+  "tables": [
+    {
+      "name": "admin_logs",
+      "sql": "CREATE TABLE admin_logs (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  admin_name TEXT NOT NULL,\n  admin_description TEXT NOT NULL DEFAULT '',\n  content TEXT NOT NULL,\n  log_type INTEGER NOT NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "admin_name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "admin_description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "log_type",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_admin_logs_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "admins",
+      "sql": "CREATE TABLE admins (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  name TEXT NOT NULL,\n  password_hash TEXT NOT NULL,\n  description TEXT NOT NULL DEFAULT '',\n  phone TEXT NOT NULL DEFAULT '',\n  role INTEGER NOT NULL DEFAULT 0 CHECK (role IN (0, 1)),\n  status INTEGER NOT NULL DEFAULT 1 CHECK (status IN (0, 1)),\n  permissions_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(permissions_json)),\n  token TEXT NOT NULL DEFAULT '',\n  token_expires_at INTEGER NOT NULL DEFAULT 0,\n  login_count INTEGER NOT NULL DEFAULT 0 CHECK (login_count >= 0),\n  login_at INTEGER NOT NULL DEFAULT 0,\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (project_id, name)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "password_hash",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "phone",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "role",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "1",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "permissions_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "token",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "token_expires_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "login_count",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "login_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_admins_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "name"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_admins_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "assets",
+      "sql": "CREATE TABLE assets (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  module TEXT NOT NULL CHECK (module IN ('news', 'guide', 'spot', 'scenic', 'merchant', 'panorama', 'feedback')),\n  record_id TEXT NOT NULL,\n  owner_user_id TEXT REFERENCES users(id) ON DELETE SET NULL,\n  admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  file_path TEXT NOT NULL,\n  mime_type TEXT NOT NULL,\n  size_bytes INTEGER NOT NULL CHECK (size_bytes BETWEEN 1 AND 5242880),\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (project_id, file_path)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "module",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "record_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "owner_user_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "file_path",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "mime_type",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "size_bytes",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "users",
+          "from": "owner_user_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_assets_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "file_path"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_assets_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bookings",
+      "sql": "CREATE TABLE bookings (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  reservation_id TEXT NOT NULL REFERENCES reservations(id) ON DELETE RESTRICT,\n  slot_id TEXT NOT NULL REFERENCES reservation_slots(id) ON DELETE RESTRICT,\n  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,\n  reservation_title TEXT NOT NULL,\n  booking_day TEXT NOT NULL,\n  starts_at TEXT NOT NULL,\n  ends_at TEXT NOT NULL,\n  starts_at_timestamp INTEGER NOT NULL,\n  verification_code TEXT NOT NULL,\n  forms_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(forms_json)),\n  status INTEGER NOT NULL DEFAULT 1 CHECK (status IN (1, 10, 99)),\n  checked_in INTEGER NOT NULL DEFAULT 0 CHECK (checked_in IN (0, 1)),\n  reason TEXT NOT NULL DEFAULT '',\n  is_admin_created INTEGER NOT NULL DEFAULT 0 CHECK (is_admin_created IN (0, 1)),\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()), checked_in_at INTEGER NOT NULL DEFAULT 0,\n  UNIQUE (project_id, verification_code)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "reservation_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "slot_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "user_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "reservation_title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "booking_day",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "starts_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "ends_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "starts_at_timestamp",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "verification_code",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "forms_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "1",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "checked_in",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "reason",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "is_admin_created",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 18,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 19,
+          "name": "checked_in_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "users",
+          "from": "user_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "reservation_slots",
+          "from": "slot_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 3,
+          "seq": 0,
+          "table": "reservations",
+          "from": "reservation_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 4,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_bookings_one_active_per_user",
+          "unique": 1,
+          "partial": 1,
+          "columns": [
+            "slot_id",
+            "user_id"
+          ]
+        },
+        {
+          "name": "idx_bookings_slot_status",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "slot_id",
+            "status",
+            "checked_in"
+          ]
+        },
+        {
+          "name": "idx_bookings_user",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "user_id",
+            "created_at"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_bookings_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "verification_code"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_bookings_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "content_categories",
+      "sql": "CREATE TABLE content_categories (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  module TEXT NOT NULL CHECK (module IN ('news', 'guide', 'spot')),\n  category_key TEXT NOT NULL,\n  name TEXT NOT NULL,\n  state TEXT NOT NULL DEFAULT 'draft' CHECK (state IN ('draft', 'published', 'offline', 'deleted')),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  published_at INTEGER NOT NULL DEFAULT 0,\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (project_id, module, category_key)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "module",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "category_key",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_content_categories_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "module",
+            "category_key"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_content_categories_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "favorites",
+      "sql": "CREATE TABLE favorites (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,\n  content_type TEXT NOT NULL CHECK (content_type IN ('news', 'guide', 'spot', 'scenic', 'merchant', 'panorama')),\n  content_id TEXT NOT NULL,\n  title TEXT NOT NULL,\n  path TEXT NOT NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (user_id, content_type, content_id)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "user_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "content_type",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "content_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "path",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "users",
+          "from": "user_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_favorites_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "user_id",
+            "content_type",
+            "content_id"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_favorites_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "feedback",
+      "sql": "CREATE TABLE feedback (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,\n  category TEXT NOT NULL,\n  content TEXT NOT NULL,\n  phone TEXT NOT NULL DEFAULT '',\n  images_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(images_json)),\n  status INTEGER NOT NULL DEFAULT 0 CHECK (status IN (0, 1, 2)),\n  reply TEXT NOT NULL DEFAULT '',\n  reply_at INTEGER NOT NULL DEFAULT 0,\n  processed_at INTEGER NOT NULL DEFAULT 0,\n  process_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  request_key TEXT NOT NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (project_id, user_id, request_key)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "user_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "category",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "content",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "phone",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "images_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "reply",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "reply_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "processed_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "process_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "request_key",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "process_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "users",
+          "from": "user_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_feedback_admin",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "status",
+            "created_at"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_feedback_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "user_id",
+            "request_key"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_feedback_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "food_merchants",
+      "sql": "CREATE TABLE food_merchants (\n  id TEXT PRIMARY KEY REFERENCES merchant_registry(id) ON DELETE CASCADE,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  name TEXT NOT NULL,\n  description TEXT NOT NULL DEFAULT '',\n  phone TEXT NOT NULL DEFAULT '',\n  address TEXT NOT NULL DEFAULT '',\n  hours TEXT NOT NULL DEFAULT '',\n  images_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(images_json)),\n  content_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(content_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  state TEXT NOT NULL DEFAULT 'draft' CHECK (state IN ('draft', 'published', 'offline', 'deleted')),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "phone",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "address",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "hours",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "images_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "content_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "merchant_registry",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_food_merchants_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "state",
+            "deleted",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_food_merchants_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "guide_spots",
+      "sql": "CREATE TABLE guide_spots (\n  guide_id TEXT NOT NULL REFERENCES guides(id) ON DELETE CASCADE,\n  spot_id TEXT NOT NULL REFERENCES spots(id) ON DELETE RESTRICT,\n  position INTEGER NOT NULL CHECK (position >= 0),\n  duration TEXT NOT NULL DEFAULT '',\n  note TEXT NOT NULL DEFAULT '',\n  highlight TEXT NOT NULL DEFAULT '',\n  PRIMARY KEY (guide_id, spot_id),\n  UNIQUE (guide_id, position)\n) WITHOUT ROWID, STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "guide_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "spot_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 2
+        },
+        {
+          "cid": 2,
+          "name": "position",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "duration",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "note",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "highlight",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "spots",
+          "from": "spot_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "guides",
+          "from": "guide_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_guide_spots_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "guide_id",
+            "position"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_guide_spots_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "guide_id",
+            "spot_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "guides",
+      "sql": "CREATE TABLE guides (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  category_id TEXT REFERENCES content_categories(id) ON DELETE RESTRICT,\n  title TEXT NOT NULL,\n  category_name TEXT NOT NULL DEFAULT '',\n  duration TEXT NOT NULL DEFAULT '',\n  forms_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(forms_json)),\n  data_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(data_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  cms_state TEXT NOT NULL DEFAULT 'draft' CHECK (cms_state IN ('draft', 'published', 'offline', 'deleted')),\n  status INTEGER NOT NULL DEFAULT 0 CHECK (status IN (0, 1)),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  featured INTEGER NOT NULL DEFAULT 0 CHECK (featured IN (0, 1)),\n  view_count INTEGER NOT NULL DEFAULT 0 CHECK (view_count >= 0),\n  qr_file TEXT NOT NULL DEFAULT '',\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  revision INTEGER NOT NULL DEFAULT 0 CHECK (revision >= 0),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "category_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "category_name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "duration",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "forms_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "data_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "cms_state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "featured",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "view_count",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "qr_file",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 18,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 19,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 20,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 21,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "content_categories",
+          "from": "category_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_guides_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "cms_state",
+            "deleted",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_guides_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "merchant_registry",
+      "sql": "CREATE TABLE merchant_registry (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  category TEXT NOT NULL CHECK (category IN ('food', 'stay', 'travel')),\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE(project_id, id)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "category",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_merchant_registry_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "id"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_merchant_registry_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "news",
+      "sql": "CREATE TABLE news (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  category_id TEXT REFERENCES content_categories(id) ON DELETE RESTRICT,\n  title TEXT NOT NULL,\n  description TEXT NOT NULL DEFAULT '',\n  category_name TEXT NOT NULL DEFAULT '',\n  pictures_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(pictures_json)),\n  content_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(content_json)),\n  forms_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(forms_json)),\n  data_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(data_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  activity_start TEXT NOT NULL DEFAULT '',\n  activity_end TEXT NOT NULL DEFAULT '',\n  cms_state TEXT NOT NULL DEFAULT 'draft' CHECK (cms_state IN ('draft', 'published', 'offline', 'deleted')),\n  status INTEGER NOT NULL DEFAULT 0 CHECK (status IN (0, 1)),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  featured INTEGER NOT NULL DEFAULT 0 CHECK (featured IN (0, 1)),\n  view_count INTEGER NOT NULL DEFAULT 0 CHECK (view_count >= 0),\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  revision INTEGER NOT NULL DEFAULT 0 CHECK (revision >= 0),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  CHECK (activity_end = '' OR activity_start = '' OR activity_end >= activity_start)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "category_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "category_name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "pictures_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "content_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "forms_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "data_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "activity_start",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "activity_end",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "cms_state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "featured",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "view_count",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 18,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 19,
+          "name": "revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 20,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 21,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 22,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 23,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 24,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "content_categories",
+          "from": "category_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_news_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "cms_state",
+            "deleted",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_news_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "panoramas",
+      "sql": "CREATE TABLE panoramas (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  name TEXT NOT NULL,\n  description TEXT NOT NULL DEFAULT '',\n  cover_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(cover_json)),\n  resource_type TEXT NOT NULL CHECK (resource_type IN ('image', 'url', 'provider')),\n  resource TEXT NOT NULL DEFAULT '',\n  content_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(content_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  state TEXT NOT NULL DEFAULT 'draft' CHECK (state IN ('draft', 'published', 'offline', 'deleted')),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "cover_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "resource_type",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "resource",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "content_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_panoramas_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "state",
+            "deleted",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_panoramas_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "projects",
+      "sql": "CREATE TABLE projects (\n  id TEXT PRIMARY KEY,\n  name TEXT NOT NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_projects_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reservation_days",
+      "sql": "CREATE TABLE reservation_days (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  reservation_id TEXT NOT NULL REFERENCES reservations(id) ON DELETE CASCADE,\n  day TEXT NOT NULL CHECK (day GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),\n  description TEXT NOT NULL DEFAULT '',\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (reservation_id, day)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "reservation_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "day",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "reservations",
+          "from": "reservation_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_reservation_days_date",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "reservation_id",
+            "day"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_reservation_days_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "reservation_id",
+            "day"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_reservation_days_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reservation_slots",
+      "sql": "CREATE TABLE reservation_slots (\n  id TEXT PRIMARY KEY,\n  reservation_day_id TEXT NOT NULL REFERENCES reservation_days(id) ON DELETE CASCADE,\n  mark TEXT NOT NULL,\n  starts_at TEXT NOT NULL CHECK (starts_at GLOB '[0-2][0-9]:[0-5][0-9]'),\n  ends_at TEXT NOT NULL CHECK (ends_at GLOB '[0-2][0-9]:[0-5][0-9]'),\n  capacity INTEGER CHECK (capacity IS NULL OR capacity >= 0),\n  status INTEGER NOT NULL DEFAULT 1 CHECK (status IN (0, 1)),\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (reservation_day_id, mark),\n  CHECK (ends_at > starts_at)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "reservation_day_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "mark",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "starts_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "ends_at",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "capacity",
+          "type": "INTEGER",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "1",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "reservation_days",
+          "from": "reservation_day_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_reservation_slots_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "reservation_day_id",
+            "mark"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_reservation_slots_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reservations",
+      "sql": "CREATE TABLE reservations (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  title TEXT NOT NULL,\n  type_id TEXT NOT NULL,\n  type_name TEXT NOT NULL,\n  content_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(content_json)),\n  style_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(style_json)),\n  form_schema_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(form_schema_json)),\n  status INTEGER NOT NULL DEFAULT 1 CHECK (status IN (0, 1, 9, 10)),\n  show_limit INTEGER NOT NULL DEFAULT 1 CHECK (show_limit IN (0, 1)),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  featured INTEGER NOT NULL DEFAULT 0 CHECK (featured IN (0, 1)),\n  qr_file TEXT NOT NULL DEFAULT '',\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "type_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "type_name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "content_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "style_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "form_schema_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "1",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "show_limit",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "1",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "featured",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "qr_file",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_reservations_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "status",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_reservations_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "scenic",
+      "sql": "CREATE TABLE scenic (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  name TEXT NOT NULL,\n  description TEXT NOT NULL DEFAULT '',\n  address TEXT NOT NULL DEFAULT '',\n  hours TEXT NOT NULL DEFAULT '',\n  phone TEXT NOT NULL DEFAULT '',\n  images_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(images_json)),\n  content_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(content_json)),\n  info_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(info_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  state TEXT NOT NULL DEFAULT 'draft' CHECK (state IN ('draft', 'published', 'offline', 'deleted')),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "address",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "hours",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "phone",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "images_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "content_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "info_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 18,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_scenic_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "sql": "CREATE TABLE settings (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  setting_key TEXT NOT NULL,\n  setting_type TEXT NOT NULL DEFAULT '',\n  value_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(value_json)),\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (project_id, setting_key)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "setting_key",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "setting_type",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "value_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "sqlite_autoindex_settings_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "setting_key"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_settings_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "spots",
+      "sql": "CREATE TABLE spots (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  category_id TEXT REFERENCES content_categories(id) ON DELETE RESTRICT,\n  title TEXT NOT NULL,\n  category_name TEXT NOT NULL DEFAULT '',\n  forms_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(forms_json)),\n  data_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(data_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  cms_state TEXT NOT NULL DEFAULT 'draft' CHECK (cms_state IN ('draft', 'published', 'offline', 'deleted')),\n  status INTEGER NOT NULL DEFAULT 0 CHECK (status IN (0, 1)),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  featured INTEGER NOT NULL DEFAULT 0 CHECK (featured IN (0, 1)),\n  view_count INTEGER NOT NULL DEFAULT 0 CHECK (view_count >= 0),\n  qr_file TEXT NOT NULL DEFAULT '',\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  revision INTEGER NOT NULL DEFAULT 0 CHECK (revision >= 0),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "category_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "title",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "category_name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "forms_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "data_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "cms_state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "featured",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "view_count",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "qr_file",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "revision",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 18,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 19,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 20,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "content_categories",
+          "from": "category_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "RESTRICT",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_spots_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "cms_state",
+            "deleted",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_spots_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stay_merchants",
+      "sql": "CREATE TABLE stay_merchants (\n  id TEXT PRIMARY KEY REFERENCES merchant_registry(id) ON DELETE CASCADE,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  name TEXT NOT NULL,\n  description TEXT NOT NULL DEFAULT '',\n  phone TEXT NOT NULL DEFAULT '',\n  address TEXT NOT NULL DEFAULT '',\n  hours TEXT NOT NULL DEFAULT '',\n  images_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(images_json)),\n  content_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(content_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  state TEXT NOT NULL DEFAULT 'draft' CHECK (state IN ('draft', 'published', 'offline', 'deleted')),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "phone",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "address",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "hours",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "images_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "content_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "merchant_registry",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_stay_merchants_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "state",
+            "deleted",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_stay_merchants_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "travel_merchants",
+      "sql": "CREATE TABLE travel_merchants (\n  id TEXT PRIMARY KEY REFERENCES merchant_registry(id) ON DELETE CASCADE,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  name TEXT NOT NULL,\n  description TEXT NOT NULL DEFAULT '',\n  phone TEXT NOT NULL DEFAULT '',\n  address TEXT NOT NULL DEFAULT '',\n  hours TEXT NOT NULL DEFAULT '',\n  images_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(images_json)),\n  content_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(content_json)),\n  draft_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(draft_json)),\n  state TEXT NOT NULL DEFAULT 'draft' CHECK (state IN ('draft', 'published', 'offline', 'deleted')),\n  sort_order INTEGER NOT NULL DEFAULT 9999,\n  is_demo INTEGER NOT NULL DEFAULT 0 CHECK (is_demo IN (0, 1)),\n  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),\n  published_at INTEGER NOT NULL DEFAULT 0,\n  edit_admin_id TEXT REFERENCES admins(id) ON DELETE SET NULL,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch())\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "description",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "phone",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "address",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "hours",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "images_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "content_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "draft_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "state",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'draft'",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "sort_order",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "9999",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "is_demo",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 13,
+          "name": "deleted",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 14,
+          "name": "published_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 15,
+          "name": "edit_admin_id",
+          "type": "TEXT",
+          "notnull": 0,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 16,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 17,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "admins",
+          "from": "edit_admin_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "SET NULL",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "table": "merchant_registry",
+          "from": "id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_travel_merchants_public",
+          "unique": 0,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "state",
+            "deleted",
+            "sort_order"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_travel_merchants_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "sql": "CREATE TABLE users (\n  id TEXT PRIMARY KEY,\n  project_id TEXT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,\n  mini_openid TEXT NOT NULL,\n  status INTEGER NOT NULL DEFAULT 1 CHECK (status IN (0, 1, 8, 9)),\n  check_reason TEXT NOT NULL DEFAULT '',\n  name TEXT NOT NULL DEFAULT '',\n  mobile TEXT NOT NULL DEFAULT '',\n  forms_json TEXT NOT NULL DEFAULT '[]' CHECK (json_valid(forms_json)),\n  profile_json TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(profile_json)),\n  login_count INTEGER NOT NULL DEFAULT 0 CHECK (login_count >= 0),\n  login_at INTEGER NOT NULL DEFAULT 0,\n  created_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  updated_at INTEGER NOT NULL DEFAULT (unixepoch()),\n  UNIQUE (project_id, mini_openid)\n) STRICT",
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 1
+        },
+        {
+          "cid": 1,
+          "name": "project_id",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 2,
+          "name": "mini_openid",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": null,
+          "pk": 0
+        },
+        {
+          "cid": 3,
+          "name": "status",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "1",
+          "pk": 0
+        },
+        {
+          "cid": 4,
+          "name": "check_reason",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 5,
+          "name": "name",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 6,
+          "name": "mobile",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "''",
+          "pk": 0
+        },
+        {
+          "cid": 7,
+          "name": "forms_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'[]'",
+          "pk": 0
+        },
+        {
+          "cid": 8,
+          "name": "profile_json",
+          "type": "TEXT",
+          "notnull": 1,
+          "dflt_value": "'{}'",
+          "pk": 0
+        },
+        {
+          "cid": 9,
+          "name": "login_count",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 10,
+          "name": "login_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "0",
+          "pk": 0
+        },
+        {
+          "cid": 11,
+          "name": "created_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        },
+        {
+          "cid": 12,
+          "name": "updated_at",
+          "type": "INTEGER",
+          "notnull": 1,
+          "dflt_value": "unixepoch()",
+          "pk": 0
+        }
+      ],
+      "foreignKeys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "projects",
+          "from": "project_id",
+          "to": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_users_mobile_nonempty",
+          "unique": 1,
+          "partial": 1,
+          "columns": [
+            "project_id",
+            "mobile"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_users_2",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "project_id",
+            "mini_openid"
+          ]
+        },
+        {
+          "name": "sqlite_autoindex_users_1",
+          "unique": 1,
+          "partial": 0,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    }
+  ]
+}

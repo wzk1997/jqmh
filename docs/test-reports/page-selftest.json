@@ -1,0 +1,116 @@
+{
+  "generatedAt": "2026-10-15T05:59:38.384Z",
+  "base": "http://127.0.0.1:8787",
+  "summary": {
+    "checks": 7,
+    "passed": 7,
+    "failed": 0,
+    "pages": 74,
+    "adminPages": 40,
+    "visitorPages": 34
+  },
+  "checks": [
+    {
+      "name": "正式页面清单与四件套",
+      "status": "通过",
+      "durationMs": 1,
+      "evidence": {
+        "total": 74,
+        "admin": 40,
+        "visitor": 34
+      }
+    },
+    {
+      "name": "页面 JSON 与 JavaScript 语法",
+      "status": "通过",
+      "durationMs": 5781,
+      "evidence": {
+        "json": 74,
+        "javascript": 74
+      }
+    },
+    {
+      "name": "微信官方 WXML/WXSS 编译",
+      "status": "通过",
+      "durationMs": 216,
+      "evidence": {
+        "wxmlFiles": 115,
+        "wxsFiles": 3,
+        "wxssFiles": 141
+      }
+    },
+    {
+      "name": "本地服务与管理员登录",
+      "status": "通过",
+      "durationMs": 107,
+      "evidence": {
+        "project": "TRIP1",
+        "database": "/Users/wangke/Documents/project/WeTravel/local/data/wetravel.sqlite3"
+      }
+    },
+    {
+      "name": "前台页面读取接口",
+      "status": "通过",
+      "durationMs": 34,
+      "evidence": {
+        "calls": 17,
+        "routes": [
+          "home/portal",
+          "spot/list",
+          "spot/view",
+          "guide/list",
+          "guide/view",
+          "news/list",
+          "news/view",
+          "cms/list",
+          "cms/detail",
+          "cms/list",
+          "cms/detail",
+          "cms/list",
+          "cms/detail",
+          "reservation/list",
+          "reservation/view",
+          "reservation/list_by_day",
+          "reservation/list_has_day"
+        ]
+      }
+    },
+    {
+      "name": "后台页面读取接口",
+      "status": "通过",
+      "durationMs": 18,
+      "evidence": {
+        "calls": 15,
+        "routes": [
+          "admin/home",
+          "admin/cms_list",
+          "admin/cms_list",
+          "admin/cms_list",
+          "admin/cms_list",
+          "admin/cms_list",
+          "admin/spot_list",
+          "admin/guide_list",
+          "admin/news_list",
+          "admin/reservation_list",
+          "admin/user_list",
+          "admin/feedback_search",
+          "admin/mgr_list",
+          "admin/log_list",
+          "admin/reservation_temp_list"
+        ]
+      }
+    },
+    {
+      "name": "后台二维码与导出页面",
+      "status": "通过",
+      "durationMs": 28,
+      "evidence": {
+        "pageQr": "http://127.0.0.1:8787/media/system/page-entry.svg",
+        "checkinQr": "http://127.0.0.1:8787/media/system/checkin-PAGE-SELFTEST.svg",
+        "userRows": 1,
+        "bookingRows": 0,
+        "testFilesCleaned": true
+      }
+    }
+  ]
+}

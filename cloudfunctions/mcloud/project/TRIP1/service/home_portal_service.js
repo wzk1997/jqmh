@@ -3,7 +3,7 @@ const Cms=require('./admin/admin_cms_service.js');
 const publicCms=require('./cms_service.js');
 const v=require('./cms_validation.js');
 const KEY='SETUP_HOME_PORTAL';
-const TYPES=['scenic','album','product','news','merchant','panorama'];
+const TYPES=['scenic','guide','spot','news','merchant','panorama'];
 function reference(ref){
  if(!ref||!TYPES.includes(ref.module))v.fail('首页内容类型不正确');
  return {module:ref.module,id:v.id(ref.id)};

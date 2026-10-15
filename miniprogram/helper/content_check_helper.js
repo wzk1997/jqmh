@@ -31,6 +31,7 @@ function imgSizeCheck(size, maxSize) {
 }
 
 async function imgCheckCloud(path, opt) {
+	if (!setting.CLOUD_ID) throw new Error('本地模式禁止调用云端内容检查');
  
 	
 	/*

@@ -32,7 +32,7 @@ class AdminNewsService extends BaseProjectAdminService {
 	}) {
 
 
-		return new CmsService().saveLegacy('news', {title,cateId,cateName,order,desc,forms}, '', true);
+		return new CmsService().saveContent('news', {title,cateId,cateName,order,desc,forms}, '', true);
 	}
 
 	/**删除资讯数据 */
@@ -58,7 +58,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		id,
 		hasImageForms
 	}) {
-		return new CmsService().patchLegacy('news', id, 'forms', hasImageForms);
+		return new CmsService().patchContent('news', id, 'forms', hasImageForms);
 	}
 
 
@@ -71,7 +71,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		content // 富文本数组
 	}) {
 
-		return new CmsService().patchLegacy('news', id, 'content', content);
+		return new CmsService().patchContent('news', id, 'content', content);
 
 	}
 
@@ -84,7 +84,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		imgList // 图片数组
 	}) {
 
-		return new CmsService().patchLegacy('news', id, 'pic', imgList);
+		return new CmsService().patchContent('news', id, 'pic', imgList);
 
 	}
 
@@ -100,7 +100,7 @@ class AdminNewsService extends BaseProjectAdminService {
 		forms
 	}) {
 
-		return new CmsService().saveLegacy('news', {id,title,cateId,cateName,order,desc,forms}, '', true);
+		return new CmsService().saveContent('news', {id,title,cateId,cateName,order,desc,forms}, '', true);
 	}
 
 	/**取得资讯分页列表 */

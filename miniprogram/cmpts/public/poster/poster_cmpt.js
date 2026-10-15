@@ -162,7 +162,7 @@ Component({
 		bindSaveTap: function (e) {
 			let that = this;
 			let callback = function () {
-				wx.saveImageToPhotosAlbum({
+				wx.saveImageToPhotosGuide({
 					filePath: that.data.img,
 					success: function (data) {
 						wx.showToast({
@@ -174,7 +174,7 @@ Component({
 				});
 			}
 
-			picHelper.getWritePhotosAlbum(callback);
+			picHelper.getWritePhotosGuide(callback);
 		}
 
 

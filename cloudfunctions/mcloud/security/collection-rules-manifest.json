@@ -1,5 +1,5 @@
 {
-  "status": "applied",
+  "status": "partially-applied",
   "source": "https://docs.cloudbase.net/database/security-rules",
   "ruleFile": "database-client-deny.json",
   "collections": [
@@ -16,10 +16,17 @@
     "bx_cms_asset",
     "bx_feedback",
     "bx_feedback_asset",
-    "bx_setup_trip1"
+    "bx_setup_trip1",
+    "bx_spot",
+    "bx_guide",
+    "bx_reservation",
+    "bx_reservation_day",
+    "bx_booking",
+    "bx_fav",
+    "bx_user"
   ],
   "access": "All application reads and writes use mcloud controllers. Client SDK direct collection access is denied.",
-  "deployment": "All 14 target collections verified as ADMINONLY through official DescribeSafeRule. Ten pending collections tightened by super-admin authenticated ModifyDatabaseACL after complete rule backup. SDK live reads and creates return -502003; 14 business query checks and an authenticated legacy write remain functional.",
+  "deployment": "Existing appliedCollections describe the prior deployment only. Apply database-client-deny.json to remainingCollections before schema-v2 migration; verify with DescribeSafeRule. Old source collections stay protected and are retained for recovery.",
   "appliedCollections": [
     "bx_admin",
     "bx_log",
@@ -40,7 +47,15 @@
     "read": false,
     "write": false
   },
-  "remainingCollections": [],
+  "remainingCollections": [
+    "bx_spot",
+    "bx_guide",
+    "bx_reservation",
+    "bx_reservation_day",
+    "bx_booking",
+    "bx_fav",
+    "bx_user"
+  ],
   "managerBackup": "/tmp/wetravel-cloud-backup-20261013/database-rules-manager-before.json",
   "liveEvidence": "artifacts/ui-audit-20261013/database-rule-regression.json",
   "maintenanceAccess": "Temporary wt_acl_maintenance function closed; temporary mcloud ACL routes, controller and manager SDK dependency removed after maintenance."

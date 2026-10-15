@@ -1,0 +1,390 @@
+{
+  "generatedAt": "2026-10-15T05:59:31.945Z",
+  "runId": "map-1792043971750",
+  "base": "http://127.0.0.1:8787",
+  "database": "/Users/wangke/Documents/project/WeTravel/local/data/wetravel.sqlite3",
+  "summary": {
+    "modules": 11,
+    "passed": 11,
+    "failed": 0,
+    "integrity": "ok",
+    "foreignKeyViolations": 0,
+    "testDataCleaned": true
+  },
+  "results": [
+    {
+      "module": "基础隔离",
+      "page": "全局",
+      "adminRoute": "admin/login",
+      "publicRoute": "health",
+      "tables": [
+        "projects",
+        "admins"
+      ],
+      "status": "通过",
+      "durationMs": 1,
+      "evidence": {
+        "project": {
+          "id": "TRIP1",
+          "name": "WeTravel"
+        },
+        "admin": {
+          "id": "local-admin",
+          "name": "admin",
+          "projectId": "TRIP1"
+        }
+      }
+    },
+    {
+      "module": "分类",
+      "page": "后台 CMS 分类页",
+      "adminRoute": "admin/cms_save + state",
+      "publicRoute": "cms/categories",
+      "tables": [
+        "content_categories"
+      ],
+      "status": "通过",
+      "durationMs": 8,
+      "evidence": {
+        "id": "5a7af1961d1a4f788b0bf8e483337e87",
+        "row": {
+          "module": "spot",
+          "key": "audit-1792043971859",
+          "name": "映射审计-map-1792043971750-分类",
+          "state": "published"
+        }
+      }
+    },
+    {
+      "module": "景区",
+      "page": "后台景区简介编辑页 / 前台景区介绍页",
+      "adminRoute": "admin/cms_save + state",
+      "publicRoute": "cms/detail",
+      "tables": [
+        "scenic"
+      ],
+      "status": "通过",
+      "durationMs": 9,
+      "evidence": {
+        "id": "5e5251a72f9b4f9eab9e275b963eda64",
+        "onlyIn": {
+          "scenic": 1,
+          "spots": 0,
+          "guides": 0,
+          "news": 0,
+          "food_merchants": 0,
+          "stay_merchants": 0,
+          "travel_merchants": 0,
+          "panoramas": 0
+        },
+        "db": {
+          "name": "映射审计-map-1792043971750-景区",
+          "address": "审计地址",
+          "state": "published"
+        },
+        "front": {
+          "name": "映射审计-map-1792043971750-景区",
+          "address": "审计地址"
+        }
+      }
+    },
+    {
+      "module": "景点",
+      "page": "后台景点 CMS 编辑页 / 前台景点详情页",
+      "adminRoute": "admin/cms_save + state",
+      "publicRoute": "spot/view",
+      "tables": [
+        "spots",
+        "content_categories",
+        "assets"
+      ],
+      "status": "通过",
+      "durationMs": 11,
+      "evidence": {
+        "id": "785bad1948fa41288ee551134506a7f8",
+        "onlyIn": {
+          "scenic": 0,
+          "spots": 1,
+          "guides": 0,
+          "news": 0,
+          "food_merchants": 0,
+          "stay_merchants": 0,
+          "travel_merchants": 0,
+          "panoramas": 0
+        },
+        "db": {
+          "title": "映射审计-map-1792043971750-景点",
+          "categoryKey": "audit-1792043971859",
+          "state": "published"
+        },
+        "front": {
+          "title": "映射审计-map-1792043971750-景点",
+          "cateId": "5a7af1961d1a4f788b0bf8e483337e87"
+        },
+        "asset": {
+          "module": "spot",
+          "recordId": "785bad1948fa41288ee551134506a7f8",
+          "url": "http://127.0.0.1:8787/media/spot/785bad1948fa41288ee551134506a7f8/e7ce0125ee274ba3be570a92b1768564.png"
+        }
+      }
+    },
+    {
+      "module": "攻略",
+      "page": "后台攻略 CMS 编辑页 / 前台攻略详情页",
+      "adminRoute": "admin/cms_save + state",
+      "publicRoute": "guide/view",
+      "tables": [
+        "guides",
+        "guide_spots",
+        "spots"
+      ],
+      "status": "通过",
+      "durationMs": 9,
+      "evidence": {
+        "id": "00902d6faa18409cba53c482b77d3015",
+        "onlyIn": {
+          "scenic": 0,
+          "spots": 0,
+          "guides": 1,
+          "news": 0,
+          "food_merchants": 0,
+          "stay_merchants": 0,
+          "travel_merchants": 0,
+          "panoramas": 0
+        },
+        "db": {
+          "title": "映射审计-map-1792043971750-攻略",
+          "duration": "2小时",
+          "state": "published"
+        },
+        "relation": {
+          "guideId": "00902d6faa18409cba53c482b77d3015",
+          "spotId": "785bad1948fa41288ee551134506a7f8",
+          "position": 0
+        },
+        "front": {
+          "title": "映射审计-map-1792043971750-攻略",
+          "spotId": "785bad1948fa41288ee551134506a7f8"
+        }
+      }
+    },
+    {
+      "module": "资讯",
+      "page": "后台资讯 CMS 编辑页 / 前台资讯详情页",
+      "adminRoute": "admin/cms_save + state",
+      "publicRoute": "news/view",
+      "tables": [
+        "news",
+        "content_categories"
+      ],
+      "status": "通过",
+      "durationMs": 8,
+      "evidence": {
+        "id": "4ec76426d59c43cfa42cc2799047af56",
+        "onlyIn": {
+          "scenic": 0,
+          "spots": 0,
+          "guides": 0,
+          "news": 1,
+          "food_merchants": 0,
+          "stay_merchants": 0,
+          "travel_merchants": 0,
+          "panoramas": 0
+        },
+        "db": {
+          "title": "映射审计-map-1792043971750-资讯",
+          "start": "2030-01-01",
+          "end": "2030-01-02",
+          "state": "published"
+        },
+        "front": {
+          "title": "映射审计-map-1792043971750-资讯",
+          "start": "2030-01-01",
+          "end": "2030-01-02"
+        }
+      }
+    },
+    {
+      "module": "吃住行商户硬隔离",
+      "page": "后台吃住行 CMS 编辑页 / 前台餐饮、住宿、交通页",
+      "adminRoute": "admin/cms_save + state",
+      "publicRoute": "cms/list + cms/detail",
+      "tables": [
+        "merchant_registry",
+        "food_merchants",
+        "stay_merchants",
+        "travel_merchants"
+      ],
+      "status": "通过",
+      "durationMs": 18,
+      "evidence": {
+        "food": {
+          "id": "c99b28d92beb46fcaa0452a8e60a1d44",
+          "onlyIn": {
+            "scenic": 0,
+            "spots": 0,
+            "guides": 0,
+            "news": 0,
+            "food_merchants": 1,
+            "stay_merchants": 0,
+            "travel_merchants": 0,
+            "panoramas": 0
+          },
+          "frontCategory": "food"
+        },
+        "stay": {
+          "id": "0a9d1f0242794e15a40ac5a478ca8052",
+          "onlyIn": {
+            "scenic": 0,
+            "spots": 0,
+            "guides": 0,
+            "news": 0,
+            "food_merchants": 0,
+            "stay_merchants": 1,
+            "travel_merchants": 0,
+            "panoramas": 0
+          },
+          "frontCategory": "stay"
+        },
+        "travel": {
+          "id": "0dc848adf59243908a7b81d0fc7830f2",
+          "onlyIn": {
+            "scenic": 0,
+            "spots": 0,
+            "guides": 0,
+            "news": 0,
+            "food_merchants": 0,
+            "stay_merchants": 0,
+            "travel_merchants": 1,
+            "panoramas": 0
+          },
+          "frontCategory": "travel"
+        }
+      }
+    },
+    {
+      "module": "全景",
+      "page": "后台全景 CMS 编辑页 / 前台全景页",
+      "adminRoute": "admin/cms_save + state",
+      "publicRoute": "cms/detail",
+      "tables": [
+        "panoramas"
+      ],
+      "status": "通过",
+      "durationMs": 5,
+      "evidence": {
+        "id": "34ee3e9c2d8c4805b792e9dabe36d5e9",
+        "onlyIn": {
+          "scenic": 0,
+          "spots": 0,
+          "guides": 0,
+          "news": 0,
+          "food_merchants": 0,
+          "stay_merchants": 0,
+          "travel_merchants": 0,
+          "panoramas": 1
+        },
+        "db": {
+          "name": "映射审计-map-1792043971750-全景",
+          "type": "url",
+          "state": "published"
+        },
+        "front": {
+          "name": "映射审计-map-1792043971750-全景",
+          "type": "url"
+        }
+      }
+    },
+    {
+      "module": "预约项目",
+      "page": "后台预约编辑页 / 前台预约详情页",
+      "adminRoute": "admin/reservation_insert",
+      "publicRoute": "reservation/view",
+      "tables": [
+        "reservations",
+        "reservation_days",
+        "reservation_slots"
+      ],
+      "status": "通过",
+      "durationMs": 4,
+      "evidence": {
+        "id": "7474e9e4198f4c0d8c3083b8e48d5fc1",
+        "db": {
+          "title": "映射审计-map-1792043971750-预约",
+          "typeId": "scenic"
+        },
+        "day": {
+          "id": "417384e26fb44533aa51befddd5bd059",
+          "day": "2031-01-01"
+        },
+        "slot": {
+          "id": "d8c75be241c740d0aca9e63ca15d44e0",
+          "mark": "T203101011792043971927",
+          "capacity": 5
+        },
+        "front": {
+          "title": "映射审计-map-1792043971750-预约"
+        }
+      }
+    },
+    {
+      "module": "用户/收藏/反馈/预约记录",
+      "page": "前台个人中心、收藏、反馈、预约 / 后台反馈和预约名单",
+      "adminRoute": "passport/register + feedback + reservation/join",
+      "publicRoute": "passport/my_detail + fav + feedback/my_list + reservation/my_join_detail",
+      "tables": [
+        "users",
+        "favorites",
+        "feedback",
+        "bookings"
+      ],
+      "status": "通过",
+      "durationMs": 8,
+      "evidence": {
+        "ids": {
+          "user": "411d544ffd4946ee9c953b31d39b3e35",
+          "feedback": "004c0299fa70446dbcd659dd7106b2df",
+          "booking": "eb7493e792e54c6bb6ed38c840d02801"
+        },
+        "relations": {
+          "user": {
+            "id": "411d544ffd4946ee9c953b31d39b3e35",
+            "mini_openid": "visitor-map-1792043971750",
+            "name": "映射审计-map-1792043971750-游客"
+          },
+          "favorite": {
+            "user_id": "411d544ffd4946ee9c953b31d39b3e35",
+            "content_type": "spot",
+            "content_id": "785bad1948fa41288ee551134506a7f8"
+          },
+          "feedback": {
+            "user_id": "411d544ffd4946ee9c953b31d39b3e35",
+            "status": 1
+          },
+          "booking": {
+            "user_id": "411d544ffd4946ee9c953b31d39b3e35",
+            "reservation_id": "7474e9e4198f4c0d8c3083b8e48d5fc1",
+            "slot_id": "d8c75be241c740d0aca9e63ca15d44e0",
+            "status": 1
+          }
+        }
+      }
+    },
+    {
+      "module": "设置/日志",
+      "page": "后台首页配置与操作日志页",
+      "adminRoute": "admin/portal_get + admin/log_list",
+      "publicRoute": "home/portal",
+      "tables": [
+        "settings",
+        "admin_logs"
+      ],
+      "status": "通过",
+      "durationMs": 1,
+      "evidence": {
+        "setting": "SETUP_HOME_PORTAL",
+        "auditLogCount": 9
+      }
+    }
+  ]
+}

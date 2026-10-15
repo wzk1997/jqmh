@@ -1,7 +1,7 @@
 const AdminBiz=require('../../../../../comm/biz/admin_biz.js');
 const cloud=require('../../../../../helper/cloud_helper.js');
 const cms=require('../../../ui/cms_ui.js');
-const names={scenic:'景区简介',album:'园区攻略',product:'景点',news:'活动资讯',merchant:'商家',panorama:'全景资源'};
+const names={scenic:'景区简介',guide:'园区攻略',spot:'景点',news:'活动资讯',merchant:'商家',panorama:'全景资源'};
 Page({data:{moduleNames:names,loading:true,error:'',saving:false,config:{brandName:'WeTravel',scenicId:'',slides:[],featured:[]},choices:[],choosing:false,choicePage:0,choiceMore:false,choiceLoading:false,choiceModule:'scenic',choiceTypes:[],referenceNames:{},scenicName:''},
  onLoad(){if(!AdminBiz.isAdmin(this))return;const admin=AdminBiz.getAdminToken();this.setData({canWrite:cms.can(admin,'scenic','write'),canPublish:cms.can(admin,'scenic','publish'),choiceTypes:Object.keys(names).filter(module=>cms.can(admin,module,'read')).map(id=>({id,name:names[id]}))});this.load();},
  async call(action,params={}){const r=await cloud.callCloudSumbit('admin/portal_'+action,params,{title:'bar'});return r.data;},

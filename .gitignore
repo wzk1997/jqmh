@@ -13,6 +13,12 @@ $RECYCLE.BIN/
 # Node.js
 node_modules/
 
+# .NET build outputs
+**/bin/
+**/obj/
+
 # Local verification outputs and developer-specific settings
 artifacts/
 project.private.config.json
+local/data/
+local/uploads/

@@ -97,7 +97,7 @@ test('all registered feedback pages and route targets exist; active visitor entr
         const [controller,action]=routes[name].split('@');assert(fs.existsSync(path.join(root,'cloudfunctions/mcloud/project/TRIP1/controller',controller+'.js')));assert(action);
     }
     for(const file of ['default/index/default_index.wxml','default/index/default_index.js','my/index/my_index.wxml','about/service/about_service.wxml']){
-        const contents=fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages',file),'utf8');assert(!/预约|理赔|订单|支付|meet\//.test(contents));
+        const contents=fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages',file),'utf8');assert(!/预约|理赔|订单|支付|reservation\//.test(contents));
     }
 });
 test('existing ORM retains deterministic document ID and project/owner isolation',async()=>{

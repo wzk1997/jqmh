@@ -30,40 +30,40 @@ module.exports = {
 	],
 
 	// ### 预约相关  
-	MEET_NAME: '预约',
-	MEET_TYPE: [
+	RESERVATION_NAME: '预约',
+	RESERVATION_TYPE: [
 		{ id: 1, title: '景点预约', style: 'leftbig2' },
 		{ id: 2, title: '停车预约', style: 'leftbig3' }
 	],
-	MEET_CAN_NULL_TIME: false, // 是否允许有无时段的日期保存和展示   
+	RESERVATION_CAN_NULL_TIME: false, // 是否允许有无时段的日期保存和展示
 
-	MEET_JOIN_FIELDS: [
+	RESERVATION_BOOKING_FIELDS: [
 		{ mark: 'name', type: 'text', title: '姓名', must: true, max: 30 },
 		{ mark: 'phone', type: 'mobile', title: '手机', must: true }
 	],
 
-	ALBUM_NAME: '攻略',
-	ALBUM_CATE: [
+	GUIDE_NAME: '攻略',
+	GUIDE_CATE: [
 		{ id: 1, title: '线路' },
 		{ id: 2, title: '吃喝' },
 		{ id: 3, title: '住宿' },
 		{ id: 4, title: '购物' },
 		{ id: 5, title: '其他' },
 	],
-	ALBUM_FIELDS: [
+	GUIDE_FIELDS: [
 		{ mark: 'cover', title: '封面图片', type: 'image', min: 1, max: 1, must: true },
 		{ mark: 'desc', title: '简介', type: 'textarea', max: 100, must: true },
 		{ mark: 'detail', title: '详细介绍', type: 'content', must: true },
 	],
 
-	PRODUCT_NAME: '景点',
-	PRODUCT_CATE: [
+	SPOT_NAME: '景点',
+	SPOT_CATE: [
 		{ id: 1, title: '仙山贡水' },
 		{ id: 2, title: '伍家台' },
 		{ id: 3, title: '狮子关' },
 		{ id: 4, title: '其他景点' }
 	],
-	PRODUCT_FIELDS: [
+	SPOT_FIELDS: [
 		{ mark: 'cover', title: '封面图片', type: 'image', min: 1, max: 1, must: true },
 		{ mark: 'star', title: '推荐指数(星级)', type: 'select', selectOptions: ['1', '2', '3', '4', '5'], def: 1, must: true },
 		{ mark: 'time', title: '开放时间', type: 'textarea', must: false },
@@ -72,6 +72,6 @@ module.exports = {
 		{ mark: 'traffic', title: '交通攻略', type: 'textarea', max: 500, must: false },
 		{ mark: 'ticket', title: '门票攻略', type: 'textarea', max: 500, must: false },
 		{ mark: 'other', title: '其他信息', type: 'textarea', max: 10000, must: false },
-		{ mark: 'album', title: '景点图集', type: 'image', min: 1, max: 10, must: true },
+		{ mark: 'gallery', title: '景点图集', type: 'image', min: 1, max: 10, must: true },
 	],
 }

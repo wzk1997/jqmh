@@ -15,7 +15,7 @@ class FootBiz extends BaseBiz {
 	static getFootList() {
 		let foot = cacheHelper.get(CACHE_FOOT);
 		if (!Array.isArray(foot)) return [];
-		return foot.map(item => ({...item, time:typeof item.time === 'number' ? timeHelper.timestamp2Time(item.time) : item.time}));
+		return foot.map(item => ({...item, path:typeof item.path==='string'?item.path.split('?').map((part,index)=>index===0?part.replace(/product|album|meet/g,name=>({product:'spot',album:'guide',meet:'reservation'}[name])):part).join('?'):item.path, time:typeof item.time === 'number' ? timeHelper.timestamp2Time(item.time) : item.time}));
 	}
 
 	/**添加足迹缓存

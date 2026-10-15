@@ -39,7 +39,7 @@ Page({
 	 */
 	onReady: function () { },
     onPageScroll(e){const mode=e.scrollTop>200?'page':'home';if(mode!==this.data.profileNavMode)this.setData({profileNavMode:mode});},
-    explore(){wx.switchTab({url:'/projects/TRIP1/pages/album/index/album_index'});},
+    explore(){wx.switchTab({url:'/projects/TRIP1/pages/guide/index/guide_index'});},
 
 	/**
 	 * 生命周期函数--监听页面显示

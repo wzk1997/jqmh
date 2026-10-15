@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-10-15T05:59:31.471Z",
+  "base": "http://127.0.0.1:8787",
+  "runId": "acceptance-1792043971248",
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "results": [
+    {
+      "id": "BA-01",
+      "name": "健康检查与本地数据库定位",
+      "status": "通过",
+      "durationMs": 98,
+      "evidence": {
+        "database": "/Users/wangke/Documents/project/WeTravel/local/data/wetravel.sqlite3",
+        "project": "TRIP1"
+      }
+    },
+    {
+      "id": "BA-02",
+      "name": "管理员登录及管理首页统计",
+      "status": "通过",
+      "durationMs": 62,
+      "evidence": {
+        "admin": "admin",
+        "stats": [
+          {
+            "title": "注册用户",
+            "cnt": 1
+          },
+          {
+            "title": "内容总数",
+            "cnt": 9
+          },
+          {
+            "title": "客户反馈",
+            "cnt": 0
+          },
+          {
+            "title": "预约记录",
+            "cnt": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "BA-03",
+      "name": "景点草稿隔离、发布、游客查询",
+      "status": "通过",
+      "durationMs": 11,
+      "evidence": {
+        "id": "c8ca8e8740e8428b85ce8943ecd2c56b",
+        "title": "验收景点-acceptance-1792043971248"
+      }
+    },
+    {
+      "id": "BA-04",
+      "name": "游客注册、资料读取与收藏闭环",
+      "status": "通过",
+      "durationMs": 8,
+      "evidence": {
+        "name": "验收游客",
+        "mobile": "19043971420"
+      }
+    },
+    {
+      "id": "BA-05",
+      "name": "反馈图片上传、提交、管理员回复、游客查看",
+      "status": "通过",
+      "durationMs": 9,
+      "evidence": {
+        "id": "ec0769afce9e4d8dbf30809f2a722a1d",
+        "image": "http://127.0.0.1:8787/media/feedback/968267abeb2d400caf945c7fc40b5a13/acceptance-1792043971248/f7c5a85c8f2641668226e70a8a800681.png",
+        "status": 1
+      }
+    },
+    {
+      "id": "BA-06",
+      "name": "预约创建、个人详情与取消闭环",
+      "status": "通过",
+      "durationMs": 8,
+      "evidence": {
+        "id": "141f41d2cef7413d908ab2d2404721c6",
+        "status": 10
+      }
+    },
+    {
+      "id": "BA-07",
+      "name": "未授权管理接口拦截",
+      "status": "通过",
+      "durationMs": 2,
+      "evidence": {
+        "code": 2401,
+        "msg": "管理员登录已过期"
+      }
+    },
+    {
+      "id": "BA-08",
+      "name": "SQLite 完整性与外键检查",
+      "status": "通过",
+      "durationMs": 3,
+      "evidence": {
+        "integrity": "ok",
+        "foreignKeyViolations": 0
+      }
+    },
+    {
+      "id": "BA-09",
+      "name": "预约后台新增、日期时段落表、关闭与删除",
+      "status": "通过",
+      "durationMs": 17,
+      "evidence": {
+        "id": "f1504f00d8eb4de4badac60a93645617",
+        "day": "2030-12-31",
+        "slot": "T203012311792043971450",
+        "deleted": true
+      }
+    }
+  ]
+}

@@ -63,6 +63,9 @@ async function callCloudData(route, params = {}, options) {
 }
 
 function callCloud(route, params = {}, options) {
+	if (!setting.CLOUD_ID) {
+		return callLocal(route, params, options);
+	}
 
 	let title = '加载中';
 	let hint = true;
@@ -193,6 +196,34 @@ function callCloud(route, params = {}, options) {
 	});
 }
 
+function callLocal(route, params = {}, options = {}) {
+	const title = options.title === undefined ? '加载中' : options.title;
+	const hint = options.hint !== false;
+	if (hint) title === 'bar' ? wx.showNavigationBarLoading() : wx.showLoading({ title, mask: true });
+	const admin = cacheHelper.get(constants.CACHE_ADMIN);
+	const user = cacheHelper.get(constants.CACHE_TOKEN);
+	const token = route.indexOf('admin/') === 0 ? (admin && admin.token || '') : (user && user.id || 'local-visitor');
+	return new Promise((resolve, reject) => wx.request({
+		url: setting.LOCAL_API_BASE + '/api',
+		method: 'POST',
+		header: { 'content-type': 'application/json' },
+		data: { route, token, PID: pageHelper.getPID(), params },
+		success(res) {
+			const result = res.data || {};
+			if (result.code === CODE.SUCC) return resolve(result);
+			if (hint) wx.showModal({ title: '温馨提示', content: result.msg || '本地服务请求失败', showCancel: false });
+			reject(result);
+		},
+		fail(error) {
+			if (hint) wx.showModal({ title: '本地服务未启动', content: '请执行 npm run local:server 后重试', showCancel: false });
+			reject(error);
+		},
+		complete() {
+			if (hint) title === 'bar' ? wx.hideNavigationBarLoading() : wx.hideLoading();
+		}
+	}));
+}
+
 async function dataList(that, listName, route, params, options, isReverse = false) {
 
 	console.log('dataList begin');
@@ -272,6 +303,7 @@ async function dataList(that, listName, route, params, options, isReverse = fals
 
 async function getTempFileURLOne(fileID) {
 	if (!fileID) return '';
+	if (!setting.CLOUD_ID) throw new Error('本地模式禁止访问云存储');
 
 	let result = await wx.cloud.getTempFileURL({
 		fileList: [fileID],
@@ -283,6 +315,7 @@ async function getTempFileURLOne(fileID) {
 
 async function transTempPics(imgList, dir, id, prefix = '', strict = false) {
 	if (setting.IS_DEMO) return imgList; 
+	if (!setting.CLOUD_ID) throw new Error('本地模式禁止上传到云存储');
 
 	if (prefix && !prefix.endsWith('_')) prefix += '_';
 	if (!id) id = timeHelper.time('YMD');

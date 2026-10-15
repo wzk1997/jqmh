@@ -36,7 +36,7 @@
 				<view class="upimg-title content-cut-two">{{item.title}}</view>
 				<view class="data-desc content-cut-two">{{item.desc}}</view>
 				<view class="data-status">
-					<text wx:if="{{item.type=='meet'}}" class="icon-remind margin-right-xxs"></text>{{item.ext}}
+					<text wx:if="{{item.type=='reservation'}}" class="icon-remind margin-right-xxs"></text>{{item.ext}}
 				</view>
 			</view>
 			<!--上下图 END-->
@@ -81,7 +81,7 @@
 					<view class="data">
 						<view class="bottom-tag-list text-cut">
 						</view>
-						<view class="bottom-status"><text wx:if="{{item.type=='meet'}}" class="icon-remind margin-right-xxs"></text>{{item.ext}}</view>
+						<view class="bottom-status"><text wx:if="{{item.type=='reservation'}}" class="icon-remind margin-right-xxs"></text>{{item.ext}}</view>
 					</view>
 				</view>
 			</view>
@@ -98,7 +98,7 @@
 					<view class="data-desc content-cut-one">{{item.desc}}</view>
 				</view>
 				<view class="data-status">
-					<text wx:if="{{item.type=='meet'}}" class="icon-remind margin-right-xxs"></text>{{item.ext}}
+					<text wx:if="{{item.type=='reservation'}}" class="icon-remind margin-right-xxs"></text>{{item.ext}}
 				</view>
 			</view>
 			<!--大文字 END-->

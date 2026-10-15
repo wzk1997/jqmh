@@ -613,7 +613,7 @@ function url(e, that) {
 		case 'saveimg':
 		case 'saveimage': {
 			let callback = function () {
-				wx.saveImageToPhotosAlbum({ //成功之后保存到本地 
+				wx.saveImageToPhotosGuide({ //成功之后保存到本地
 					filePath: url, //生成的图片的本地路径
 					success: function (res) {
 						wx.showToast({
@@ -628,7 +628,7 @@ function url(e, that) {
 				})
 			}
 
-			picHelper.getWritePhotosAlbum(callback);
+			picHelper.getWritePhotosGuide(callback);
 			break;
 		}
 		case 'bool': //正反 

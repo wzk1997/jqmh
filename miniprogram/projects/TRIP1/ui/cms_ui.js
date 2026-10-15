@@ -1,5 +1,5 @@
 const cloudHelper=require('../../../helper/cloud_helper.js');
-const META={scenic:{title:'景区简介',icon:'icon-home'},album:{title:'园区攻略',icon:'icon-pic'},merchant:{title:'吃住行管理',icon:'icon-shop'},panorama:{title:'全景图管理',icon:'icon-camera'},news:{title:'活动资讯',icon:'icon-form'},product:{title:'景点管理',icon:'icon-location'},category:{title:'分类管理',icon:'icon-cascades'}};
+const META={scenic:{title:'景区简介',icon:'icon-home'},guide:{title:'园区攻略',icon:'icon-pic'},merchant:{title:'吃住行管理',icon:'icon-shop'},panorama:{title:'全景图管理',icon:'icon-camera'},news:{title:'活动资讯',icon:'icon-form'},spot:{title:'景点管理',icon:'icon-location'},category:{title:'分类管理',icon:'icon-cascades'}};
 const STATES={draft:'草稿',published:'已发布',offline:'已下架',deleted:'已删除'};
 function normalize(kind,row){
  const p=kind==='category'?'CONTENT_CATEGORY_':kind.toUpperCase()+'_',obj=row[p+'OBJ']||{};

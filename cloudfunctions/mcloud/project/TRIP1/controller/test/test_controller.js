@@ -7,14 +7,14 @@ const BaseController = require('../../controller/base_project_controller.js');
 const fakerLib = require('../../../../framework/lib/faker_lib.js');
 
 const VoteModel = require('../../model/vote_model.js');
-const VoteJoinModel = require('../../model/vote_join_model.js');
+const VoteBookingModel = require('../../model/vote_booking_model.js');
 const VoteService = require('../../service/vote_service.js');
 
 const EnrollModel = require('../../model/enroll_model.js');
-const EnrollJoinModel = require('../../model/enroll_join_model.js');
+const EnrollBookingModel = require('../../model/enroll_booking_model.js');
 
 const ActivityModel = require('../../model/activity_model.js');
-const ActivityJoinModel = require('../../model/activity_join_model.js');
+const ActivityBookingModel = require('../../model/activity_booking_model.js');
 
 class TestController extends BaseController {
 
@@ -35,34 +35,34 @@ class TestController extends BaseController {
 		if (!enroll) return console.error('no enroll');
 
 		let join = {};
-		join.ENROLL_JOIN_ENROLL_ID = ENROLL_ID;
-		join.ENROLL_JOIN_STATUS = 1;
+		join.ENROLL_BOOKING_ENROLL_ID = ENROLL_ID;
+		join.ENROLL_BOOKING_STATUS = 1;
 
 		console.log('>>>>delete');
-		let delCnt = await EnrollJoinModel.del({ ENROLL_JOIN_ENROLL_ID: ENROLL_ID });
+		let delCnt = await EnrollBookingModel.del({ ENROLL_BOOKING_ENROLL_ID: ENROLL_ID });
 		console.log('>>>>delete=' + delCnt);
 
 		for (let k = 1; k <= 10; k++) {
 			console.log('>>>>insert >' + k);
-			join.ENROLL_JOIN_USER_ID = fakerLib.getUuid();
+			join.ENROLL_BOOKING_USER_ID = fakerLib.getUuid();
 
-			join.ENROLL_JOIN_LAST_TIME = fakerLib.getAddTimestamp();
-			join.ENROLL_JOIN_ADD_TIME = fakerLib.getAddTimestamp();
+			join.ENROLL_BOOKING_LAST_TIME = fakerLib.getAddTimestamp();
+			join.ENROLL_BOOKING_ADD_TIME = fakerLib.getAddTimestamp();
 
-			join.ENROLL_JOIN_FORMS = [
+			join.ENROLL_BOOKING_FORMS = [
 				{ mark: 'name', title: '姓名', type: 'text', val: fakerLib.getName() },
 				{ mark: 'phone', title: '手机', type: 'mobile', val: fakerLib.getMobile() }
 			];
 
-			await EnrollJoinModel.insert(join);
+			await EnrollBookingModel.insert(join);
 		}
 
 		console.log('>>>> STAT');
-		let cnt = await EnrollJoinModel.count({
-			ENROLL_JOIN_ENROLL_ID: ENROLL_ID
+		let cnt = await EnrollBookingModel.count({
+			ENROLL_BOOKING_ENROLL_ID: ENROLL_ID
 		});
 
-		await EnrollModel.edit(ENROLL_ID, { ENROLL_JOIN_CNT: cnt, ENROLL_MAX_CNT: cnt + 10 });
+		await EnrollModel.edit(ENROLL_ID, { ENROLL_BOOKING_CNT: cnt, ENROLL_MAX_CNT: cnt + 10 });
 
 		console.log('mockEnrollJoin >>>>>>> END');
 	}
@@ -75,34 +75,34 @@ class TestController extends BaseController {
 		if (!activity) return console.error('no activity');
 
 		let join = {};
-		join.ACTIVITY_JOIN_ACTIVITY_ID = ACTIVITY_ID;
-		join.ACTIVITY_JOIN_STATUS = 1;
+		join.ACTIVITY_BOOKING_ACTIVITY_ID = ACTIVITY_ID;
+		join.ACTIVITY_BOOKING_STATUS = 1;
 
 		console.log('>>>>delete');
-		let delCnt = await ActivityJoinModel.del({ ACTIVITY_JOIN_ACTIVITY_ID: ACTIVITY_ID });
+		let delCnt = await ActivityBookingModel.del({ ACTIVITY_BOOKING_ACTIVITY_ID: ACTIVITY_ID });
 		console.log('>>>>delete=' + delCnt);
 
 		for (let k = 1; k <= 10; k++) {
 			console.log('>>>>insert >' + k);
-			join.ACTIVITY_JOIN_USER_ID = fakerLib.getUuid();
+			join.ACTIVITY_BOOKING_USER_ID = fakerLib.getUuid();
 
-			join.ACTIVITY_JOIN_CODE = fakerLib.getStr(15);
-			join.ACTIVITY_JOIN_ADD_TIME = fakerLib.getAddTimestamp();
+			join.ACTIVITY_BOOKING_CODE = fakerLib.getStr(15);
+			join.ACTIVITY_BOOKING_ADD_TIME = fakerLib.getAddTimestamp();
 
-			join.ACTIVITY_JOIN_FORMS = [
+			join.ACTIVITY_BOOKING_FORMS = [
 				{ mark: 'name', title: '姓名', type: 'text', val: fakerLib.getName() },
 				{ mark: 'phone', title: '手机', type: 'mobile', val: fakerLib.getMobile() }
 			];
 
-			await ActivityJoinModel.insert(join);
+			await ActivityBookingModel.insert(join);
 		}
 
 		console.log('>>>> STAT');
-		let cnt = await ActivityJoinModel.count({
-			ACTIVITY_JOIN_ACTIVITY_ID: ACTIVITY_ID
+		let cnt = await ActivityBookingModel.count({
+			ACTIVITY_BOOKING_ACTIVITY_ID: ACTIVITY_ID
 		});
 
-		await ActivityModel.edit(ACTIVITY_ID, { ACTIVITY_JOIN_CNT: cnt, ACTIVITY_MAX_CNT: cnt + 10 });
+		await ActivityModel.edit(ACTIVITY_ID, { ACTIVITY_BOOKING_CNT: cnt, ACTIVITY_MAX_CNT: cnt + 10 });
 
 		console.log('mockActivityJoin >>>>>>> END');
 	}
@@ -116,23 +116,23 @@ class TestController extends BaseController {
 		if (!vote) return console.error('no vote');
 
 		let join = {};
-		join.VOTE_JOIN_VOTE_ID = VOTE_ID;
+		join.VOTE_BOOKING_VOTE_ID = VOTE_ID;
 
 		console.log('>>>>delete');
-		let delCnt = await VoteJoinModel.del({ VOTE_JOIN_VOTE_ID: VOTE_ID });
+		let delCnt = await VoteBookingModel.del({ VOTE_BOOKING_VOTE_ID: VOTE_ID });
 		console.log('>>>>delete=' + delCnt);
 
 
 		for (let k = 1; k <= 10; k++) {
 			console.log('>>>>insert >' + k);
-			join.VOTE_JOIN_USER_ID = fakerLib.getUuid(); 
-			join.VOTE_JOIN_ADD_TIME = fakerLib.getAddTimestamp();
+			join.VOTE_BOOKING_USER_ID = fakerLib.getUuid();
+			join.VOTE_BOOKING_ADD_TIME = fakerLib.getAddTimestamp();
 
 			
-			join.VOTE_JOIN_CNT = 1;
-			join.VOTE_JOIN_SELECTED = [k % vote.VOTE_ITEM.length];
+			join.VOTE_BOOKING_CNT = 1;
+			join.VOTE_BOOKING_SELECTED = [k % vote.VOTE_ITEM.length];
 
-			await VoteJoinModel.insert(join);
+			await VoteBookingModel.insert(join);
 		}
 
 		console.log('>>>> STAT');

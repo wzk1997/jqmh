@@ -1,6 +1,7 @@
 module.exports = {
 	//### 环境相关 
-	CLOUD_ID: 'cloud1-d7g9o14z451e97c40', //云服务id ,本地测试环境 
+	CLOUD_ID: '', // 本地开发保持为空，禁止连接线上云环境
+	LOCAL_API_BASE: 'http://127.0.0.1:8787', // SQLite 本地后端
 
 	// #### 版本信息 
 	VER: 'build 2022.08.14',

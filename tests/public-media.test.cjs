@@ -12,11 +12,11 @@ test('published response media excludes feedback, arbitrary client IDs, drafts a
  assert.deepEqual(s.collect('cms/detail',row,{module:'feedback'},'test-env'),[]);
 });
 test('portal and itinerary sign only their canonical content folders without changing payload IDs',async()=>{
- const s=service(),scenic=file('scenic','s'),spot=file('product','p'),album=file('album','a');
- const portal={scenic:{_id:'s',SCENIC_IMAGES:[scenic]},slides:[{image:scenic},{image:file('scenic','other')}],featured:[{type:'album',id:'a',pic:album}]};
- assert.deepEqual(s.collect('home/portal',portal,{},'test-env'),[scenic,album]);
- const row={_id:'a',ALBUM_OBJ:{cover:[album]},ALBUM_SPOTS:[{_id:'p',cover:spot}]};
- const original=JSON.stringify(row);assert.deepEqual(s.collect('album/view',row,{},'test-env'),[album,spot]);assert.equal(JSON.stringify(row),original);
+ const s=service(),scenic=file('scenic','s'),spot=file('spot','p'),guide=file('guide','a');
+ const portal={scenic:{_id:'s',SCENIC_IMAGES:[scenic]},slides:[{image:scenic},{image:file('scenic','other')}],featured:[{type:'guide',id:'a',pic:guide}]};
+ assert.deepEqual(s.collect('home/portal',portal,{},'test-env'),[scenic,guide]);
+ const row={_id:'a',GUIDE_OBJ:{cover:[guide]},GUIDE_SPOTS:[{_id:'p',cover:spot}]};
+ const original=JSON.stringify(row);assert.deepEqual(s.collect('guide/view',row,{},'test-env'),[guide,spot]);assert.equal(JSON.stringify(row),original);
 });
 test('URL signing batches at fifty and tolerates missing files without exposing storage errors',async()=>{
  const calls=[],s=service({getTempFileURL:async input=>{calls.push(input);return {fileList:input.fileList.map(({fileID},i)=>({fileID,status:i===0?-1:0,tempFileURL:'https://example.test/photo'}))};}});

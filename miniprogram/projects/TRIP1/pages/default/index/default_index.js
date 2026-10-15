@@ -41,7 +41,7 @@ Page({
             { title: '一周天气', icon: 'icon-info', url: '../../about/index/about_index?key=SETUP_CONTENT_WEATHER' },
             { title: '客户反馈', icon: 'icon-edit', url: '../../feedback/index/feedback_index' }
         ],
-		album: [
+		guide: [
 			'/projects/TRIP1/images/home/b3.jpg',
 			'/projects/TRIP1/images/home/b1.jpg',
 			'/projects/TRIP1/images/home/b4.jpg',

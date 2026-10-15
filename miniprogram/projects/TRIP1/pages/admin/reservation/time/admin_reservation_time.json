@@ -1,0 +1,9 @@
+{
+	"usingComponents": {
+		"cmpt-picker-multi": "/cmpts/public/picker_multi/picker_multi_cmpt",
+		"cmpt-calendar": "/cmpts/public/calendar/calendar_reservation/calendar_reservation_cmpt"
+	},
+	"navigationBarBackgroundColor": "#ffffff",
+	"navigationBarTextStyle": "black",
+	"navigationBarTitleText": "时间设置"
+}

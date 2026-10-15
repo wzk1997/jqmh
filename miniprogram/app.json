@@ -2,11 +2,10 @@
   "pages": [
     "projects/TRIP1/pages/default/index/default_index",
     "projects/TRIP1/pages/my/index/my_index",
-    "projects/TRIP1/pages/album/index/album_index",
-    "projects/TRIP1/pages/product/index/product_index",
+    "projects/TRIP1/pages/guide/index/guide_index",
+    "projects/TRIP1/pages/spot/index/spot_index",
     "cmpts/public/form/form_set/field/form_set_field",
-    "cmpts/public/form/form_show/content/form_show_content",
-    "pages/test1/test1"
+    "cmpts/public/form/form_show/content/form_show_content"
   ],
   "window": {
     "backgroundColor": "#f5f8f6",
@@ -28,16 +27,16 @@
         "selectedIconPath": "/projects/TRIP1/images/ui/home_v2_active.png"
       },
       {
-        "pagePath": "projects/TRIP1/pages/product/index/product_index",
+        "pagePath": "projects/TRIP1/pages/spot/index/spot_index",
         "text": "景区导览",
         "iconPath": "/projects/TRIP1/images/ui/guide_v2.png",
         "selectedIconPath": "/projects/TRIP1/images/ui/guide_v2_active.png"
       },
       {
-        "pagePath": "projects/TRIP1/pages/album/index/album_index",
+        "pagePath": "projects/TRIP1/pages/guide/index/guide_index",
         "text": "园区攻略",
-        "iconPath": "/projects/TRIP1/images/ui/album_v2.png",
-        "selectedIconPath": "/projects/TRIP1/images/ui/album_v2_active.png"
+        "iconPath": "/projects/TRIP1/images/ui/guide_v2.png",
+        "selectedIconPath": "/projects/TRIP1/images/ui/guide_v2_active.png"
       },
       {
         "pagePath": "projects/TRIP1/pages/my/index/my_index",
@@ -81,22 +80,22 @@
         "user/list/admin_user_list",
         "user/detail/admin_user_detail",
         "user/export/admin_user_export",
-        "meet/cover/admin_meet_cover",
-        "meet/edit/admin_meet_edit",
-        "meet/export/admin_join_export",
-        "meet/join/admin_meet_join",
-        "meet/list/admin_meet_list",
-        "meet/record/admin_record_list",
-        "meet/scan/admin_meet_scan",
-        "meet/self/admin_meet_self",
-        "meet/temp/admin_temp_select",
-        "meet/time/admin_meet_time",
-        "album/list/admin_album_list",
-        "album/add/admin_album_add",
-        "album/edit/admin_album_edit",
-        "product/list/admin_product_list",
-        "product/add/admin_product_add",
-        "product/edit/admin_product_edit",
+        "reservation/cover/admin_reservation_cover",
+        "reservation/edit/admin_reservation_edit",
+        "reservation/export/admin_join_export",
+        "reservation/join/admin_reservation_join",
+        "reservation/list/admin_reservation_list",
+        "reservation/record/admin_record_list",
+        "reservation/scan/admin_reservation_scan",
+        "reservation/self/admin_reservation_self",
+        "reservation/temp/admin_temp_select",
+        "reservation/time/admin_reservation_time",
+        "guide/list/admin_guide_list",
+        "guide/add/admin_guide_add",
+        "guide/edit/admin_guide_edit",
+        "spot/list/admin_spot_list",
+        "spot/add/admin_spot_add",
+        "spot/edit/admin_spot_edit",
         "feedback/admin_feedback",
         "cms/list/cms_list",
         "cms/detail/cms_detail",
@@ -107,16 +106,16 @@
       ]
     },
     {
-      "root": "projects/TRIP1/pages/meet",
-      "name": "meet",
+      "root": "projects/TRIP1/pages/reservation",
+      "name": "reservation",
       "pages": [
-        "index/meet_index",
-        "calendar/meet_calendar",
-        "join/meet_join",
-        "detail/meet_detail",
-        "self/meet_self",
-        "my_join_list/meet_my_join_list",
-        "my_join_detail/meet_my_join_detail"
+        "index/reservation_index",
+        "calendar/reservation_calendar",
+        "join/reservation_join",
+        "detail/reservation_detail",
+        "self/reservation_self",
+        "my_join_list/reservation_my_join_list",
+        "my_join_detail/reservation_my_join_detail"
       ]
     },
     {
@@ -165,17 +164,17 @@
       ]
     },
     {
-      "root": "projects/TRIP1/pages/product/detail",
-      "name": "product_detail",
+      "root": "projects/TRIP1/pages/spot/detail",
+      "name": "spot_detail",
       "pages": [
-        "product_detail"
+        "spot_detail"
       ]
     },
     {
-      "root": "projects/TRIP1/pages/album/detail",
-      "name": "album_detail",
+      "root": "projects/TRIP1/pages/guide/detail",
+      "name": "guide_detail",
       "pages": [
-        "album_detail"
+        "guide_detail"
       ]
     },
     {

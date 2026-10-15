@@ -8,14 +8,14 @@ const util = require('../../../../framework/utils/util.js');
 const crypto = require('crypto');
 const models = {
     scenic: require('../../model/scenic_model.js'),
-    news: require('../../model/news_model.js'), album: require('../../model/album_model.js'),
-    product: require('../../model/product_model.js'), merchant: require('../../model/merchant_model.js'),
+    news: require('../../model/news_model.js'), guide: require('../../model/guide_model.js'),
+    spot: require('../../model/spot_model.js'), merchant: require('../../model/merchant_model.js'),
     panorama: require('../../model/panorama_model.js'), category: require('../../model/content_category_model.js')
 };
 const Asset = require('../../model/cms_asset_model.js');
 const prefix = kind => kind === 'category' ? 'CONTENT_CATEGORY_' : kind.toUpperCase() + '_';
-const legacy = kind => ['news','album','product'].includes(kind);
-const stateField = kind => prefix(kind) + (legacy(kind) ? 'CMS_STATE' : 'STATE');
+const formContent = kind => ['news','guide','spot'].includes(kind);
+const stateField = kind => prefix(kind) + (formContent(kind) ? 'CMS_STATE' : 'STATE');
 function currentState(kind, row) { return row[stateField(kind)] || (row[prefix(kind)+'STATUS'] === 1 ? 'published' : 'offline'); }
 class AdminCmsService extends BaseService {
     model(kind) { if (!models[kind]) v.fail('管理模块不正确'); return models[kind]; }
@@ -38,15 +38,15 @@ class AdminCmsService extends BaseService {
         const size = v.integer(input.size, '每页数量', 1, 50, 20);
         const search = v.text(input.search, '搜索', 50);
         const where = { and: { _pid: util.getProjectId(), [p+'DELETED']: ['<>', true] } };
-        if (publicOnly) where.and[legacy(kind)?p+'STATUS':stateField(kind)] = legacy(kind)?1:'published';
+        if (publicOnly) where.and[formContent(kind)?p+'STATUS':stateField(kind)] = formContent(kind)?1:'published';
         else if (input.state) {
             const state=v.state(input.state);
-            if(legacy(kind)&&state==='published')where.and[p+'STATUS']=1;
+            if(formContent(kind)&&state==='published')where.and[p+'STATUS']=1;
             else where.and[stateField(kind)]=state;
         }
-        if (input.category) where.and[p+(legacy(kind)?'CATE_ID':'CATEGORY')] = v.text(input.category, '分类', 80);
+        if (input.category) where.and[p+(formContent(kind)?'CATE_ID':'CATEGORY')] = v.text(input.category, '分类', 80);
         if (kind === 'category') where.and[p+'MODULE'] = v.text(input.module, '模块', 30, true);
-        if (search) where.and[p+(legacy(kind) ? 'TITLE' : 'NAME')] = ['like', search];
+        if (search) where.and[p+(formContent(kind) ? 'TITLE' : 'NAME')] = ['like', search];
         const result = await Model.getList(where, '*', { [p+'ORDER']: 'asc', [p+'ADD_TIME']: 'desc' }, page, size, true, 0);
         result.list = result.list.map(row => ({ ...row, cmsState: currentState(kind,row) }));
         return result;
@@ -56,19 +56,19 @@ class AdminCmsService extends BaseService {
         const kind=spec.module,Model=this.model(kind),p=prefix(kind),id='wt_demo_'+spec.key;await this.ensure(Model);
         const existing=await Model.getOne(id);if(existing)return {id,created:false,module:kind};
         const row={_id:id,[p+'DEMO']:true,[p+'ORDER']:spec.data.order,[p+'EDIT_ADMIN']:adminId,[stateField(kind)]:'draft'};
-        if(legacy(kind))Object.assign(row,{[p+'TITLE']:spec.name,[p+'CATE_ID']:spec.data.cateId,[p+'CATE_NAME']:await this.category(kind,spec.data.cateId),[p+'STATUS']:0});
+        if(formContent(kind))Object.assign(row,{[p+'TITLE']:spec.name,[p+'CATE_ID']:spec.data.cateId,[p+'CATE_NAME']:await this.category(kind,spec.data.cateId),[p+'STATUS']:0});
         else row[p+'NAME']=spec.name;
         await Model.insert(row);return {id,created:true,module:kind};
     }
     async spots(input={}) {
-        const Model=models.product;await this.ensure(Model);
+        const Model=models.spot;await this.ensure(Model);
         const page=v.integer(input.page,'页码',1,10000,1),size=v.integer(input.size,'每页数量',1,50,50);
         const ids=input.ids===undefined?[]:input.ids;if(!Array.isArray(ids)||ids.length>30)v.fail('关联景点不正确');
         const keys=[...new Set(ids.map(v.id))];
-        const where={PRODUCT_STATUS:1,PRODUCT_DELETED:['<>',true]};
-        const fields='_id,PRODUCT_TITLE,PRODUCT_OBJ';
-        const normalize=row=>({id:row._id,name:row.PRODUCT_TITLE,cover:((row.PRODUCT_OBJ||{}).cover||[])[0]||'',available:true});
-        const result=await Model.getList(where,fields,{PRODUCT_ORDER:'asc',PRODUCT_ADD_TIME:'desc'},page,size,true,0);
+        const where={SPOT_STATUS:1,SPOT_DELETED:['<>',true]};
+        const fields='_id,SPOT_TITLE,SPOT_OBJ';
+        const normalize=row=>({id:row._id,name:row.SPOT_TITLE,cover:((row.SPOT_OBJ||{}).cover||[])[0]||'',available:true});
+        const result=await Model.getList(where,fields,{SPOT_ORDER:'asc',SPOT_ADD_TIME:'desc'},page,size,true,0);
         const selected=await Promise.all(keys.map(async id=>{const row=await Model.getOne({...where,_id:id},fields);return row?normalize(row):{id,name:'景点已下架或不可用',cover:'',available:false};}));
         return {...result,list:result.list.map(normalize),selected};
     }
@@ -98,12 +98,12 @@ class AdminCmsService extends BaseService {
         }
         // Old content can have OBJ without FORMS.
         const obj = row[p+'OBJ'] || {};
-        values.push(...(Array.isArray(obj.cover)?obj.cover:[]), ...(Array.isArray(obj.album)?obj.album:[]));
+        values.push(...(Array.isArray(obj.cover)?obj.cover:[]), ...(Array.isArray(obj.gallery)?obj.gallery:[]));
         for (const n of obj.detail || []) if (n.type === 'img') values.push(n.val);
         return values;
     }
     async category(kind, key, name) {
-        const defaults = {news:{'activity':'景区活动','announcement':'景区公告','tips':'旅游资讯','1':'景区动态','2':'美食','3':'特产'},album:{'1':'线路','2':'吃喝','3':'住宿','4':'购物','5':'其他'},product:{'1':'仙山贡水','2':'伍家台','3':'狮子关','4':'其他景点'}};
+        const defaults = {news:{'activity':'景区活动','announcement':'景区公告','tips':'旅游资讯','1':'景区动态','2':'美食','3':'特产'},guide:{'1':'线路','2':'吃喝','3':'住宿','4':'购物','5':'其他'},spot:{'1':'仙山贡水','2':'伍家台','3':'狮子关','4':'其他景点'}};
         key = v.text(key, '分类编号', 80, true);
         await this.ensure(models.category);
         const category = await models.category.getOne({CONTENT_CATEGORY_MODULE:kind,CONTENT_CATEGORY_KEY:key});
@@ -112,20 +112,20 @@ class AdminCmsService extends BaseService {
         if(defaults[kind]&&defaults[kind][key])return defaults[kind][key];
         v.fail('分类不存在或尚未发布');
     }
-    async saveLegacy(kind, input, adminId = '', staged = false) {
+    async saveContent(kind, input, adminId = '', staged = false) {
         const Model=this.model(kind),p=prefix(kind); await this.ensure(Model);
         const existing = input.id ? await this.detail(kind,input.id) : null;
         const title=v.text(input.title,'标题',50,true), order=v.integer(input.order,'排序'),
               cateName=await this.category(kind,input.cateId,input.cateName);
         const forms=v.forms(input.forms || [],kind,staged);
-        for(const f of forms)if(f.mark==='spots')for(const spot of f.val)await this.detail('product',spot);
+        for(const f of forms)if(f.mark==='spots')for(const spot of f.val)await this.detail('spot',spot);
         const data={ [p+'TITLE']:title,[p+'ORDER']:order,[p+'CATE_ID']:String(input.cateId),[p+'CATE_NAME']:cateName,[p+'FORMS']:forms,[p+'OBJ']:dataUtil.dbForms2Obj(forms),[p+'EDIT_ADMIN']:adminId };
-        if(kind==='album'){
-            if(input.duration!==undefined)data.ALBUM_DURATION=v.text(input.duration,'游玩时长',50);
+        if(kind==='guide'){
+            if(input.duration!==undefined)data.GUIDE_DURATION=v.text(input.duration,'游玩时长',50);
             if(input.route!==undefined){
                 if(!Array.isArray(input.route)||input.route.length>30)v.fail('路线节点不正确');
                 const linked=(forms.find(f=>f.mark==='spots')||{val:[]}).val,seen=new Set();
-                data.ALBUM_ROUTE=input.route.map(node=>{if(!node||!linked.includes(node.spotId)||seen.has(node.spotId))v.fail('路线节点需关联有效景点且不能重复');seen.add(node.spotId);return {spotId:v.id(node.spotId),duration:v.text(node.duration,'节点时长',50),note:v.text(node.note,'节点说明',300),highlight:v.text(node.highlight,'路线亮点标题',30)};});
+                data.GUIDE_ROUTE=input.route.map(node=>{if(!node||!linked.includes(node.spotId)||seen.has(node.spotId))v.fail('路线节点需关联有效景点且不能重复');seen.add(node.spotId);return {spotId:v.id(node.spotId),duration:v.text(node.duration,'节点时长',50),note:v.text(node.note,'节点说明',300),highlight:v.text(node.highlight,'路线亮点标题',30)};});
             }
         }
         if(kind==='news') {
@@ -142,7 +142,7 @@ class AdminCmsService extends BaseService {
         else await Model.insert({_id:id,...data,[stateField(kind)]:'draft',[p+'STATUS']:0});
         return {id};
     }
-    async patchLegacy(kind, id, field, value) {
+    async patchContent(kind, id, field, value) {
         const row=await this.detail(kind,id),Model=this.model(kind),p=prefix(kind); let data={};
         if(field==='forms') {
             const patch=v.forms(value,kind);
@@ -157,7 +157,7 @@ class AdminCmsService extends BaseService {
         return {id,urls:data[p+'PIC']||[]};
     }
     async save(kind, input, adminId) {
-        if(legacy(kind)) return this.saveLegacy(kind,input,adminId);
+        if(formContent(kind)) return this.saveContent(kind,input,adminId);
         const Model=this.model(kind),p=prefix(kind);await this.ensure(Model);
         const row=input.id?await this.detail(kind,input.id):null;
         let data={[p+'NAME']:v.text(input.name,'名称',80,true),[p+'ORDER']:v.integer(input.order,'排序'),[p+'EDIT_ADMIN']:adminId};
@@ -174,7 +174,7 @@ class AdminCmsService extends BaseService {
             if(input.resourceType==='provider' && resource && !/^[a-zA-Z0-9_:-]{1,200}$/.test(resource)) v.fail('场景标识不正确');
             Object.assign(data,{PANORAMA_DESC:v.text(input.desc,'场景描述',500),PANORAMA_COVER:v.images(input.cover,1),PANORAMA_RESOURCE_TYPE:input.resourceType,PANORAMA_RESOURCE:resource,PANORAMA_CONTENT:v.content(input.content)});
         } else if(kind==='category') {
-            if(!['news','album','product'].includes(input.module)) v.fail('分类模块不正确');
+            if(!['news','guide','spot'].includes(input.module)) v.fail('分类模块不正确');
             const key=v.id(input.key);
             if(row && key!==row.CONTENT_CATEGORY_KEY)v.fail('不能修改已有分类编号');
             const found=await Model.getOne({CONTENT_CATEGORY_MODULE:input.module,CONTENT_CATEGORY_KEY:key});
@@ -203,19 +203,19 @@ class AdminCmsService extends BaseService {
     async setState(kind,id,state,adminId='') {
         const row=await this.detail(kind,id),Model=this.model(kind),p=prefix(kind); state=v.state(state);
         if(state==='published') {
-            if(legacy(kind))await this.category(kind,row[p+'CATE_ID']);
-            if(kind==='album')for(const id of (row.ALBUM_OBJ.spots||[])){const spot=await this.detail('product',id);if(spot.cmsState!=='published')v.fail('关联景点尚未发布');}
+            if(formContent(kind))await this.category(kind,row[p+'CATE_ID']);
+            if(kind==='guide')for(const id of (row.GUIDE_OBJ.spots||[])){const spot=await this.detail('spot',id);if(spot.cmsState!=='published')v.fail('关联景点尚未发布');}
             if(kind==='scenic' && row.SCENIC_INFO)require('../scenic_info_validation.js')(row.SCENIC_INFO,row.SCENIC_IMAGES||[]);
             if(kind==='scenic' && (!row.SCENIC_IMAGES.length || !row.SCENIC_CONTENT.length)) v.fail('请完善景区图片与介绍');
             if(kind==='news' && (!(row.NEWS_PIC||[]).length || !(row.NEWS_CONTENT||[]).length)) v.fail('请先完善封面与正文');
-            if(['album','product'].includes(kind) && !(row[p+'OBJ']&&row[p+'OBJ'].cover&&row[p+'OBJ'].cover.length)) v.fail('请先上传封面');
-            if(kind==='album' && !(row.ALBUM_OBJ.detail||[]).length) v.fail('请先完善攻略正文');
+            if(['guide','spot'].includes(kind) && !(row[p+'OBJ']&&row[p+'OBJ'].cover&&row[p+'OBJ'].cover.length)) v.fail('请先上传封面');
+            if(kind==='guide' && !(row.GUIDE_OBJ.detail||[]).length) v.fail('请先完善攻略正文');
             if(kind==='merchant' && (!row.MERCHANT_PHONE || !row.MERCHANT_ADDRESS || !row.MERCHANT_IMAGES.length)) v.fail('请完善电话、地址和图片');
             if(kind==='panorama' && (!row.PANORAMA_RESOURCE || !row.PANORAMA_COVER.length)) v.fail('请完善全景资源和封面');
         }
         const data={[stateField(kind)]:state,[p+'EDIT_ADMIN']:adminId};
         if(state==='published' && row.hasDraft){Object.assign(data,row[p+'DRAFT']);data[p+'DRAFT']={};}
-        if(legacy(kind))data[p+'STATUS']=state==='published'?1:0;
+        if(formContent(kind))data[p+'STATUS']=state==='published'?1:0;
         if(state==='published' && !row[p+'PUBLISH_TIME'])data[p+'PUBLISH_TIME']=Date.now();
         await this.replaceContent(Model,id,data);return {id,state};
     }
@@ -226,7 +226,7 @@ class AdminCmsService extends BaseService {
             if(await models[module].count({[prefix(module)+'CATE_ID']:row.CONTENT_CATEGORY_KEY,[prefix(module)+'DELETED']:['<>',true]}))v.fail('分类仍有内容使用，请先调整分类');
         }
         const data={[p+'DELETED']:true,[stateField(kind)]:'deleted',[p+'EDIT_ADMIN']:adminId};
-        if(legacy(kind)){data[p+'STATUS']=0;data[p+'DELETED_TIME']=Date.now();}
+        if(formContent(kind)){data[p+'STATUS']=0;data[p+'DELETED_TIME']=Date.now();}
         await this.model(kind).edit(id,data);return {id};
     }
     async sort(kind,id,order) { await this.detail(kind,id); await this.model(kind).edit(id,{[prefix(kind)+'ORDER']:v.integer(order,'排序')}); }

@@ -5,21 +5,21 @@
  */
 
 
-function getWritePhotosAlbum(callback) {
+function getWritePhotosGuide(callback) {
 	wx.getSetting({
 		success: res => {
 			console.log('res=', res);
-			if (res.authSetting['scope.writePhotosAlbum']) {
+			if (res.authSetting['scope.writePhotosGuide']) {
 				console.log('true');
 				callback && callback();
-			} else if (res.authSetting['scope.writePhotosAlbum'] === undefined) {
+			} else if (res.authSetting['scope.writePhotosGuide'] === undefined) {
 				wx.showModal({
 					title: '提示',
 					content: '您未开启保存图片到相册的权限，请点击确定去开启权限！',
 					success: (res) => {
 						if (res.confirm) {
 							wx.authorize({
-								scope: 'scope.writePhotosAlbum',
+								scope: 'scope.writePhotosGuide',
 								success: (res) => {
 									callback && callback()
 									console.log('授权下载成功', res);
@@ -49,7 +49,7 @@ function getWritePhotosAlbum(callback) {
 										icon: 'none',
 										title: '正在保存图片',
 									});
-									if (res.authSetting['scope.writePhotosAlbum']) {
+									if (res.authSetting['scope.writePhotosGuide']) {
 										console.log('false success res=', res);
 										callback && callback();
 									} else {
@@ -77,5 +77,5 @@ function getWritePhotosAlbum(callback) {
 }
 
 module.exports = {
-	getWritePhotosAlbum
+	getWritePhotosGuide
 }

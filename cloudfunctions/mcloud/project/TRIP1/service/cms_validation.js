@@ -46,13 +46,13 @@ function images(value = [], max = 10) {
 }
 function forms(value = [], kind, staged = false) {
     if (!Array.isArray(value) || value.length > 30) fail('表单不正确');
-    const allowed = kind === 'album' ? ['cover', 'desc', 'detail', 'spots'] : kind === 'news' ? ['desc', 'cover'] : ['cover', 'star', 'time', 'address', 'desc', 'traffic', 'ticket', 'other', 'album', 'latitude', 'longitude', 'subtitle', 'distance', 'duration', 'bestTime'];
+    const allowed = kind === 'guide' ? ['cover', 'desc', 'detail', 'spots'] : kind === 'news' ? ['desc', 'cover'] : ['cover', 'star', 'time', 'address', 'desc', 'traffic', 'ticket', 'other', 'gallery', 'latitude', 'longitude', 'subtitle', 'distance', 'duration', 'bestTime'];
     const seen = new Set();
     return value.map(item => {
         if (!item || !allowed.includes(item.mark) || seen.has(item.mark)) fail('表单字段不正确');
         seen.add(item.mark);
         let val, type = item.type;
-        if (['cover', 'album'].includes(item.mark)) {
+        if (['cover', 'gallery'].includes(item.mark)) {
             if (type !== 'image') fail('图片字段类型不正确');
             val = images(item.val, item.mark === 'cover' ? 1 : 10);
             if (staged) val = val.filter(v => v.startsWith('cloud://') || v.startsWith('/images/'));

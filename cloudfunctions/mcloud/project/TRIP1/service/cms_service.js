@@ -14,17 +14,17 @@ async function categories(module) {
     return list;
 }
 async function list(module,input) {
-    if(!['scenic','merchant'].includes(module))v.fail('公开模块不正确');
+    if(!['scenic','merchant','panorama'].includes(module))v.fail('公开模块不正确');
     const result=await new Cms().list(module,input,true);
     result.list=result.list.map(row=>publicRow(module,row));return result;
 }
 function publicRow(module,row) {
     const p=module.toUpperCase()+'_', data={_id:row._id};
-    const fields=module==='merchant'?['NAME','CATEGORY','DESC','PHONE','ADDRESS','HOURS','IMAGES','CONTENT']:['NAME','DESC','ADDRESS','HOURS','PHONE','IMAGES','CONTENT','INFO'];
+    const fields=module==='merchant'?['NAME','CATEGORY','DESC','PHONE','ADDRESS','HOURS','IMAGES','CONTENT']:module==='panorama'?['NAME','DESC','COVER','RESOURCE_TYPE','RESOURCE','CONTENT']:['NAME','DESC','ADDRESS','HOURS','PHONE','IMAGES','CONTENT','INFO'];
     fields.push('DEMO');for(const f of fields)data[p+f]=row[p+f];data[p+'PUBLISH_TIME']=row[p+'PUBLISH_TIME'];return data;
 }
 async function detail(module,id) {
-    if(!['scenic','merchant'].includes(module))v.fail('公开模块不正确');
+    if(!['scenic','merchant','panorama'].includes(module))v.fail('公开模块不正确');
     const cms=new Cms(),Model=cms.model(module);await cms.ensure(Model);
     const row=await Model.getOne(v.id(id));
     if(!row || row[module.toUpperCase()+'_DELETED'] || Cms.currentState(module,row)!=='published')v.fail('内容尚未发布');return publicRow(module,row);

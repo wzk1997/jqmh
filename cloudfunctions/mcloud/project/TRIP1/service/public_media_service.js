@@ -1,7 +1,7 @@
 // Display-only URLs for canonical published content. Never accepts client file IDs.
 const cloudBase = require('../../../framework/cloud/cloud_base.js');
 const config = require('../../../config/config.js');
-const TYPES = ['news', 'album', 'product', 'scenic', 'merchant'];
+const TYPES = ['news', 'album', 'product', 'scenic', 'merchant', 'panorama'];
 const ROUTES = new Set(['home/list', 'home/portal', 'news/list', 'news/view', 'album/list', 'album/view', 'product/list', 'product/view', 'cms/list', 'cms/detail']);
 function collect(route, data, params = {}, environment = config.CLOUD_ID, allowDrafts = false) {
     if (!ROUTES.has(route)) return [];

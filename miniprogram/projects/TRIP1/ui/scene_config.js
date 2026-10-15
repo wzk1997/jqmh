@@ -5,4 +5,5 @@ module.exports = {
     arBackdrop: '/projects/TRIP1/images/design/ar-forest-v3.jpg',
     // Fill these only when the real third-party providers/resources are available.
     arProvider: null,
+    panoramaUrl: '',
 };

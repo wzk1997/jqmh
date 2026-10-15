@@ -8,7 +8,7 @@ Page({
 	/**
 	 * 页面的初始数据
 	 */
-	data: {modules:[{id:'scenic',title:'景区简介',icon:'icon-home'},{id:'album',title:'园区攻略',icon:'icon-pic'},{id:'merchant',title:'吃住行',icon:'icon-shop'},{id:'news',title:'活动资讯',icon:'icon-form'},{id:'feedback',title:'客户反馈',icon:'icon-edit'}]},
+	data: {modules:[{id:'scenic',title:'景区简介',icon:'icon-home'},{id:'album',title:'园区攻略',icon:'icon-pic'},{id:'merchant',title:'吃住行',icon:'icon-shop'},{id:'panorama',title:'全景图',icon:'icon-camera'},{id:'news',title:'活动资讯',icon:'icon-form'},{id:'feedback',title:'客户反馈',icon:'icon-edit'}]},
     openModule(e){const id=e.currentTarget.dataset.id;wx.navigateTo({url:id==='feedback'?'/projects/TRIP1/pages/admin/feedback/admin_feedback':'/projects/TRIP1/pages/admin/cms/list/cms_list?module='+id});},
 
 	/**

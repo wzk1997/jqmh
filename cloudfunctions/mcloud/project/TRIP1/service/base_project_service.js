@@ -44,7 +44,9 @@ class BaseProjectService extends BaseService {
 		}
 
 		if (await dbUtil.isExistCollection(F('admin'))) {
-			let adminCnt = await AdminModel.count({});
+			// A project may contain ordinary administrators already. Only the
+			// reserved super-admin account determines whether setup must create it.
+			let adminCnt = await AdminModel.count({ ADMIN_NAME: 'admin' });
 			if (adminCnt == 0) {
 				let data = {};
 				data.ADMIN_NAME = 'admin';

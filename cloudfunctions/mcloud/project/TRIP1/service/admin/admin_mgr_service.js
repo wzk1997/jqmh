@@ -17,6 +17,15 @@ const md5Lib = require('../../../../framework/lib/md5_lib.js');
 
 class AdminMgrService extends BaseProjectAdminService {
 
+	async getAdminsByName(name, fields = '_id,ADMIN_NAME,ADMIN_DELETED') {
+		return await AdminModel.getAll({ ADMIN_NAME: name }, fields, { ADMIN_ADD_TIME: 'asc' }, 100);
+	}
+
+	async assertAdminNameAvailable(name, excludeId = '') {
+		const admins = await this.getAdminsByName(name);
+		if (admins.some(admin => admin._id !== excludeId)) this.AppError('账号已存在');
+	}
+
 	//**管理员登录  */
 	async adminLogin(name, password) {
 
@@ -25,8 +34,9 @@ class AdminMgrService extends BaseProjectAdminService {
 			ADMIN_STATUS: 1,
 			ADMIN_NAME: name, ADMIN_DELETED: ['<>',true]
 		}
-		let fields = 'ADMIN_ID,ADMIN_NAME,ADMIN_DESC,ADMIN_TYPE,ADMIN_LOGIN_TIME,ADMIN_LOGIN_CNT,ADMIN_PASSWORD,ADMIN_PERMISSIONS';
-		let admin = await AdminModel.getOne(where, fields);
+		const matches = await AdminModel.getAll(where, '_id,ADMIN_ID,ADMIN_NAME,ADMIN_DESC,ADMIN_TYPE,ADMIN_LOGIN_TIME,ADMIN_LOGIN_CNT,ADMIN_PASSWORD,ADMIN_PERMISSIONS', { ADMIN_ADD_TIME: 'asc' }, 2);
+		if (matches.length > 1) this.AppError('管理员账号数据重复，请联系维护人员处理');
+		let admin = matches[0];
 		if (!admin || !passwordUtil.verify(password,admin.ADMIN_PASSWORD))
 			this.AppError('管理员不存在或者已停用');
 
@@ -42,7 +52,7 @@ class AdminMgrService extends BaseProjectAdminService {
 			ADMIN_LOGIN_TIME: timeUtil.time(),
 			ADMIN_LOGIN_CNT: cnt + 1
 		}
-		await AdminModel.edit(where, data);
+		await AdminModel.edit(admin._id, data);
 
 		let type = admin.ADMIN_TYPE;
 		let last = (!admin.ADMIN_LOGIN_TIME) ? '尚未登录' : timeUtil.timestamp2Time(admin.ADMIN_LOGIN_TIME);
@@ -168,7 +178,7 @@ class AdminMgrService extends BaseProjectAdminService {
         const name=v.text(input.name,'账号',30,true),desc=v.text(input.desc,'姓名',30,true),phone=v.phone(input.phone);
         if(!/^[a-zA-Z0-9_-]{5,30}$/.test(name))this.AppError('账号需为5至30位字母、数字或下划线');
         if(typeof input.password!=='string'||input.password.length<6||input.password.length>30)this.AppError('密码长度需为6至30位');
-        if(await AdminModel.getOne({ADMIN_NAME:name}))this.AppError('账号已存在');
+		await this.assertAdminNameAvailable(name);
         return AdminModel.insert({ADMIN_NAME:name,ADMIN_DESC:desc,ADMIN_PHONE:phone,ADMIN_PASSWORD:passwordUtil.hash(input.password),ADMIN_TYPE:0});
     }
     async statusMgr(id,status,myAdminId){
@@ -196,7 +206,7 @@ class AdminMgrService extends BaseProjectAdminService {
         const admin=await AdminModel.getOne(v.id(id));if(!admin||admin.ADMIN_DELETED)this.AppError('管理员不存在');
         const name=v.text(input.name,'账号',30,true),desc=v.text(input.desc,'姓名',30,true),phone=v.phone(input.phone);
         if(!/^[a-zA-Z0-9_-]{5,30}$/.test(name))this.AppError('账号格式不正确');
-        const duplicate=await AdminModel.getOne({ADMIN_NAME:name});if(duplicate&&duplicate._id!==id)this.AppError('账号已存在');
+		await this.assertAdminNameAvailable(name,id);
         const data={ADMIN_NAME:name,ADMIN_DESC:desc,ADMIN_PHONE:phone};
         if(input.password){if(input.password.length<6||input.password.length>30)this.AppError('密码长度不正确');data.ADMIN_PASSWORD=passwordUtil.hash(input.password);data.ADMIN_TOKEN='';data.ADMIN_TOKEN_TIME=0;}
         await AdminModel.edit(id,data);

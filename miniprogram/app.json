@@ -7,7 +7,7 @@
     "pages/test1/test1"
   ],
   "window": {
-    "backgroundColor": "#f5f8f6",
+    "backgroundColor": "#faf7f2",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black"
@@ -15,8 +15,8 @@
   "tabBar": {
     "custom": true,
     "backgroundColor": "#FFFFFF",
-    "color": "#79809c",
-    "selectedColor": "#087f70",
+    "color": "#78675f",
+    "selectedColor": "#a44736",
     "list": [
       {
         "pagePath": "projects/TRIP1/pages/default/index/default_index",

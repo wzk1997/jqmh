@@ -50,7 +50,7 @@ Component({
 		},
 		doFav: {
 			type: Boolean,
-			value: true
+			value: false
 		},
 		doFoot: {
 			type: Boolean,
@@ -58,7 +58,7 @@ Component({
 		},
 		doShare: {
 			type: Boolean,
-			value: true
+			value: false
 		},
 		doHome: {
 			type: Boolean,
@@ -66,7 +66,7 @@ Component({
 		},
 		doPoster: {
 			type: Boolean,
-			value: true
+			value: false
 		},
 		doFoot: {
 			type: Boolean,
@@ -117,7 +117,7 @@ Component({
 				FootBiz.addFoot(this.data.cate, this.data.title);
 			}
 
-			if (this.data.doShare) {
+			if (this.data.doShare && this.data.doPoster) {
 
 				let posterConfig = await posterCmptHelper.config1({
 					cover: this.data.cover,
@@ -145,12 +145,13 @@ Component({
 	 */
 	methods: {
 		bindShareTap: function () {
+			if (!this.data.doShare) return;
 			this.setData({
 				showPoster: true
 			});
 		},
 		bindFavTap: async function () {
-			if (this.data.isFav == -1) return;
+			if (!this.data.doFav || this.data.isFav == -1) return;
 			
 			await FavBiz.updateFav(this, this.data.oid, this.data.isFav, this.data.cate, this.data.title);
 		},

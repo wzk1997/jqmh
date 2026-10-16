@@ -1,5 +1,5 @@
 module.exports = {
-	PROJECT_COLOR: '#116b60',
+	PROJECT_COLOR: '#a44736',
 	NAV_COLOR: '#000000',
 	NAV_BG: '#ffffff',
 
@@ -23,11 +23,7 @@ module.exports = {
 
 
 	NEWS_NAME: '内容',
-	NEWS_CATE: [
-		{ id: 1, title: '园区动态', style: 'upimg' },
-		{ id: 2, title: '美食', style: 'leftbig1' },
-		{ id: 3, title: '特产', style: 'leftbig3' },
-	],
+	NEWS_CATE: [],
 
 	// ### 预约相关  
 	MEET_NAME: '预约',
@@ -43,13 +39,7 @@ module.exports = {
 	],
 
 	ALBUM_NAME: '攻略',
-	ALBUM_CATE: [
-		{ id: 1, title: '线路' },
-		{ id: 2, title: '吃喝' },
-		{ id: 3, title: '住宿' },
-		{ id: 4, title: '购物' },
-		{ id: 5, title: '其他' },
-	],
+	ALBUM_CATE: [],
 	ALBUM_FIELDS: [
 		{ mark: 'cover', title: '封面图片', type: 'image', min: 1, max: 1, must: true },
 		{ mark: 'desc', title: '简介', type: 'textarea', max: 100, must: true },
@@ -57,12 +47,7 @@ module.exports = {
 	],
 
 	PRODUCT_NAME: '景点',
-	PRODUCT_CATE: [
-		{ id: 1, title: '仙山贡水' },
-		{ id: 2, title: '伍家台' },
-		{ id: 3, title: '狮子关' },
-		{ id: 4, title: '其他景点' }
-	],
+	PRODUCT_CATE: [],
 	PRODUCT_FIELDS: [
 		{ mark: 'cover', title: '封面图片', type: 'image', min: 1, max: 1, must: true },
 		{ mark: 'star', title: '推荐指数(星级)', type: 'select', selectOptions: ['1', '2', '3', '4', '5'], def: 1, must: true },

@@ -1,3 +1,3 @@
 @import "../../../style/design_v3.wxss";
-page{background:#f7faf8}
+page{background:#faf7f2}
 news-waterfall{display:block;padding:24rpx}

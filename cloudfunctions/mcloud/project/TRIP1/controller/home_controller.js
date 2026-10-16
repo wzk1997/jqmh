@@ -26,11 +26,6 @@ class HomeController extends BaseProjectController {
 	}
 
 
-	/** 首页推荐列表 */
-	async getHomeList() {
-		let service = new HomeService();
-		return await service.getHomeList(); 
-	}
 
 }
 

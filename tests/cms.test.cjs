@@ -2,9 +2,13 @@ const test=require('node:test'), assert=require('node:assert/strict'),fs=require
 const root=path.resolve(__dirname,'..');
 function load(file,mocks={}){const filename=path.join(root,file),mod={exports:{}};vm.runInThisContext('(function(require,module,exports){'+fs.readFileSync(filename,'utf8')+'\n})',{filename})(n=>n in mocks?mocks[n]:require(n.startsWith('.')?path.resolve(path.dirname(filename),n):n),mod,mod.exports);return mod.exports;}
 const validation=load('cloudfunctions/mcloud/project/TRIP1/service/cms_validation.js');
-function fixture(){
+function fixture({withCategories=true}={}){
  const stores={},queries=[],files=new Map();
- const models={};for(const kind of ['news','album','product','merchant','category','scenic']){const store=stores[kind]=new Map();const p=kind==='category'?'CONTENT_CATEGORY_':kind.toUpperCase()+'_';models[kind]={CL:'bx_'+kind,getOne:async q=>typeof q==='string'?store.get(q):[...store.values()].find(r=>Object.entries(q).every(([k,v])=>Array.isArray(v)?r[k]!==v[1]:r[k]===v)),insert:async d=>{store.set(d._id,{[p+'DELETED']:false,[p+'DRAFT']:{},[p+'ADD_TIME']:1,...d});return d._id},edit:async(id,d)=>Object.assign(store.get(id),structuredClone(d)),getList:async(...args)=>{queries.push({kind,args});return {list:[...store.values()],total:store.size}},getAll:async()=>[],count:async()=>0};}
+ const models={};for(const kind of ['news','album','product','merchant','category','scenic']){const store=stores[kind]=new Map();const p=kind==='category'?'CONTENT_CATEGORY_':kind.toUpperCase()+'_';models[kind]={CL:'bx_'+kind,getOne:async q=>typeof q==='string'?store.get(q):[...store.values()].find(r=>Object.entries(q).every(([k,v])=>Array.isArray(v)?r[k]!==v[1]:r[k]===v)),insert:async d=>{store.set(d._id,{[p+'DELETED']:false,[p+'DRAFT']:{},[p+'ADD_TIME']:1,...d});return d._id},edit:async(id,d)=>Object.assign(store.get(id),structuredClone(d)),getList:async(...args)=>{queries.push({kind,args});return {list:[...store.values()],total:store.size}},getAll:async(q={})=>[...store.values()].filter(row=>Object.entries(q).every(([key,value])=>row[key]===value)),count:async()=>0};}
+ // Explicit test records stand in for manually managed categories, not production defaults.
+ if(withCategories)for(const module of ['news','album','product'])for(const key of ['1','2','3','4','5','tips']){
+  const id='test-'+module+'-'+key;stores.category.set(id,{_id:id,CONTENT_CATEGORY_MODULE:module,CONTENT_CATEGORY_KEY:key,CONTENT_CATEGORY_NAME:key==='tips'?(module==='album'?'游玩贴士':'旅游资讯'):'测试分类'+key,CONTENT_CATEGORY_STATE:'published',CONTENT_CATEGORY_DELETED:false});
+ }
  class Base{AppError(m){throw Error(m);}}
  const mocks={'./base_project_admin_service.js':Base,'../cms_validation.js':validation,'../../../../framework/database/db_util.js':{isExistCollection:async()=>true},'../../../../framework/utils/data_util.js':{dbForms2Obj:forms=>Object.fromEntries(forms.map(f=>[f.mark,f.val]))},'../../../../framework/validate/content_check.js':{checkTextMultiAdmin:async()=>{},checkImgAdmin:async()=>{}},'../../../../framework/utils/util.js':{getProjectId:()=> 'TRIP1'},'../../../../framework/cloud/cloud_base.js':{getCloud:()=>({downloadFile:async({fileID})=>({fileContent:files.get(fileID)||Buffer.from('bad')}),uploadFile:async({cloudPath,fileContent})=>{const fileID='cloud://env/'+cloudPath;files.set(fileID,fileContent);return {fileID}}})},'../../model/cms_asset_model.js':{CL:'bx_cms_asset',insert:async()=> 'asset'}};
  for(const [k,m]of Object.entries(models))mocks['../../model/'+(k==='category'?'content_category':k)+'_model.js']=m;
@@ -80,28 +84,24 @@ test('image upload retry reuses successful files and the existing draft without 
 });
 test('disabled default categories cannot reappear through compatibility defaults or be used to publish',async()=>{
  const f=fixture();const {id}=await f.service.saveLegacy('news',{title:'分类停用前的草稿',cateId:'1',order:1,forms:[]});
- f.stores.category.set('disabled',{_id:'disabled',CONTENT_CATEGORY_MODULE:'news',CONTENT_CATEGORY_KEY:'1',CONTENT_CATEGORY_NAME:'停用分类',CONTENT_CATEGORY_STATE:'offline',CONTENT_CATEGORY_DELETED:false});
+ f.stores.category.delete('test-news-1');f.stores.category.set('disabled',{_id:'disabled',CONTENT_CATEGORY_MODULE:'news',CONTENT_CATEGORY_KEY:'1',CONTENT_CATEGORY_NAME:'停用分类',CONTENT_CATEGORY_STATE:'offline',CONTENT_CATEGORY_DELETED:false});
  await assert.rejects(f.service.category('news','1'),/停用/);await assert.rejects(f.service.setState('news',id,'published'),/停用/);
- f.models.category.getAll=async()=>[...f.stores.category.values()];const api=load('cloudfunctions/mcloud/project/TRIP1/service/cms_service.js',{'./admin/admin_cms_service.js':f.Cms,'./cms_validation.js':validation});const categories=await api.categories('news');assert(!categories.some(c=>c.id==='1'));
+ f.models.category.getAll=async()=>[...f.stores.category.values()].filter(row=>row.CONTENT_CATEGORY_MODULE==='news');const api=load('cloudfunctions/mcloud/project/TRIP1/service/cms_service.js',{'./admin/admin_cms_service.js':f.Cms,'./cms_validation.js':validation});const categories=await api.categories('news');assert(!categories.some(c=>c.id==='1'));
 });
 test('rapid CMS filter changes discard old responses instead of showing mismatched content',async()=>{
  let definition;const pending=[];vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages/admin/cms/list/cms_list.js'),'utf8'),{require:n=>n.includes('cms_ui')?{call:(action,params)=>new Promise(resolve=>pending.push({params,resolve})),normalize:(_,row)=>row}:{},Page:p=>definition=p});
  const page={...definition,data:structuredClone(definition.data),setData(p){Object.assign(this.data,p)}};page.data.module='merchant';const first=page.load();page.data.category='stay';const second=page.load();assert.equal(pending.length,2);pending[1].resolve({list:[{id:'hotel'}],total:1});await second;pending[0].resolve({list:[{id:'old-food'}],total:1});await first;assert.equal(page.data.records[0].id,'hotel');assert.equal(page.data.loading,false);
 });
-test('category management includes built-in categories that have no database record',async()=>{
+test('category management displays only stored categories and never synthesizes defaults',async()=>{
  let definition;const calls=[];vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages/admin/cms/list/cms_list.js'),'utf8'),{require:n=>n.includes('cms_ui')?{call:async(action,params)=>{calls.push({action,params});return action==='list'?{list:[{_id:'custom',CONTENT_CATEGORY_KEY:'custom',CONTENT_CATEGORY_NAME:'自定义',CONTENT_CATEGORY_STATE:'draft'}],total:1}:[{id:'activity',name:'景区活动',legacy:true},{id:'custom',name:'自定义'}];},normalize:(_,row)=>({id:row._id,key:row.CONTENT_CATEGORY_KEY,name:row.CONTENT_CATEGORY_NAME,state:row.CONTENT_CATEGORY_STATE,stateLabel:'草稿'}),META:{category:{title:'分类管理'}},can:()=>true}:{},Page:p=>definition=p});
- const page={...definition,data:structuredClone(definition.data),setData(p){Object.assign(this.data,p)}};page.data.module='category';page.data.categoryModule='news';await page.load();assert.equal(calls.length,2);assert.equal(calls.find(c=>c.action==='categories').params.module,'news');assert.equal(page.data.records.length,2);assert.equal(page.data.records[0].name,'景区活动');assert.equal(page.data.records[0].builtin,true);assert.equal(page.data.records[1].name,'自定义');
+ const page={...definition,data:structuredClone(definition.data),setData(p){Object.assign(this.data,p)}};page.data.module='category';page.data.categoryModule='news';await page.load();assert.equal(calls.length,1);assert.equal(calls[0].action,'list');assert.equal(page.data.records.length,1);assert.equal(page.data.records[0].name,'自定义');assert(!page.data.records[0].builtin);
 });
 test('compound database queries retain project isolation and status filters in the effective AND clause',()=>{
  const Multi=load('cloudfunctions/mcloud/framework/database/multi_model.js',{'./model.js':class {},'../utils/util.js':{getProjectId:()=> 'TRIP1'},'../utils/data_util.js':{},'../../config/config.js':{COLLECTION_PRFIX:'bx_'}});
  const result=Multi._getWhere({FEEDBACK_STATUS:0,_pid:'other-project',or:[{FEEDBACK_CONTENT:['like','设施']},{FEEDBACK_PHONE:['like','设施']}]});assert.equal(result.and._pid,'TRIP1');assert.equal(result.and.FEEDBACK_STATUS,0);assert.equal(result.or.length,2);assert(!Object.hasOwn(result,'_pid'));
  const nested=Multi._getWhere({and:{_pid:'other-project',NEWS_STATUS:1},or:[{NEWS_TITLE:['like','山']}]});assert.equal(nested.and._pid,'TRIP1');assert.equal(nested.and.NEWS_STATUS,1);
 });
-test('homepage recommendation cache cannot expose deleted, offline or unsupported content',async()=>{
- const queries=[];const News={getOne:async(where)=>{queries.push(where);return where._id==='live'?{_id:'live',NEWS_TITLE:'实时公开标题',NEWS_STATUS:1,NEWS_PIC:['/live.jpg']}:null;},getAll:async()=>[]};
- const Service=load('cloudfunctions/mcloud/project/TRIP1/service/home_service.js',{'./base_project_service.js':class {},'../../../framework/utils/setup/setup_util.js':{get:async()=>[{type:'news',id:'deleted',title:'过期缓存'},{type:'news',id:'live',title:'旧标题'},{type:'meet',id:'booking'}]},'../public/constants.js':{SETUP_HOME_VOUCH_KEY:'vouch'},'../model/news_model.js':News,'../model/album_model.js':{},'../model/product_model.js':{}});
- const result=await new Service().getHomeList();assert.equal(result.length,1);assert.equal(result[0].title,'实时公开标题');assert(queries.every(q=>q.NEWS_STATUS===1&&q.NEWS_DELETED[0]==='<>'));
-});
+test('retired homepage recommendation read and clear routes are no longer registered',()=>{const routes=require('../cloudfunctions/mcloud/project/TRIP1/public/route.js');assert(!routes['home/list']);assert(!routes['admin/clear_vouch']);});
 test('prepared database rules deny direct visitor SDK access to private and CMS collections',()=>{
  const rules=JSON.parse(fs.readFileSync(path.join(root,'cloudfunctions/mcloud/security/database-client-deny.json')));assert.equal(rules.read,false);assert.equal(rules.write,false);const manifest=JSON.parse(fs.readFileSync(path.join(root,'cloudfunctions/mcloud/security/collection-rules-manifest.json')));for(const collection of ['bx_admin','bx_feedback','bx_cms_asset','bx_news','bx_merchant','bx_panorama'])assert(manifest.collections.includes(collection));assert(['prepared-not-applied','partially-applied','applied'].includes(manifest.status));for(const collection of manifest.appliedCollections||[])assert(manifest.collections.includes(collection));
 });
@@ -270,4 +270,67 @@ test('latest guide first page also runs its count alongside the computed publica
  const aggregate={ifNull:x=>x,gt:x=>x,cond:x=>x};
  const Service=load('cloudfunctions/mcloud/project/TRIP1/service/album_service.js',{'./base_project_service.js':class{getProjectId(){return 'TRIP1';}},'../../../framework/utils/util.js':{isDefined:v=>v!==undefined},'../model/album_model.js':Model,'../../../framework/database/db_util.js':{getCmd:()=>({aggregate}),getListComputed:(...args)=>{started.push('list');assert.equal(args[7],false);assert(!args[2].split(',').includes('ALBUM_OBJ'));return new Promise(r=>resolveList=r);}}});
  const pending=new Service().getAlbumList({sortMode:'latest',page:1,size:20});assert.deepEqual(started,['count','list']);resolveCount(0);resolveList({page:1,size:20,list:[]});assert.equal((await pending).count,0);
+});
+
+test('guide tips and news tips keep independent categories and records',async()=>{
+ const f=fixture();
+ assert.equal(await f.service.category('album','tips'),'游玩贴士');
+ assert.equal(await f.service.category('news','tips'),'旅游资讯');
+ const guide=await f.service.saveLegacy('album',{title:'同名内容',cateId:'tips',order:1,forms:[]});
+ const news=await f.service.saveLegacy('news',{title:'同名内容',cateId:'tips',order:1,forms:[]});
+ assert.equal(f.stores.album.size,1);assert.equal(f.stores.news.size,1);
+ assert.equal(f.stores.album.get(guide.id).ALBUM_CATE_NAME,'游玩贴士');
+ assert(!Object.keys(f.stores.album.get(guide.id)).some(k=>k.startsWith('NEWS_')));
+ assert(!Object.keys(f.stores.news.get(news.id)).some(k=>k.startsWith('ALBUM_')));
+ await f.service.remove('news',news.id);
+ assert.equal((await f.service.detail('album',guide.id)).ALBUM_TITLE,'同名内容');
+ const api=load('cloudfunctions/mcloud/project/TRIP1/service/cms_service.js',{'./admin/admin_cms_service.js':f.Cms,'./cms_validation.js':validation});
+ assert((await api.categories('album')).some(row=>row.id==='tips'&&row.name==='游玩贴士'));
+});
+
+test('empty category storage stays empty and content cannot silently recreate a default category',async()=>{
+ const f=fixture({withCategories:false}),api=load('cloudfunctions/mcloud/project/TRIP1/service/cms_service.js',{'./admin/admin_cms_service.js':f.Cms,'./cms_validation.js':validation});
+ for(const module of ['news','album','product']){assert.deepEqual(await api.categories(module),[]);await assert.rejects(f.service.category(module,'1'),/不存在/);}
+ assert.equal(f.stores.category.size,0);
+});
+
+test('category deletion blocks current or pending draft references, then stays deleted within its module',async()=>{
+ const f=fixture();let where;f.models.product.count=async q=>{where=q;return 1;};
+ await assert.rejects(f.service.remove('category','test-product-1'),/草稿使用/);
+ assert.equal(where.and.PRODUCT_DELETED[0],'<>');assert(where.or.some(q=>q['PRODUCT_DRAFT.PRODUCT_CATE_ID']==='1'));assert(where.or.some(q=>q.PRODUCT_CATE_ID==='1'));
+ assert.equal(f.stores.category.get('test-product-1').CONTENT_CATEGORY_DELETED,false);
+ f.models.product.count=async()=>0;await f.service.remove('category','test-product-1');
+ const api=load('cloudfunctions/mcloud/project/TRIP1/service/cms_service.js',{'./admin/admin_cms_service.js':f.Cms,'./cms_validation.js':validation});
+ assert(!(await api.categories('product')).some(row=>row.id==='1'));await assert.rejects(f.service.category('product','1'),/停用/);
+ assert((await api.categories('news')).some(row=>row.id==='1'));
+});
+
+test('fresh setup creates required collections and administrator but no sample business records',async()=>{
+ const collections=new Set(),admins=[];const Service=load('cloudfunctions/mcloud/project/TRIP1/service/base_project_service.js',{
+  '../../../framework/database/db_util.js':{isExistCollection:async name=>collections.has(name),createCollection:async name=>collections.add(name)},
+  '../../../framework/utils/util.js':{getProjectId:()=> 'TRIP1'},
+  '../../../framework/platform/model/admin_model.js':{count:async()=>admins.length,insert:async row=>admins.push(row)},
+  '../../../framework/platform/service/base_service.js':class {}
+ });
+ await new Service().initSetup();assert.equal(admins.length,1);assert(collections.has('bx_setup_trip1'));assert(collections.has('bx_album'));
+ await new Service().initSetup();assert.equal(admins.length,1);
+ const settings=require('../miniprogram/projects/TRIP1/public/project_setting.js');
+ for(const key of ['NEWS_CATE','ALBUM_CATE','PRODUCT_CATE'])assert.deepEqual(settings[key],[]);
+});
+
+test('category list deletion confirms, uses the correct scope, refreshes and enforces the UI permission gate',async()=>{
+ let definition,confirmed=true,confirmCalls=0;const calls=[];
+ const cms={confirm:async()=>{confirmCalls++;return confirmed;},call:async(action,params)=>{calls.push({action,params});return {list:[],total:0}},normalize:(_,r)=>r};
+ vm.runInNewContext(fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages/admin/cms/list/cms_list.js'),'utf8'),{Page:o=>definition=o,require:n=>n.includes('cms_ui')?cms:{},wx:{showToast(){}}});
+ const p={...definition,data:structuredClone(definition.data),setData(v){Object.assign(this.data,v)}};
+ Object.assign(p.data,{module:'category',categoryModule:'product',canDelete:true,records:[{id:'category-id',name:'手动分类'}]});
+ const event={currentTarget:{dataset:{id:'category-id'}}};confirmed=false;await p.removeCategory(event);assert.equal(calls.length,0);assert.equal(p.data.deleting,false);
+ p.data.canDelete=false;await p.removeCategory(event);assert.equal(confirmCalls,1);
+ p.data.canDelete=true;confirmed=true;await p.removeCategory(event);assert.equal(calls[0].action,'remove');assert.deepEqual(JSON.parse(JSON.stringify(calls[0].params)),{module:'category',id:'category-id',categoryModule:'product'});assert.equal(calls[1].action,'list');assert.equal(p.data.records.length,0);assert.equal(p.data.deleting,false);
+});
+
+test('independent carousel asset upload validates bytes and stores assets outside scenic records',async()=>{
+ const f=fixture();const result=await f.service.uploadAsset('home_portal','SETUP_HOME_PORTAL',Buffer.from([255,216,255,1]).toString('base64'),'admin');
+ assert(result.fileID.includes('/TRIP1/home_portal/SETUP_HOME_PORTAL/'));assert.equal(f.stores.scenic.size,0);
+ await assert.rejects(f.service.uploadAsset('home_portal','SETUP_HOME_PORTAL',Buffer.from('invalid').toString('base64'),'admin'),/JPG/);
 });

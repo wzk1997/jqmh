@@ -2,7 +2,14 @@
 const cloudBase = require('../../../framework/cloud/cloud_base.js');
 const config = require('../../../config/config.js');
 const TYPES = ['news', 'album', 'product', 'scenic', 'merchant'];
-const ROUTES = new Set(['home/list', 'home/portal', 'news/list', 'news/view', 'album/list', 'album/view', 'product/list', 'product/view', 'cms/list', 'cms/detail']);
+const ROUTES = new Set(['home/portal', 'news/list', 'news/view', 'album/list', 'album/view', 'product/list', 'product/view', 'cms/list', 'cms/detail']);
+// Canonical carousel images have their own namespace; retain already-published scenic images.
+function portalFiles(slides,environment){
+ return [...new Set((slides||[]).map(s=>s.image).filter(id=>{
+  const m=typeof id==='string'&&/^cloud:\/\/([^/]+)\/(.+)$/.exec(id);
+  return m&&m[1].split('.')[0]===environment&&/^TRIP1\/(home_portal\/SETUP_HOME_PORTAL|scenic\/[\w-]+)\//.test(m[2])&&!/[\\?#]|(?:^|\/)\.\.(?:\/|$)/.test(m[2])&&/\.(?:png|jpe?g|webp)$/i.test(m[2]);
+ }))];
+}
 function collect(route, data, params = {}, environment = config.CLOUD_ID, allowDrafts = false) {
     if (!ROUTES.has(route)) return [];
     const files = new Set();
@@ -25,13 +32,8 @@ function collect(route, data, params = {}, environment = config.CLOUD_ID, allowD
         if (allowDrafts && type === 'album') (row.relatedSpots || []).forEach(spot => record(spot, 'product', spot.id));
     }
     if (route === 'home/portal') {
-        record(data && data.scenic, 'scenic', data && data.scenic && data.scenic._id);
-        if (data && data.scenic) record(data.slides, 'scenic', data.scenic._id);
-        (data && data.featured || []).forEach(row => {
-            const type = row.type || TYPES.find(t => row[t.toUpperCase() + '_NAME']);
-            record(row, type, row._id || row.id);
-        });
-    } else if (route === 'home/list') (data || []).forEach(row => record(row, row.type, row.id));
+        portalFiles(data&&data.slides,environment).forEach(id=>files.add(id));
+    }
     else {
         const type = route.startsWith('cms/') ? params.module : route.split('/')[0];
         (data && Array.isArray(data.list) ? data.list : [data]).forEach(row => record(row, type, row && (row._id || row.id)));
@@ -45,13 +47,11 @@ function collectAdmin(route, data, params = {}, environment = config.CLOUD_ID) {
     if (route === 'admin/cms_spots')
         return collect('product/list', {list:[...(data.list || []), ...(data.selected || [])]}, {}, environment);
     if (['admin/cms_upload', 'admin/portal_upload'].includes(route)) {
-        const module = route === 'admin/portal_upload' ? 'scenic' : params.module;
+        if(route==='admin/portal_upload')return portalFiles([{image:data.fileID}],environment);
+        const module = params.module;
         return collect('cms/detail', {_id:params.id || params.scenicId, image:data.fileID}, {module}, environment);
     }
-    if (route === 'admin/portal_get') {
-        return [...new Set([data.draft, data.published].filter(Boolean).flatMap(config =>
-            collect('cms/detail', {_id:config.scenicId, slides:config.slides}, {module:'scenic'}, environment)))];
-    }
+    if (route === 'admin/portal_get')return portalFiles([data.draft,data.published].filter(Boolean).flatMap(c=>c.slides||[]),environment);
     return [];
 }
 async function sign(files, maxAge) {

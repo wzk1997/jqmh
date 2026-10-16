@@ -8,7 +8,6 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {
-        navActions: [{id:'share',icon:'icon-share',label:'分享资讯',openType:'share'}],
 		isLoad: false, 
 	},
 

@@ -1,6 +1,6 @@
-<view wx:if="{{mode!='compact'}}" style="height:{{mode==='guide'?150:200}}rpx"></view>
-<view wx:if="{{mode==='guide'}}" class="guide-favorite-bar"><button class="guide-favorite-button" bindtap="bindFavTap" disabled="{{isFav===-1}}"><text class="icon-{{isFav>0?'favorfill':'favor'}}"/> {{isFav>0?'已收藏攻略':'收藏攻略'}}</button></view>
-<button wx:if="{{mode==='compact'}}" class="compact-favorite" bindtap="bindFavTap" disabled="{{isFav===-1}}" aria-label="{{isFav>0?'取消收藏景点':'收藏景点'}}"><text class="icon-{{isFav>0?'favorfill':'favor'}}"/></button>
+<view wx:if="{{mode!='compact'&&(doFav||doShare||doSlot||tag)}}" style="height:{{mode==='guide'?150:200}}rpx"></view>
+<view wx:if="{{doFav&&mode==='guide'}}" class="guide-favorite-bar"><button class="guide-favorite-button" bindtap="bindFavTap" disabled="{{isFav===-1}}"><text class="icon-{{isFav>0?'favorfill':'favor'}}"/> {{isFav>0?'已收藏攻略':'收藏攻略'}}</button></view>
+<button wx:if="{{doFav&&mode==='compact'}}" class="compact-favorite" bindtap="bindFavTap" disabled="{{isFav===-1}}" aria-label="{{isFav>0?'取消收藏景点':'收藏景点'}}"><text class="icon-{{isFav>0?'favorfill':'favor'}}"/></button>
 
 <view wx:if="{{doHome&&mode!='right'}}" bindtap="bindHomeTap" class="cmpt-fixed-home-btn"><text class="icon-home"></text><text style="font-size:22rpx;">首页</text></view>
 
@@ -12,7 +12,7 @@
 <!--回页首 end-->
 
 <!--mode1 BEGIN-->
-<view wx:if="{{mode=='mode1'}}" class="cmpt-biz-detail-mode1 safe-bottom">
+<view wx:if="{{mode=='mode1'&&(doFav||doShare||doSlot||tag)}}" class="cmpt-biz-detail-mode1 safe-bottom">
 	<view wx:if="{{tag}}" class="has-tag">{{tag}}</view>
 	<view class="fav btn-inner" bindtap="bindFavTap" wx:if="{{doFav}}">
 		<block wx:if="{{isFav>0}}">
@@ -35,7 +35,7 @@
 <!--mode1 end-->
 
 <!--mode2 BEGIN-->
-<view wx:if="{{mode=='mode2'}}" class="cmpt-biz-detail-mode2 safe-bottom">
+<view wx:if="{{mode=='mode2'&&(doFav||doShare||doSlot||tag)}}" class="cmpt-biz-detail-mode2 safe-bottom">
 	<view wx:if="{{tag}}" class="has-tag">{{tag}}</view>
 	<view class="inner">
 		<button class="share clearbtn" bindtap="bindShareTap" wx:if="{{doShare&&doPoster}}">

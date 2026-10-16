@@ -5,11 +5,6 @@
  */
 
 const BaseProjectAdminService = require('./base_project_admin_service.js');
-const UserModel = require('../../model/user_model.js');
-const MeetModel = require('../../model/meet_model.js');
-const NewsModel = require('../../model/news_model.js');
-const ProductModel = require('../../model/product_model.js');   
-const AlbumModel = require('../../model/album_model.js');
 const constants = require('../../public/constants.js');
 const setupUtil = require('../../../../framework/utils/setup/setup_util.js');
 
@@ -22,13 +17,13 @@ class AdminHomeService extends BaseProjectAdminService {
         const Cms = require('./admin_cms_service.js');
         const Feedback = require('../../model/feedback_model.js');
         const cms = new Cms();
-        const modules = [['scenic','景区介绍'],['album','攻略数'],['merchant','商家数'],['news','资讯数'],['product','景点数']];
+        const modules = [['scenic','园区简介'],['album','攻略数'],['merchant','商家数'],['news','资讯数'],['product','景点数']];
         const results = await Promise.all(modules.map(async ([module,title])=>{
             const Model=cms.model(module);await cms.ensure(Model);
-            return {title,cnt:await Model.count({[module.toUpperCase()+'_DELETED']:['<>',true]})};
+            return {module,title,cnt:await Model.count({[module.toUpperCase()+'_DELETED']:['<>',true]})};
         }));
         await cms.ensure(Feedback);
-        results.push({title:'待处理反馈',cnt:await Feedback.count({FEEDBACK_STATUS:['in',[0,2]]})});
+        results.push({module:'feedback',title:'待处理反馈',cnt:await Feedback.count({FEEDBACK_STATUS:['in',[0,2]]})});
         return results;
     }
 
@@ -39,15 +34,6 @@ class AdminHomeService extends BaseProjectAdminService {
 
 
 	//##################首页推荐
-	// 首页推荐清理
-	async clearVouchData() {
-		await setupUtil.remove(constants.SETUP_HOME_VOUCH_KEY);
-
-		await Promise.all([NewsModel.edit({}, { NEWS_VOUCH: 0 }), MeetModel.edit({}, { MEET_VOUCH: 0 }), AlbumModel.edit({}, { ALBUM_VOUCH: 0 }), ProductModel.edit({}, { PRODUCT_VOUCH: 0 })]); 
-
-	}
-
-
 	/**添加首页推荐 */
 	async updateHomeVouch(node) {
 		if (node.ext) node.ext = '#' + node.ext;

@@ -6,12 +6,12 @@ const { normalizeContent } = require('../../../ui/content_ui.js');
 Page({
     data: {
         items: [], loading: false, error: false, page: 0, hasMore: false,
-        category: '1', routeCategories: [], contentMode: 'route', sort: 'recommend',
+        category: '', routeCategories: [], contentMode: 'route', sort: 'recommend',
         sorts: [{ id: 'recommend', name: '推荐攻略' }, { id: 'new', name: '最新发布' }, { id: 'popular', name: '最受欢迎' }],
         entries: [{ id: 'route', name: '经典路线', icon: 'icon-album', color: 'green' }, { id: 'spots', name: '必玩景点', icon: 'icon-location', color: 'orange' }, { id: 'tips', name: '游玩贴士', icon: 'icon-roundcheckfill', color: 'blue' }]
     },
     bindScenicLayout(e) { this.setData({ uiChrome: e.detail }); },
-    onLoad(options = {}) { ProjectBiz.initPage(this); this.setData({ category: options.id || '1' }); this.loadCategories(); this.load(); },
+    onLoad(options = {}) { ProjectBiz.initPage(this); this.setData({ category: options.id || '' }); this.loadCategories(); this.load(); },
     onShow() { ProjectBiz.syncTabBar(this, 1); },
     async loadCategories() {
         try {
@@ -28,8 +28,8 @@ Page({
         let route;
         let params;
         if (contentMode === 'tips') {
-            route = 'news/list';
-            params = { page, size: 20, cateId: 'tips' };
+            route = 'album/list';
+            params = { page, size: 20, sortType: 'cateId', sortVal: 'tips' };
         } else if (contentMode === 'spots') {
             route = 'product/list';
             params = { page, size: 20 };
@@ -38,14 +38,13 @@ Page({
             route = 'album/list';
             params = { page, size: 20, sortType: 'cateId', sortVal: this.data.category, orderBy, ...(this.data.sort === 'new' ? { sortMode: 'latest' } : {}) };
         }
-        const queryKey = JSON.stringify({ route, category: this.data.category, sort: this.data.sort });
+        const queryKey = JSON.stringify({ route, contentMode, category: this.data.category, sort: this.data.sort });
         this.setData({ loading: true, error: false, ...(more ? {} : { ...(queryKey === this.renderedQuery ? {} : { items: [] }), hasMore: false }) });
         try {
             const result = await cloudHelper.callCloudSumbit(route, params, { title: 'bar' });
             if (serial !== this.serial) return;
             const data = result.data || {};
             const rows = (data.list || []).map(row => {
-                if (contentMode === 'tips') return normalizeContent(row, 'news');
                 if (contentMode === 'spots') {
                     const object = row.PRODUCT_OBJ || {};
                     return { ...normalizeContent(row, 'product'), distance: object.distance || '', duration: object.duration || object.time || '' };
@@ -71,8 +70,8 @@ Page({
         const id = e.currentTarget.dataset.id;
         if (!['route', 'spots', 'tips'].includes(id)) return;
         if (id !== 'route' && this.data.contentMode === id) return;
-        if (id === 'route' && this.data.contentMode === 'route' && this.data.category === '1') return;
-        this.setData({ contentMode: id, ...(id === 'route' ? { category: '1' } : {}) });
+        if (id === 'route' && this.data.contentMode === 'route' && this.data.category === '') return;
+        this.setData({ contentMode: id, ...(id === 'route' ? { category: '' } : {}) });
         this.load();
     },
     detail(e) { const path = e.currentTarget.dataset.path; if (path) wx.navigateTo({ url: path }); },

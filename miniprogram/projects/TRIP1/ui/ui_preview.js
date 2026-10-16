@@ -13,8 +13,13 @@ const albums = ['小镇初访半日游','亲子逛镇体验线','江纺街区慢
     return {_id:'ui-route-'+i,ALBUM_TITLE:title,ALBUM_CATE_ID:i<4?'1':String(i-2),ALBUM_CATE_NAME:i<4?'经典路线':['吃喝','住宿','购物','其他'][i-4],ALBUM_DEMO:true,ALBUM_DURATION:i%2?'约 4 小时':'约 2 小时',ALBUM_VIEW_CNT:238+i*23,ALBUM_ADD_TIME:'2026-10-'+String(16-i).padStart(2,'0'),ALBUM_ORDER:i,
         ALBUM_OBJ:{cover:[pictures[i%6]],desc:'串联园区特色，轻松体验'+title+'。',spots:spots.map(s=>s._id),detail:[text('串联小镇街区、休闲空间与吃喝逛玩体验。示例路线用于预览排版，实际行程请以已配置的地点和现场开放情况为准。'),photo(pictures[i%6]),text('出行贴士：备好饮水与舒适鞋履，根据天气调整行程。以上均为本地示例，不代表真实开放或服务信息。')]},ALBUM_SPOTS:spots.map((s,n)=>({...s,cover:s.PRODUCT_OBJ.cover[0],duration:'约 30 分钟',note:'第 '+(n+1)+' 站 · 沿街区漫游',highlight:s.PRODUCT_TITLE}))};
 });
+const tipGuides = ['逛镇前的准备（示例）','小镇休闲安排（示例）'].map((title,i)=>({
+    _id:'ui-album-tip-'+i,ALBUM_SPOTS:[],ALBUM_TITLE:title,ALBUM_CATE_ID:'tips',ALBUM_CATE_NAME:'游玩贴士',ALBUM_DEMO:true,ALBUM_ORDER:i,ALBUM_VIEW_CNT:0,ALBUM_ADD_TIME:'2026-10-16',
+    ALBUM_OBJ:{cover:[pictures[i]],desc:'安排小镇行程前，了解实用的逛镇建议。',spots:[],detail:[text('本内容为独立的攻略贴士示例。出行前核实开放安排，按需安排休闲与用餐时间，注意保管随身物品。具体服务信息以小镇实际公示为准。')]}
+}));
+albums.push(...tipGuides);
 const categories = {
-    album:[['1','经典路线'],['2','吃喝'],['3','住宿'],['4','购物'],['5','其他']],
+    album:[['1','经典路线'],['2','吃喝'],['3','住宿'],['4','购物'],['5','其他'],['tips','游玩贴士']],
     product:[['1','街区漫游'],['2','休闲生活'],['3','小镇体验']],
     news:[['activity','活动资讯'],['announcement','园区公告'],['tips','游玩贴士'],['culture','人文故事'],['2','特色美食'],['3','地方特产']],
     merchant:[['food','美食'],['stay','住宿'],['travel','出行']]

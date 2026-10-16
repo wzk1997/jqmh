@@ -73,8 +73,8 @@
 }
 
 .time-table .list .item .right.selected {
-	border-top: 1rpx solid #dfffd8;
-	background-color: #dfffd8;
+	border-top: 1rpx solid #f5e6e2;
+	background-color: #f5e6e2;
 }
 
 .time-table .list .item .right.selected-first {

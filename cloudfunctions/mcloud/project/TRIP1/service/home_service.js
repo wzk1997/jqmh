@@ -6,61 +6,15 @@
 
 const BaseProjectService = require('./base_project_service.js');
 const setupUtil = require('../../../framework/utils/setup/setup_util.js');
-const constants = require('../public/constants.js');
-const NewsModel = require('../model/news_model.js');
 
 class HomeService extends BaseProjectService {
 
 	async getSetup(key) {
-		if (!['SETUP_CONTENT_ABOUT','SETUP_CONTENT_BUS','SETUP_CONTENT_PARKING','SETUP_CONTENT_TOLIET','SETUP_CONTENT_LXS','SETUP_CONTENT_DY','SETUP_CONTENT_WEATHER','SETUP_HOME_VOUCH_KEY'].includes(key)) this.AppError('该配置不可公开访问');
+		if (!['SETUP_CONTENT_ABOUT','SETUP_CONTENT_BUS','SETUP_CONTENT_PARKING','SETUP_CONTENT_TOLIET','SETUP_CONTENT_LXS','SETUP_CONTENT_DY','SETUP_CONTENT_WEATHER'].includes(key)) this.AppError('该配置不可公开访问');
 		return await setupUtil.get(key);
 	}
 
-	/**首页列表 */
-	async getHomeList() {
-		let list = await setupUtil.get(constants.SETUP_HOME_VOUCH_KEY);
-		if (!list || !Array.isArray(list)) list = [];
 
-        // Cached recommendations are only pointers; resolve current published data.
-        const models={news:NewsModel,album:require('../model/album_model.js'),product:require('../model/product_model.js')};
-        const valid=[];
-        for(const node of list){
-            if(!node || !models[node.type] || typeof node.id!=='string')continue;
-            const p=node.type.toUpperCase()+'_';
-            const row=await models[node.type].getOne({_id:node.id,[p+'STATUS']:1,[p+'DELETED']:['<>',true]},'_id,'+p+'TITLE,'+p+'DESC,'+p+'PIC,'+p+'OBJ,'+p+'CATE_NAME');
-            if(!row)continue;
-            const obj=row[p+'OBJ']||{};
-            valid.push({type:node.type,id:row._id,title:row[p+'TITLE'],desc:row[p+'DESC']||obj.desc||'',pic:row[p+'PIC']||obj.cover||[],ext:row[p+'CATE_NAME']||''});
-        }
-        list=valid;
-
-
-		if (list.length == 0) {
-			let orderBy = {
-				'NEWS_ORDER': 'asc',
-				'NEWS_ADD_TIME': 'desc'
-			};
-			let fields = 'NEWS_PIC,NEWS_CATE_NAME,NEWS_TITLE,NEWS_DESC,NEWS_ADD_TIME';
-
-			let where = {};
-			where.NEWS_DELETED = ['<>',true];
-			where.NEWS_STATUS = 1; // 状态    
-
-			let retList = await NewsModel.getAll(where, fields, orderBy, 10);
-			for (let k = 0; k < retList.length; k++) {
-				list.push({
-					type: 'news',
-					ext: retList[k].NEWS_CATE_NAME,
-					title: retList[k].NEWS_TITLE,
-					id: retList[k]._id,
-					desc: retList[k].NEWS_DESC,
-					pic: retList[k].NEWS_PIC
-				})
-			}
-		}
-
-		return list;
-	}
 }
 
 module.exports = HomeService;

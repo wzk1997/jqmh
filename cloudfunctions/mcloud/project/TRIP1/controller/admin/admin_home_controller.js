@@ -27,22 +27,6 @@ class AdminHomeController extends BaseProjectAdminController {
 	}
 
 
-	// 清除首页推荐
-	async clearVouchData() {
-		await this.isAdmin();
-        for(const module of ['news','album','product'])this.requirePermission(module,'publish');
-
-		// 数据校验
-		let rules = {
-
-		};
-
-		// 取得数据
-		let input = this.validateData(rules);
-
-		let service = new AdminHomeService();
-		return await service.clearVouchData();
-	}
 
 }
 

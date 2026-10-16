@@ -14,7 +14,7 @@ test('published response media excludes feedback, arbitrary client IDs, drafts a
 test('portal and itinerary sign only their canonical content folders without changing payload IDs',async()=>{
  const s=service(),scenic=file('scenic','s'),spot=file('product','p'),album=file('album','a');
  const portal={scenic:{_id:'s',SCENIC_IMAGES:[scenic]},slides:[{image:scenic},{image:file('scenic','other')}],featured:[{type:'album',id:'a',pic:album}]};
- assert.deepEqual(s.collect('home/portal',portal,{},'test-env'),[scenic,album]);
+ assert.deepEqual(s.collect('home/portal',portal,{},'test-env'),[scenic,file('scenic','other')]);
  const row={_id:'a',ALBUM_OBJ:{cover:[album]},ALBUM_SPOTS:[{_id:'p',cover:spot}]};
  const original=JSON.stringify(row);assert.deepEqual(s.collect('album/view',row,{},'test-env'),[album,spot]);assert.equal(JSON.stringify(row),original);
 });
@@ -42,4 +42,11 @@ test('draft display URLs stay on authenticated management pages and never enter 
  const mod={exports:{}},visitor={route:'projects/TRIP1/pages/default/index/default_index',data:{},setData(v){Object.assign(this.data,v)}},admin={route:'projects/TRIP1/pages/admin/cms/edit/cms_edit',data:{},setData(v){Object.assign(this.data,v)}},preview={route:'projects/TRIP1/pages/about/index/about_index',data:{adminPreview:true},setData(v){Object.assign(this.data,v)}};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../miniprogram/helper/media_helper.js'),'utf8'),{module:mod,Date,getCurrentPages:()=>[visitor,admin,preview]});const s=mod.exports,id=file('news','n','draft.jpg');
  s.rememberAdmin({[id]:'https://example.test/private'});assert.equal(visitor.data.mediaUrls,undefined);assert.equal(s.display(id),id);assert.equal(s.snapshot()[id],undefined);assert.equal(s.display(id,admin.data.mediaUrls),'https://example.test/private');assert.equal(preview.data.mediaUrls[id],'https://example.test/private');
+});
+
+test('carousel media signs only canonical slides in its own namespace, retaining legacy scenic uploads',()=>{
+ const s=service(),own=file('home_portal','SETUP_HOME_PORTAL'),other=file('home_portal','other'),legacy=file('scenic','old');
+ assert.deepEqual(s.collect('home/portal',{slides:[{image:own},{image:legacy},{image:other}],featured:[{type:'news',id:'n',pic:file('news','n')}]},{},'test-env'),[own,legacy]);
+ assert.deepEqual(s.collectAdmin('admin/portal_upload',{fileID:own},{scenicId:'ignored'},'test-env'),[own]);
+ assert.deepEqual(s.collectAdmin('admin/portal_get',{draft:{slides:[{image:own}]},published:{slides:[{image:legacy}]}},{},'test-env'),[own,legacy]);
 });

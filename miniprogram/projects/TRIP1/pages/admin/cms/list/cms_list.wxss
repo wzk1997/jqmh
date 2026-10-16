@@ -1,2 +1,4 @@
 @import "../../../../style/cms.wxss";
-.cms-system-row[disabled]{opacity:1;color:inherit}
+.cms-list-item{display:flex;align-items:center;gap:16rpx}
+.cms-list-item .cms-list-button{flex:1;min-width:0}
+.cms-category-delete{flex-shrink:0;min-width:96rpx;margin:0;padding:14rpx 20rpx}

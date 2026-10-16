@@ -52,7 +52,6 @@ module.exports = {
 	'fav/my_list': 'fav_controller@getMyFavList',
 
 	'admin/home': 'admin/admin_home_controller@adminHome',
-	'admin/clear_vouch': 'admin/admin_home_controller@clearVouchData',
 
 	'admin/login': 'admin/admin_mgr_controller@adminLogin',
 	'admin/mgr_permissions':'admin/admin_mgr_controller@permissions',
@@ -82,7 +81,6 @@ module.exports = {
 
 
 	// 内容  
-	'home/list': 'home_controller@getHomeList',
 	'news/list': 'news_controller@getNewsList',
 	'news/view': 'news_controller@viewNews',
 

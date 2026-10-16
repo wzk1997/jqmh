@@ -9,7 +9,7 @@ function isEnabled(wxApi, settings) {
     } catch (_) { return false; }
 }
 const portal = {
-    brandName: '江纺1953', scenic: null, featured: [],
+    brandName: '江纺1953',
     slides: [
         {image: IMAGE + 'town/street-v1.jpg', title: '江纺1953', subtitle: '江纺1953 · 拾光小镇，遇见日常好时光'},
         {image: IMAGE + 'town/courtyard-v1.jpg', title: '江纺1953', subtitle: '逛街区、品美食，慢享小镇生活'},

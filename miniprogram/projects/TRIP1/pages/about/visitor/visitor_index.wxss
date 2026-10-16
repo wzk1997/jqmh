@@ -1,4 +1,4 @@
 @import "../../../style/design_v3.wxss";
 .v3-menu{margin:0 26rpx}.v3-menu-row{min-height:140rpx;margin-bottom:18rpx;border-radius:20rpx}
 
-.v3-menu{background:transparent;overflow:visible}.v3-menu-row{border:0!important;box-shadow:0 3rpx 16rpx rgba(50,87,57,.025)}
+.v3-menu{background:transparent;overflow:visible}.v3-menu-row{border:0!important;box-shadow:0 3rpx 16rpx rgba(87,58,50,.025)}

@@ -20,7 +20,7 @@ function can(admin,module,operation){
  return Array.isArray(permissions[module])&&permissions[module].includes(operation);
 }
 async function call(action,params){try {const result=await cloudHelper.callCloudSumbit('admin/cms_'+action,params,{title:'bar'});return result.data;}catch(err){throw new Error(err.msg||err.message||'操作失败，请重试');}}
-function confirm(content){return new Promise(resolve=>wx.showModal({title:'确认操作',content,confirmColor:'#146C60',success:r=>resolve(r.confirm),fail:()=>resolve(false)}));}
+function confirm(content){return new Promise(resolve=>wx.showModal({title:'确认操作',content,confirmColor:'#a44736',success:r=>resolve(r.confirm),fail:()=>resolve(false)}));}
 function go(page,module,id='',categoryModule=''){wx.navigateTo({url:'/projects/TRIP1/pages/admin/cms/'+page+'/cms_'+page+'?module='+module+(id?'&id='+id:'')+(categoryModule?'&categoryModule='+categoryModule:'')});}
 async function upload(module,id,path){if(!path||path.startsWith('cloud://')||path.startsWith('/images/'))return path;
  const base64=wx.getFileSystemManager().readFileSync(path,'base64');const result=await call('upload',{module,id,base64});return result.fileID;}

@@ -1,6 +1,6 @@
 const pageHelper = require('../../../../../helper/page_helper.js');
 const cloudHelper = require('../../../../../helper/cloud_helper.js');
-const { normalizeContent, mergeContent } = require('../../../ui/content_ui.js');
+const { normalizeContent } = require('../../../ui/content_ui.js');
 const sceneConfig = require('../../../ui/scene_config.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 const homePreview = require('../../../ui/home_preview.js');
@@ -14,7 +14,7 @@ Page({
 	 */
 	data: {mediaUrls:{},
         homeNavMode:'home',portalBrandName:'江纺1953',
-        heroRender:true,heroLoading:true,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:[],practical:[],scenicAboutUrl:'/projects/TRIP1/pages/about/index/about_index',
+        heroRender:true,heroLoading:true,heroImagesLoaded:{},heroImageErrors:{},scenicAboutUrl:'/projects/TRIP1/pages/about/index/about_index',
         heroIndex: 0,
         heroImage: sceneConfig.heroImage,
         heroPlaying: true,
@@ -70,16 +70,8 @@ Page({
         return root+(routes[ref.module]||ref.module+'/detail/'+ref.module+'_detail')+'?id='+encodeURIComponent(ref.id);
     },
     applyPortal(portal){
-        const scenic=portal.scenic,info=scenic&&scenic.SCENIC_INFO||{};
         const slides=(portal.slides||[]).map(row=>({...row,label:row.title,path:this.referenceUrl(row.target)}));
-        const featured=(portal.featured||[]).map(row=>{
-            const module=row.type||Object.keys(row).find(k=>/_NAME$/.test(k))?.split('_')[0].toLowerCase();
-            if(!module)return null;
-            const p=module.toUpperCase()+'_',id=row.id||row._id;
-            return {id,title:row.title||row[p+'NAME'],desc:row.desc||row[p+'DESC']||'',pic:row.pic||(row[p+'IMAGES']||row[p+'COVER']||[])[0]||'',demo:!!(row.demo||row[p+'DEMO']),path:this.referenceUrl({module,id})};
-        }).filter(Boolean);
-        const practical=[{title:'开放时间',text:scenic&&scenic.SCENIC_HOURS,icon:'time'},{title:'园区地址',text:scenic&&scenic.SCENIC_ADDRESS,icon:'location'},{title:'交通指南',text:[info.selfDrive,info.transit].filter(Boolean).join(' / '),icon:'taxi'},{title:'建议游玩时长',text:info.visitDuration,icon:'time'},{title:'温馨提示',text:info.tips,icon:'info'}].filter(row=>row.text);
-        this.setData({portalBrandName:portal.brandName||'江纺1953',heroLoading:false,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'江纺1953',subtitle:'拾光小镇 · 开启一段好时光'}],heroIndex:0});
+        this.setData({portalBrandName:portal.brandName||'江纺1953',heroLoading:false,heroImagesLoaded:{},heroImageErrors:{},heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'江纺1953',subtitle:'拾光小镇 · 开启一段好时光'}],heroIndex:0});
     },
     retryHero(){this.setData({heroRender:false,heroImagesLoaded:{},heroImageErrors:{}});wx.nextTick(()=>this.setData({heroRender:true}));},
     heroImageLoaded(e){const index=e.currentTarget.dataset.index;this.setData({['heroImagesLoaded.'+index]:true,['heroImageErrors.'+index]:false});},
@@ -99,12 +91,9 @@ Page({
                 cloudHelper.callCloudSumbit('news/list', {cateGroup:'scenic',page:1,size:this.data.homeNewsLimit}, {title:'bar'})
             ]);
             const portal=results[0].status==='fulfilled'?results[0].value.data:null;
-            let recommendations=[];
-            if(portal&&portal.configured){this.applyPortal(portal);recommendations=portal.featured||[];}
-            else {this.applyPortal({slides:[],featured:[],scenic:null});const res=await cloudHelper.callCloudSumbit('home/list', {}, {title:'bar'});recommendations=Array.isArray(res.data)?res.data:[];}
-            const newsList=recommendations.filter(item=>item.type==='news');
+            this.applyPortal(portal&&portal.configured?portal:{slides:[]});
             const latest=results[1].status==='fulfilled'?((results[1].value.data||{}).list||[]):[];
-            this.setData({newsList,hasHomeLoaded:true,homeError:results[1].status==='rejected',waterfallItems:mergeContent(latest.map(item=>normalizeContent(item,'news')),newsList.map(item=>normalizeContent(item,'news'))).slice(0,this.data.homeNewsLimit)});
+            this.setData({hasHomeLoaded:true,homeError:results[1].status==='rejected',waterfallItems:latest.map(item=>normalizeContent(item,'news')).slice(0,this.data.homeNewsLimit)});
         } catch (err) {
             this.setData({ homeError: true });
         } finally {

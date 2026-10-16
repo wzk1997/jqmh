@@ -103,13 +103,11 @@ class AdminCmsService extends BaseService {
         return values;
     }
     async category(kind, key, name) {
-        const defaults = {news:{'activity':'景区活动','announcement':'景区公告','tips':'旅游资讯','1':'景区动态','2':'美食','3':'特产'},album:{'1':'线路','2':'吃喝','3':'住宿','4':'购物','5':'其他'},product:{'1':'仙山贡水','2':'伍家台','3':'狮子关','4':'其他景点'}};
         key = v.text(key, '分类编号', 80, true);
         await this.ensure(models.category);
         const category = await models.category.getOne({CONTENT_CATEGORY_MODULE:kind,CONTENT_CATEGORY_KEY:key});
         if(category && (category.CONTENT_CATEGORY_DELETED || category.CONTENT_CATEGORY_STATE==='offline'))v.fail('分类已停用');
         if(category && category.CONTENT_CATEGORY_STATE==='published')return category.CONTENT_CATEGORY_NAME;
-        if(defaults[kind]&&defaults[kind][key])return defaults[kind][key];
         v.fail('分类不存在或尚未发布');
     }
     async saveLegacy(kind, input, adminId = '', staged = false) {
@@ -211,11 +209,18 @@ class AdminCmsService extends BaseService {
         if(state==='published' && !row[p+'PUBLISH_TIME'])data[p+'PUBLISH_TIME']=Date.now();
         await this.replaceContent(Model,id,data);return {id,state};
     }
+    async assertCategoryUnused(module,key) {
+        if(!['news','album','product'].includes(module))v.fail('分类模块不正确');
+        await this.ensure(models[module]);
+        const p=prefix(module);
+        const where={and:{[p+'DELETED']:['<>',true]},or:[{[p+'CATE_ID']:key},{[p+'DRAFT.'+p+'CATE_ID']:key}]};
+        if(await models[module].count(where))v.fail('分类仍有内容或草稿使用，请先调整内容分类');
+    }
     async remove(kind,id,adminId='') {
         const row=await this.detail(kind,id),p=prefix(kind);
         if(kind==='category') {
             const module=row.CONTENT_CATEGORY_MODULE;
-            if(await models[module].count({[prefix(module)+'CATE_ID']:row.CONTENT_CATEGORY_KEY,[prefix(module)+'DELETED']:['<>',true]}))v.fail('分类仍有内容使用，请先调整分类');
+            await this.assertCategoryUnused(module,row.CONTENT_CATEGORY_KEY);
         }
         const data={[p+'DELETED']:true,[stateField(kind)]:'deleted',[p+'EDIT_ADMIN']:adminId};
         if(legacy(kind)){data[p+'STATUS']=0;data[p+'DELETED_TIME']=Date.now();}
@@ -223,7 +228,10 @@ class AdminCmsService extends BaseService {
     }
     async sort(kind,id,order) { await this.detail(kind,id); await this.model(kind).edit(id,{[prefix(kind)+'ORDER']:v.integer(order,'排序')}); }
     async upload(kind,id,base64,adminId) {
-        this.model(kind);await this.detail(kind,id);await this.ensure(Asset);
+        this.model(kind);await this.detail(kind,id);return this.uploadAsset(kind,id,base64,adminId);
+    }
+    async uploadAsset(kind,id,base64,adminId) {
+        await this.ensure(Asset);
         if(typeof base64!=='string'||base64.length>7*1024*1024||!base64.length||!/^[A-Za-z0-9+/]+={0,2}$/.test(base64))v.fail('图片数据不正确');
         const b=Buffer.from(base64,'base64');
         if(!b.length||b.length>5*1024*1024)v.fail('图片须在5MB以内');

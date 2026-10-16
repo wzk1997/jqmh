@@ -1,6 +1,6 @@
 @import "ui_tokens.wxss";
 @import "ui_common.wxss";
-page { --adminColor: #087f70; --adminRedColor: #a43d31; }
+page { --adminColor: #a44736; --adminRedColor: #a43d31; }
 .main-admin { padding: 32rpx; background: var(--wt-background); }
 .main-admin .form-box, .main-admin .comm-list.menu, .main-admin .comm-list.grid { border-radius: 24rpx; overflow: hidden; box-shadow: none; background: white; }
 .main-admin .form-box { margin-bottom: 24rpx; }

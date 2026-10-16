@@ -1,22 +1,22 @@
 @import "ui_tokens.wxss";
 page {
-	background-color: #f5f8f6;
+	background-color: #faf7f2;
 
-	--projectColor: #087f70;
-	--projectColorLight: #eaf4f0;
+	--projectColor: #a44736;
+	--projectColorLight: #f4e6de;
 	--projectCompareColor: #a43d31;
 
 	/*#### 父组件日历颜色定义*/
 	/* 整体颜色 */
 	--calendarPageColor: #fff;
 	/* 加重颜色*/
-	--calendarMainColor: #087f70 !important;
+	--calendarMainColor: #a44736 !important;
 	/* 加重的亮颜色 用于选中日期的数据小圆点 */
-	--calendarLightColor: #d5e7da;
+	--calendarLightColor: #e7d9d5;
 }
 
 .bg-admin {
-	background-color: #087f70;
+	background-color: #a44736;
 }
 
 .text-project {

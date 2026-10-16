@@ -117,7 +117,7 @@ Page({
     bindFormSubmit: async function () {
         if (!AdminBiz.isAdmin(this) || this.data.saving) return;
         this.setData({saving:true});
-        const confirmed=await new Promise(resolve=>wx.showModal({title:'发布服务信息',content:'确认保存并更新游客端服务信息？',confirmColor:'#146C60',success:r=>resolve(r.confirm),fail:()=>resolve(false)}));
+        const confirmed=await new Promise(resolve=>wx.showModal({title:'发布服务信息',content:'确认保存并更新游客端服务信息？',confirmColor:'#a44736',success:r=>resolve(r.confirm),fail:()=>resolve(false)}));
         if(!confirmed){this.setData({saving:false});return;}
         this.setData({saving:true});
         try {

@@ -53,13 +53,10 @@ class NewsService extends BaseProjectService {
 		let where = { NEWS_DELETED: ['<>',true] };
 		where.NEWS_STATUS = 1; // 状态 
 
-		if(cateGroup==='scenic'){
-            const categories=await require('./cms_service.js').categories('news');
-            const ids=categories.map(c=>c.id);
-            // A category selection narrows the published category group.
-            where.NEWS_CATE_ID=['in',cateId&&cateId!=='0'?ids.filter(id=>id===cateId):ids];
-        }
-        else if (cateId && cateId !== '0') where.NEWS_CATE_ID = cateId;
+        // Category IDs have no built-in business meaning. Only published managed categories are public.
+        const categories=await require('./cms_service.js').categories('news');
+        const ids=categories.map(c=>String(c.id));
+        where.NEWS_CATE_ID=['in',cateId&&cateId!=='0'?ids.filter(id=>id===String(cateId)):ids];
 
 		if (util.isDefined(search) && search) {
 			where.NEWS_TITLE = {
@@ -76,7 +73,10 @@ class NewsService extends BaseProjectService {
 			}
 		}
 
-		return await NewsModel.getList(where, fields, orderBy, page, size, isTotal, oldTotal);
+		const result=await NewsModel.getList(where, fields, orderBy, page, size, isTotal, oldTotal);
+        const names=Object.fromEntries(categories.map(c=>[String(c.id),c.name]));
+        result.list=result.list.map(row=>({...row,NEWS_CATE_NAME:names[String(row.NEWS_CATE_ID)]||''}));
+        return result;
 	}  
 
 }

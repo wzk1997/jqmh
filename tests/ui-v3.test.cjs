@@ -8,7 +8,7 @@ test('portal search passes the same query to existing list routes and tolerates 
 test('AR never opens camera automatically and camera errors restore preview',()=>{const p=page('miniprogram/projects/TRIP1/pages/experience/ar/ar_index.js',{'../../../ui/scene_config.js':{arBackdrop:'/ar.jpg'},'../../../biz/project_biz.js':{initPage(){}}});p.onLoad({});assert.equal(p.data.cameraActive,false);p.bindCamera();assert.equal(p.data.cameraActive,true);p.bindCameraError();assert.equal(p.data.cameraActive,false);assert(p.data.cameraError);});
 test('all registered frontend routes have complete source; every static new UI URL resolves',()=>{const app=JSON.parse(fs.readFileSync(path.join(root,'miniprogram/app.json')));const registered=app.pages.concat((app.subpackages||[]).flatMap(pack=>pack.pages.map(page=>pack.root+'/'+page)));for(const route of registered)for(const ext of ['js','wxml'])assert(fs.existsSync(path.join(root,'miniprogram',route+'.'+ext)),route+'.'+ext);const pages=['about/visitor/visitor_index','about/faq/faq_index','search/portal/portal_search','experience/ar/ar_index'];for(const page of pages){const file='miniprogram/projects/TRIP1/pages/'+page+'.wxml';const s=fs.readFileSync(path.join(root,file),'utf8');for(const m of s.matchAll(/data-url="([^"{}]+)"/g)){const url=m[1].split('?')[0];if(!url.includes('/'))continue;const route=path.posix.normalize(path.posix.join(path.posix.dirname(file),url)).replace(/^miniprogram\//,'');assert(registered.includes(route),url);}}});
 
-test('portal all-news navigation explicitly passes waterfall layout to the existing news route',()=>{let target;const p=page('miniprogram/projects/TRIP1/pages/default/index/default_index.js',{}, {wx:{navigateTo:o=>target=o.url}});p.bindAllNews();assert.equal(target,'/projects/TRIP1/pages/news/index/news_index?layout=waterfall&id=1');});
+test('portal all-news navigation explicitly passes waterfall layout to the existing news route',()=>{let target;const p=page('miniprogram/projects/TRIP1/pages/default/index/default_index.js',{}, {wx:{navigateTo:o=>target=o.url}});p.bindAllNews();assert.equal(target,'/projects/TRIP1/pages/news/index/news_index?layout=waterfall');});
 test('homepage fetches a bounded first batch, caps merged recommendations and never paginates',async()=>{
  const calls=[],rows=Array.from({length:12},(_,i)=>({id:String(i+1),type:'news',title:'资讯'+i}));
  const p=page('miniprogram/projects/TRIP1/pages/default/index/default_index.js',{'../../../ui/content_ui.js':ui,'../../../../../helper/cloud_helper.js':{callCloudSumbit:async(route,params)=>{calls.push({route,params});return{data:route==='home/list'?rows:{list:rows}};}}});
@@ -21,16 +21,16 @@ test('homepage waits for portal configuration instead of flashing bundled carous
  assert.equal(p.data.heroLoading,false);assert.equal(p.data.heroSlides[0].image,'/published.jpg');
  const markup=fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/pages/default/index/default_index.wxml'),'utf8');assert(markup.includes('heroLoading&&!heroSlides.length'));assert(markup.includes('heroRender&&heroSlides.length'));
 });
-test('activity page and homepage register the same NewsWaterfall; scenic news loads the full category group',()=>{
+test('activity page and homepage register the same NewsWaterfall; scenic news loads the full category group',async()=>{
  const base=path.join(root,'miniprogram/projects/TRIP1/pages');
  const home=JSON.parse(fs.readFileSync(path.join(base,'default/index/default_index.json'))),news=JSON.parse(fs.readFileSync(path.join(base,'news/index/news_index.json')));
  assert.equal(home.usingComponents['news-waterfall'],news.usingComponents['news-waterfall']);
- const p=page('miniprogram/projects/TRIP1/pages/news/index/news_index.js',{'../../../biz/project_biz.js':{initPage(){}},'../../../public/project_setting.js':{NEWS_CATE:[]}},{wx:{setNavigationBarTitle(){}}});
- p._setCate=function(_,options){this.setData({_params:{cateId:options.id},newsCategory:String(options.id),newsHeading:'活动资讯'});};p.onLoad({id:'1'});
+ const p=page('miniprogram/projects/TRIP1/pages/news/index/news_index.js',{'../../../biz/project_biz.js':{initPage(){}},'../../../../../helper/cloud_helper.js':{callCloudSumbit:async()=>({data:[]})}},{wx:{setNavigationBarTitle(){}}});
+ await p.onLoad({id:'1'});
  assert.equal(p.data._params.cateId,'0');assert.equal(p.data._params.cateGroup,'scenic');assert.equal(p.data._params.size,20);
 });
 test('scenic news filters include every category returned by category management',async()=>{
- const categories=[{id:'activity',name:'景区活动'},{id:'2',name:'美食'},{id:'3',name:'特产'}];const p=page('miniprogram/projects/TRIP1/pages/news/index/news_index.js',{'../../../../../helper/cloud_helper.js':{callCloudSumbit:async()=>({data:categories})}});await p.loadCategories();assert.deepEqual(Array.from(p.data.activityFilters,item=>item.value),['all','activity','2','3']);
+ const categories=[{id:'activity',name:'景区活动'},{id:'2',name:'美食'},{id:'3',name:'特产'}];const p=page('miniprogram/projects/TRIP1/pages/news/index/news_index.js',{'../../../../../helper/cloud_helper.js':{callCloudSumbit:async()=>({data:categories})}},{wx:{setNavigationBarTitle(){}}});await p.loadCategories();assert.deepEqual(Array.from(p.data.newsFilters,item=>item.value),['0','activity','2','3']);
 });
 test('custom tabs synchronize direct-entry routes and only switch to registered pages',()=>{
  let current='projects/TRIP1/pages/album/index/album_index',request;

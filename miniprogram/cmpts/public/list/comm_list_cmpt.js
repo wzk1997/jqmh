@@ -234,6 +234,7 @@ Component({
 		},
 		// 数据列表
 		_getList: async function (page) {
+            const serial=this.listRequestSerial=(this.listRequestSerial||0)+1;
 			let params = {
 				page: page,
 				...this.data._params
@@ -258,10 +259,11 @@ Component({
 			}
 
 
-			let opt = {};
+			let opt = {isCurrent:()=>serial===this.listRequestSerial};
 			//if (this.data._dataList && this.data._dataList.list && this.data._dataList.list.length > 0)
 			opt.title = 'bar';
 			await cloudHelper.dataList(this, '_dataList', this.data.route, params, opt);
+            if(serial!==this.listRequestSerial)return;
 
 			this.triggerEvent('list', { //TODO 考虑改为双向数据绑定model
 				sortType: this.data.sortType,

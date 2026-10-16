@@ -1,15 +1,2 @@
-let behavior = require('../../../../../comm/behavior/news_index_bh.js');
-const ProjectBiz = require('../../../biz/project_biz.js');
-const projectSetting = require('../../../public/project_setting.js');
-
-
-Page({
-    bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
-	behaviors: [behavior],
-
-	onLoad: function (options) {
-		ProjectBiz.initPage(this);
-		this._setCate(projectSetting.NEWS_CATE, options, 1);
-
-	},
-})
+const ProjectBiz=require('../../../biz/project_biz.js');
+Page({onLoad(options={}){ProjectBiz.initPage(this);wx.redirectTo({url:'/projects/TRIP1/pages/news/index/news_index?id='+encodeURIComponent(options.id||'0')});}});

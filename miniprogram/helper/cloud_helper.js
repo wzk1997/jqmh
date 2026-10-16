@@ -245,6 +245,7 @@ async function dataList(that, listName, route, params, options, isReverse = fals
 
 	// 云函数调用 
 	await callCloud(route, params, options).then(function (res) {
+        if(options && options.isCurrent && !options.isCurrent())return;
 		console.log('cloud begin');
 
 		let dataList = res.data;

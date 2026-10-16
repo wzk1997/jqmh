@@ -34,7 +34,7 @@ function normalizeContent(item, forcedType) {
         pic: cleanImage(item.pic || item.NEWS_PIC || object.cover),
         date: displayDate(item.publishDate) || displayDate(item[prefix + '_PUBLISH_TIME']) || displayDate(item.date) || displayDate(item[prefix + '_ADD_TIME']) || displayDate(item.ext),
         activityDate: (item.activityStart || item.NEWS_ACTIVITY_START) && (item.activityEnd || item.NEWS_ACTIVITY_END) ? displayDate(item.activityStart || item.NEWS_ACTIVITY_START) + ' — ' + displayDate(item.activityEnd || item.NEWS_ACTIVITY_END) : '',
-        label: type === 'news' ? (['activity','announcement','tips','1','2','3',''].includes(categoryId)?labels[kind]:item.cateName||item.NEWS_CATE_NAME||labels[kind]) : (item[prefix + '_CATE_NAME'] || (type === 'album' ? '攻略' : '景点')),
+        label: type === 'news' ? (item.cateName||item.NEWS_CATE_NAME||labels[kind]) : (item[prefix + '_CATE_NAME'] || (type === 'album' ? '攻略' : '景点')),
         kind, categoryId, demo:!!(item.demo||item[prefix+'_DEMO']), views: item[prefix + '_VIEW_CNT'] || item.views || 0,
         path: PAGE_ROOT + type + '/detail/' + type + '_detail?id=' + encodeURIComponent(id),
     };

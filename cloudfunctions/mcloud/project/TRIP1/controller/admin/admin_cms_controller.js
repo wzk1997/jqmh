@@ -5,7 +5,7 @@ class AdminCmsController extends BaseController {
     async authorize(operation) {
         await this.isAdmin();
         const input=this._request || {}, module=v.text(input.module,'管理模块',30,true);
-        if(!['scenic','news','album','product','merchant','category'].includes(module))v.fail('管理模块不正确');
+        if(!['scenic','news','album','product','merchant','service','category'].includes(module))v.fail('管理模块不正确');
         const permissionModule=module==='category'?v.text(input.categoryModule || input.data && input.data.module,'分类模块',30,true):module;
         if(module==='category'&&!['news','album','product'].includes(permissionModule))v.fail('分类模块不正确');
         this.requirePermission(permissionModule,operation);

@@ -5,7 +5,6 @@ module.exports = {
 
 	// setup
 	SETUP_CONTENT_ITEMS: [
-		{ title: '园区概况', key: 'SETUP_CONTENT_ABOUT' },
 		{ title: '公交信息', key: 'SETUP_CONTENT_BUS' },
 		{ title: '停车场', key: 'SETUP_CONTENT_PARKING' },
 		{ title: '找厕所', key: 'SETUP_CONTENT_TOLIET' },

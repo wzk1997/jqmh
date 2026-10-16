@@ -7,6 +7,7 @@ const cloudBase = require('../../../../framework/cloud/cloud_base.js');
 const util = require('../../../../framework/utils/util.js');
 const crypto = require('crypto');
 const models = {
+    service: require('../../model/service_model.js'),
     scenic: require('../../model/scenic_model.js'),
     news: require('../../model/news_model.js'), album: require('../../model/album_model.js'),
     product: require('../../model/product_model.js'), merchant: require('../../model/merchant_model.js'),
@@ -162,6 +163,8 @@ class AdminCmsService extends BaseService {
         if(kind==='scenic') {
             Object.assign(data,{SCENIC_DESC:v.text(input.desc,'简介',500),SCENIC_ADDRESS:v.text(input.address,'地址',300),SCENIC_HOURS:v.text(input.hours,'开放时间',100),SCENIC_PHONE:v.phone(input.phone),SCENIC_IMAGES:v.images(input.images),SCENIC_CONTENT:v.content(input.content)});
             if(input.info!==undefined)data.SCENIC_INFO=require('../scenic_info_validation.js')(input.info,data.SCENIC_IMAGES);
+        } else if(kind==='service') {
+            Object.assign(data,{SERVICE_DESC:v.text(input.desc,'简介',500),SERVICE_PHONE:v.phone(input.phone),SERVICE_ADDRESS:v.text(input.address,'地址',300),SERVICE_HOURS:v.text(input.hours,'开放时间',100),SERVICE_IMAGES:v.images(input.images),SERVICE_CONTENT:v.content(input.content)});
         } else if(kind==='merchant') {
             if(!['food','stay','travel'].includes(input.category)) v.fail('商家分类不正确');
             Object.assign(data,{MERCHANT_CATEGORY:input.category,MERCHANT_DESC:v.text(input.desc,'简介',500),MERCHANT_PHONE:v.phone(input.phone),MERCHANT_ADDRESS:v.text(input.address,'地址',300),MERCHANT_HOURS:v.text(input.hours,'营业时间',100),MERCHANT_IMAGES:v.images(input.images),MERCHANT_CONTENT:v.content(input.content)});
@@ -201,6 +204,7 @@ class AdminCmsService extends BaseService {
             if(kind==='news' && (!(row.NEWS_PIC||[]).length || !(row.NEWS_CONTENT||[]).length)) v.fail('请先完善封面与正文');
             if(['album','product'].includes(kind) && !(row[p+'OBJ']&&row[p+'OBJ'].cover&&row[p+'OBJ'].cover.length)) v.fail('请先上传封面');
             if(kind==='album' && !(row.ALBUM_OBJ.detail||[]).length) v.fail('请先完善攻略正文');
+            if(kind==='service' && !(row.SERVICE_CONTENT||[]).length)v.fail('请填写服务正文后发布');
             if(kind==='merchant' && (!row.MERCHANT_PHONE || !row.MERCHANT_ADDRESS || !row.MERCHANT_IMAGES.length)) v.fail('请完善电话、地址和图片');
         }
         const data={[stateField(kind)]:state,[p+'EDIT_ADMIN']:adminId};

@@ -1,15 +1,1 @@
-<scenic-nav-bar title="编辑" bind:layout="bindScenicLayout"/>
-<view wx:if="{{!isLoad}}" class="margin-top load loading text-l text-grey"></view>
-
-<block wx:if="{{isAdmin&&isLoad}}">
-	<view class="main-admin">
-		<view class="form-box shadow">
-			<view class="form-group" style="width: 100%;">
-				<cmpt-editor inlineToolbar="{{true}}" imageMaxMB="{{5}}" textMaxLength="{{10000}}" nodeList="{{formContent}}" viewMode="{{true}}" style="width: 100%;" id="contentEditor"></cmpt-editor>
-			</view>
-		</view>
-	</view>
-	<view class="btn-bottom-admin"> 
-		<view bindtap="bindFormSubmit" class="save">保存修改</view>
-	</view>
-</block>
+<scenic-nav-bar title="便捷服务"/><view class="cms-page"><text class="cms-meta">正在打开便捷服务管理…</text></view>

@@ -30,16 +30,7 @@ Page({
         hasHomeLoaded: false,
         homeError: false,
         homeUiPreview: false,
-        services: [
-            { title: '美食餐饮', icon: 'icon-shop', url: '../../news/index/news_index?id=2' },
-            { title: '地方特产', icon: 'icon-goodsnew', url: '../../news/index/news_index?id=3' },
-            { title: '星级导游', icon: 'icon-discover', url: '../../about/index/about_index?key=SETUP_CONTENT_DY' },
-            { title: '公交信息', icon: 'icon-location', url: '../../about/index/about_index?key=SETUP_CONTENT_BUS' },
-            { title: '停车场', icon: 'icon-ticket', url: '../../about/index/about_index?key=SETUP_CONTENT_PARKING' },
-            { title: '找厕所', icon: 'icon-service', url: '../../about/index/about_index?key=SETUP_CONTENT_TOLIET' },
-            { title: '一周天气', icon: 'icon-info', url: '../../about/index/about_index?key=SETUP_CONTENT_WEATHER' },
-            { title: '客户反馈', icon: 'icon-edit', url: '../../feedback/index/feedback_index' }
-        ],
+
 		album: [
 			'/projects/TRIP1/images/town/courtyard-v1.jpg',
 			'/projects/TRIP1/images/town/street-v1.jpg',
@@ -112,7 +103,7 @@ Page({
 	onShow: async function () {
         ProjectBiz.syncTabBar(this, 0);
         this.setData({heroPlaying:true});
-		await this._loadList();
+		if (!this.data.hasHomeLoaded) await this._loadList();
 	},
 
 	onPullDownRefresh: async function () {

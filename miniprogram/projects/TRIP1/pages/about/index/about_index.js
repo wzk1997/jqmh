@@ -33,6 +33,7 @@ Page({
 		ProjectBiz.initPage(this);
 
         if(options&&options.adminPreview==='1'){const AdminBiz=require('../../../../../comm/biz/admin_biz.js');if(!AdminBiz.isAdmin(this))return;this.setData({adminPreview:true,previewId:options.id||''});}
+        this.setData({serviceId:options&&options.serviceId||''});
         this.setData({scenicId:!this.data.adminPreview&&options&&options.id||''});
         const contentKey = options && options.key ? options.key : 'SETUP_CONTENT_ABOUT';
         const contentItem = projectSetting.SETUP_CONTENT_ITEMS.find(item => item.key === contentKey);
@@ -43,16 +44,25 @@ Page({
 
     async loadAbout(){
         const key=this.data.contentKey;
+        if(this.data.serviceId){
+            this.setData({isScenicAbout:false,isLoad:false,serviceUnavailable:false,serviceError:false});
+            try{const result=await cloudHelper.callCloudSumbit('cms/detail',{module:'service',id:this.data.serviceId},{hint:false});
+                const row=result&&result.data;if(!row)throw new Error('服务信息暂不可用');
+                this.prepareScenic(null);this.setData({scenicRecord:null,contentTitle:row.SERVICE_NAME,about:row.SERVICE_CONTENT||[],serviceInfo:row,isLoad:true});
+            }catch(error){this.setData({about:[],serviceInfo:null,isLoad:true,serviceUnavailable:true,serviceError:true});}
+            return;
+        }
         if(this.data.adminPreview){try{const record=await require('../../../ui/cms_ui.js').call('detail',{module:'scenic',id:this.data.previewId});this.prepareScenic(record);this.setData({about:record.SCENIC_CONTENT||[],isLoad:true,scenicRecord:record,previewError:false});}catch(_){this.setData({isLoad:true,previewError:true});}return;}
         if(key==='SETUP_CONTENT_ABOUT'){
             const result=await cloudHelper.callCloudSumbit(this.data.scenicId?'cms/detail':'cms/list',this.data.scenicId?{module:'scenic',id:this.data.scenicId}:{module:'scenic',page:1,size:1},{hint:false}).catch(()=>null);
             const record=this.data.scenicId?result&&result.data:result && result.data && result.data.list && result.data.list[0];
             if(record){this.prepareScenic(record);this.setData({about:record.SCENIC_CONTENT,isLoad:true,scenicRecord:record});return;}
+            this.prepareScenic(null);this.setData({about:[],isLoad:true,scenicRecord:null});return;
         }
         this.prepareScenic(null);this.setData({scenicRecord:null});await this._loadDetail(key,projectSetting.SETUP_CONTENT_ITEMS);
     },
     bindExpand(){this.setData({expanded:!this.data.expanded});},
-    onShareAppMessage(){return {title:this.data.adminPreview?'园区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'园区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
+    onShareAppMessage(){if(this.data.serviceId)return {title:this.data.contentTitle||'便捷服务',path:'/projects/TRIP1/pages/about/index/about_index?serviceId='+encodeURIComponent(this.data.serviceId)};return {title:this.data.adminPreview?'园区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'园区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
     onPullDownRefresh: async function () {
         try { await this.loadAbout(); }
         finally { wx.stopPullDownRefresh(); }

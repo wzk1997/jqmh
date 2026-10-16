@@ -9,7 +9,7 @@ test('admin statistics omit retired modules even when an older server returns th
  const stats=inventory.visibleStats(rows,id=>id!=='merchant');
  assert.deepEqual(stats,[{module:'scenic',title:'园区简介',cnt:1},{module:'album',title:'攻略数',cnt:2}]);
  assert.deepEqual(inventory.visibleStats(null,()=>true),[]);
- assert.deepEqual(inventory.MODULES.map(item=>item.id),['scenic','album','product','merchant','news','feedback']);
+ assert.deepEqual(inventory.MODULES.map(item=>item.id),['scenic','album','product','merchant','news','service','feedback']);
 });
 
 test('admin refresh rebuilds permitted menus and rejects retired module navigation',async()=>{

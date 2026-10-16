@@ -4,7 +4,7 @@ function load(file,mocks={}){const filename=path.join(root,file),mod={exports:{}
 const validation=load('cloudfunctions/mcloud/project/TRIP1/service/cms_validation.js');
 function fixture({withCategories=true}={}){
  const stores={},queries=[],files=new Map();
- const models={};for(const kind of ['news','album','product','merchant','category','scenic']){const store=stores[kind]=new Map();const p=kind==='category'?'CONTENT_CATEGORY_':kind.toUpperCase()+'_';models[kind]={CL:'bx_'+kind,getOne:async q=>typeof q==='string'?store.get(q):[...store.values()].find(r=>Object.entries(q).every(([k,v])=>Array.isArray(v)?r[k]!==v[1]:r[k]===v)),insert:async d=>{store.set(d._id,{[p+'DELETED']:false,[p+'DRAFT']:{},[p+'ADD_TIME']:1,...d});return d._id},edit:async(id,d)=>Object.assign(store.get(id),structuredClone(d)),getList:async(...args)=>{queries.push({kind,args});return {list:[...store.values()],total:store.size}},getAll:async(q={})=>[...store.values()].filter(row=>Object.entries(q).every(([key,value])=>row[key]===value)),count:async()=>0};}
+ const models={};for(const kind of ['news','album','product','merchant','category','scenic','service']){const store=stores[kind]=new Map();const p=kind==='category'?'CONTENT_CATEGORY_':kind.toUpperCase()+'_';models[kind]={CL:'bx_'+kind,getOne:async q=>typeof q==='string'?store.get(q):[...store.values()].find(r=>Object.entries(q).every(([k,v])=>Array.isArray(v)?r[k]!==v[1]:r[k]===v)),insert:async d=>{store.set(d._id,{[p+'DELETED']:false,[p+'DRAFT']:{},[p+'ADD_TIME']:1,...d});return d._id},edit:async(id,d)=>Object.assign(store.get(id),structuredClone(d)),getList:async(...args)=>{queries.push({kind,args});return {list:[...store.values()],total:store.size}},getAll:async(q={})=>[...store.values()].filter(row=>Object.entries(q).every(([key,value])=>row[key]===value)),count:async()=>0};}
  // Explicit test records stand in for manually managed categories, not production defaults.
  if(withCategories)for(const module of ['news','album','product'])for(const key of ['1','2','3','4','5','tips']){
   const id='test-'+module+'-'+key;stores.category.set(id,{_id:id,CONTENT_CATEGORY_MODULE:module,CONTENT_CATEGORY_KEY:key,CONTENT_CATEGORY_NAME:key==='tips'?(module==='album'?'游玩贴士':'旅游资讯'):'测试分类'+key,CONTENT_CATEGORY_STATE:'published',CONTENT_CATEGORY_DELETED:false});
@@ -333,4 +333,33 @@ test('independent carousel asset upload validates bytes and stores assets outsid
  const f=fixture();const result=await f.service.uploadAsset('home_portal','SETUP_HOME_PORTAL',Buffer.from([255,216,255,1]).toString('base64'),'admin');
  assert(result.fileID.includes('/TRIP1/home_portal/SETUP_HOME_PORTAL/'));assert.equal(f.stores.scenic.size,0);
  await assert.rejects(f.service.uploadAsset('home_portal','SETUP_HOME_PORTAL',Buffer.from('invalid').toString('base64'),'admin'),/JPG/);
+});
+
+test('convenience service records have isolated storage, staged publication and soft deletion',async()=>{
+ const f=fixture();const data={name:'停车指引',desc:'停车位置说明',order:2,content:[{type:'text',val:'请按园区标识停车'}]};
+ const {id}=await f.service.save('service',data,'admin');
+ await f.service.setState('service',id,'published','admin');
+ await f.service.save('service',{...data,id,name:'新停车指引'},'admin');
+ assert.equal(f.stores.service.get(id).SERVICE_NAME,'停车指引');
+ assert.equal((await f.service.detail('service',id)).SERVICE_NAME,'新停车指引');
+ for(const kind of ['scenic','merchant','news','album'])assert.equal(f.stores[kind].size,0);
+ const publicApi=load('cloudfunctions/mcloud/project/TRIP1/service/cms_service.js',{'./admin/admin_cms_service.js':f.Cms,'./cms_validation.js':validation});
+ const published=await publicApi.detail('service',id);
+ assert.equal(published.SERVICE_NAME,'停车指引');assert(!('SERVICE_DRAFT' in published));assert(!('SERVICE_EDIT_ADMIN' in published));
+ await f.service.setState('service',id,'published','admin');
+ assert.equal((await publicApi.detail('service',id)).SERVICE_NAME,'新停车指引');
+ await f.service.remove('service',id,'admin');
+ assert.equal(f.stores.service.get(id).SERVICE_DELETED,true);
+ await assert.rejects(publicApi.detail('service',id),/尚未发布/);
+});
+
+test('convenience services cannot publish empty content and use independent permission scope',async()=>{
+ const f=fixture();const {id}=await f.service.save('service',{name:'营业时间',order:1},'admin');
+ await assert.rejects(f.service.setState('service',id,'published','admin'),/正文/);
+ const gates=[];
+ class Controller{async isAdmin(){}requirePermission(module,op){gates.push([module,op]);throw Error('denied');}}
+ const Admin=load('cloudfunctions/mcloud/project/TRIP1/controller/admin/admin_cms_controller.js',{'./base_project_admin_controller.js':Controller,'../../service/admin/admin_cms_service.js':f.Cms,'../../service/cms_validation.js':validation});
+ for(const [method,op]of [['list','read'],['save','write'],['state','publish'],['remove','delete']]){
+  const c=new Admin();c._request={module:'service',id};await assert.rejects(c[method](),/denied/);assert.deepEqual(gates.at(-1),['service',op]);
+ }
 });

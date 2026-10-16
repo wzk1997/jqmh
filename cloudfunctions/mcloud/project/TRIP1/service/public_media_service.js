@@ -1,7 +1,7 @@
 // Display-only URLs for canonical published content. Never accepts client file IDs.
 const cloudBase = require('../../../framework/cloud/cloud_base.js');
 const config = require('../../../config/config.js');
-const TYPES = ['news', 'album', 'product', 'scenic', 'merchant'];
+const TYPES = ['news', 'album', 'product', 'scenic', 'merchant', 'service'];
 const ROUTES = new Set(['home/portal', 'news/list', 'news/view', 'album/list', 'album/view', 'product/list', 'product/view', 'cms/list', 'cms/detail']);
 // Canonical carousel images have their own namespace; retain already-published scenic images.
 function portalFiles(slides,environment){

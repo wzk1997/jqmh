@@ -29,9 +29,18 @@ Page({
    else state.merchants=merge(state.merchants,rows.map(row=>({id:row._id,title:row.MERCHANT_NAME,desc:row.MERCHANT_DESC,address:row.MERCHANT_ADDRESS||'',hours:row.MERCHANT_HOURS||'',pic:(row.MERCHANT_IMAGES||[])[0]||'',phone:row.MERCHANT_DEMO?'':row.MERCHANT_PHONE,demo:row.MERCHANT_DEMO,path:'../merchant/merchant_detail?id='+row._id})));
   });
   const failed=state.legacyError||state.merchantError,empty=!state.items.length&&!state.merchants.length;
-  this.setData({...state,loading:false,error:!!failed&&empty,partialError:!!failed&&!empty,hasMore:state.legacyHasMore||state.merchantHasMore});
+  const result={...state,loading:false,error:!!failed&&empty,partialError:!!failed&&!empty,hasMore:state.legacyHasMore||state.merchantHasMore};
+  this.tabCache=this.tabCache||{};this.tabCache[tab]=Object.fromEntries(['items','merchants','loading','error','partialError','legacyPage','merchantPage','legacyHasMore','merchantHasMore','legacyError','merchantError','hasMore'].map(key=>[key,result[key]]));this.setData(result);
  },
  loadMore(){if(this.data.hasMore)return this.load(true);},retry(){return this.load(true,true);},onReachBottom(){return this.loadMore();},
- bindServiceTab(e){this.setData({serviceTab:e.currentTarget.dataset.tab});this.load();},
- onPullDownRefresh(){this.load().finally(()=>wx.stopPullDownRefresh());},url(e){pageHelper.url(e,this);}
+ bindServiceTab(e){
+  const tab=e.currentTarget.dataset.tab;
+  if(!['food','stay','travel'].includes(tab)||tab===this.data.serviceTab)return;
+  this.serial=(this.serial||0)+1;
+  this.setData({serviceTab:tab});
+  const cached=this.tabCache&&this.tabCache[tab];
+  if(cached){this.setData({...cached,serviceTab:tab});return;}
+  return this.load();
+ },
+ onPullDownRefresh(){return this.load().finally(()=>wx.stopPullDownRefresh());},url(e){pageHelper.url(e,this);}
 });

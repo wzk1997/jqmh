@@ -2,7 +2,7 @@
   "usingComponents": {},
   "navigationBarBackgroundColor": "#ffffff",
   "navigationBarTextStyle": "black",
-  "enablePullDownRefresh": true,
-  "navigationBarTitleText": "单页文章",
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "便捷服务",
   "navigationStyle": "custom"
 }

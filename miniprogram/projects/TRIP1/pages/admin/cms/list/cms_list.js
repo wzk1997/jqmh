@@ -8,6 +8,14 @@ Page({data:{module:'',title:'内容管理',records:[],search:'',state:'',categor
  pickCategory(e){const index=Number(e.detail.value);this.setData({categoryIndex:index,category:this.data.categories[index].id});this.load();},
  inputSearch(e){this.setData({search:e.detail.value});},search(){this.load();},filter(e){this.setData({[e.currentTarget.dataset.field]:e.currentTarget.dataset.id});this.load();},
  add(){cms.go('edit',this.data.module,'',this.data.categoryModule);},detail(e){cms.go('detail',this.data.module,e.currentTarget.dataset.id,this.data.categoryModule);},
+ async removeService(e){
+  if(this.data.module!=='service'||!this.data.canDelete||this.data.deleting)return;
+  const row=this.data.records.find(item=>item.id===e.currentTarget.dataset.id);if(!row)return;
+  this.setData({deleting:true,deleteError:''});
+  try{if(!await cms.confirm('确认删除服务“'+row.name+'”？删除后游客端不再显示，原数据会保留。'))return;
+   await cms.call('remove',{module:'service',id:row.id});await this.load();wx.showToast({title:'服务已删除'});
+  }catch(error){this.setData({deleteError:error.message||'删除失败，请重试'});}finally{this.setData({deleting:false});}
+ },
  async removeCategory(e){
   if(this.data.module!=='category'||!this.data.canDelete||this.data.deleting)return;
   const row=this.data.records.find(item=>item.id===e.currentTarget.dataset.id);if(!row)return;

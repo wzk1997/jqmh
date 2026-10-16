@@ -1,18 +1,1 @@
-<scenic-nav-bar title="单页文章" bind:layout="bindScenicLayout"/>
-<!-- List Begin -->
-<view class="main-admin" wx:if="{{isAdmin}}">
-	<view class="admin-comm-list">
-		<view class="item" wx:for="{{list}}" wx:key="key" bindtap="url" data-url="../about/admin_setup_about?key={{item.key}}">
-			<view class="header">
-				<view class="left text-cut">《{{item.title}}》</view>
-				<view class="right">
-					<view class="btn round margin-right-s"><text class="icon-edit margin-right-xxs"></text>编辑</view>
-
-					<view catchtap="url" data-url="../../../about/index/about_index?key={{item.key}}" class="btn round margin-right-s"><text class="icon-attention margin-right-xxs"></text>预览</view>
-				</view>
-			</view>
-		</view>
-
-	</view>
-	<!-- List END -->
-</view>
+<scenic-nav-bar title="便捷服务"/><view class="cms-page"><text class="cms-meta">正在打开便捷服务管理…</text></view>

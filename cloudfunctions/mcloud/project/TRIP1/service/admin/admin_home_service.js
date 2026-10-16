@@ -17,7 +17,7 @@ class AdminHomeService extends BaseProjectAdminService {
         const Cms = require('./admin_cms_service.js');
         const Feedback = require('../../model/feedback_model.js');
         const cms = new Cms();
-        const modules = [['scenic','园区简介'],['album','攻略数'],['merchant','商家数'],['news','资讯数'],['product','景点数']];
+        const modules = [['scenic','园区简介'],['album','攻略数'],['merchant','商家数'],['news','资讯数'],['product','景点数'],['service','服务数']];
         const results = await Promise.all(modules.map(async ([module,title])=>{
             const Model=cms.model(module);await cms.ensure(Model);
             return {module,title,cnt:await Model.count({[module.toUpperCase()+'_DELETED']:['<>',true]})};

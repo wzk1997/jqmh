@@ -1,5 +1,5 @@
 <wxs module="media" src="../../../../../wxs/media.wxs"/>
-<scenic-nav-bar title="景区资讯" bind:layout="bindScenicLayout"/>
+<scenic-nav-bar title="园区资讯" bind:layout="bindScenicLayout"/>
 <view wx:if="{{!_params}}" class="wt-state">正在加载资讯…</view>
 <block wx:else>
   <cmpt-comm-list topOffset="{{uiChrome.height}}" heading="{{newsHeading}}" headingSubtitle="{{newsSubtitle}}" headingImage="/projects/TRIP1/images/home/b4.jpg" headerHeight="240" filterMenus="{{newsFilters}}" filterValue="{{newsCategory}}" bind:filter="bindNewsCategory" type="news-list" search="{{search || ''}}" _params="{{_params}}" route="news/list" topBottom="120" placeholder="搜索资讯标题" bind:list="bindCommListCmpt">

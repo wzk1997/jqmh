@@ -2,15 +2,13 @@ const behavior = require('../../../../../comm/behavior/about_bh.js');
 const cloudHelper = require('../../../../../helper/cloud_helper.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 const projectSetting = require('../../../public/project_setting.js');
-const AdminBiz = require('../../../../../comm/biz/admin_biz.js');
-const setting = require('../../../../../setting/setting.js');
 
 Page({
     data:{navMode:'immersive',activeSection:0,tabs:['概况','特色亮点','实用信息'],info:{}},
     prepareScenic(record){
         const info=record&&record.SCENIC_INFO||{},images=record&&record.SCENIC_IMAGES||[];
         const sections=['highlights'].map(key=>({key,items:(info[key]||[]).map(card=>({...card,image:images[card.imageIndex-1]||''}))}));
-        const facts=[{value:info.rating,label:'景区等级'},{value:info.altitude,label:'海拔'},{value:info.history,label:'人文历史'}].filter(item=>item.value);
+        const facts=[{value:info.rating,label:'园区等级'},{value:info.altitude,label:'海拔'},{value:info.history,label:'人文历史'}].filter(item=>item.value);
         const traffic=[{title:'自驾',text:info.selfDrive},{title:'公共交通',text:info.transit},{title:'停车信息',text:info.parking}].filter(item=>item.text);
         this.setData({info,sections,facts,traffic,mapMarkers:typeof info.latitude==='number'&&typeof info.longitude==='number'?[{id:1,latitude:info.latitude,longitude:info.longitude,title:record.SCENIC_NAME,width:28,height:36}]:[]});
     },
@@ -23,7 +21,6 @@ Page({
     preview(e){const current=e.currentTarget.dataset.src,media=require('../../../../../helper/media_helper.js');wx.previewImage({current:media.display(current,this.data.mediaUrls),urls:[media.display(current,this.data.mediaUrls)]});},
     copyAddress(){wx.setClipboardData({data:this.data.scenicRecord.SCENIC_ADDRESS});},
     openMap(){const info=this.data.info;if(typeof info.latitude==='number'&&typeof info.longitude==='number')wx.openLocation({latitude:info.latitude,longitude:info.longitude,name:this.data.scenicRecord.SCENIC_NAME,address:this.data.scenicRecord.SCENIC_ADDRESS||'',scale:15});},
-    openAdmin(){if(setting.IS_SUB)return AdminBiz.adminLogin(this,'admin','123456');wx.reLaunch({url:'../../admin/index/login/admin_login'});},
 
     bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
 
@@ -39,7 +36,7 @@ Page({
         this.setData({scenicId:!this.data.adminPreview&&options&&options.id||''});
         const contentKey = options && options.key ? options.key : 'SETUP_CONTENT_ABOUT';
         const contentItem = projectSetting.SETUP_CONTENT_ITEMS.find(item => item.key === contentKey);
-        this.setData({ contentKey, contentTitle: contentItem ? contentItem.title : '景区信息', isScenicAbout: contentKey === 'SETUP_CONTENT_ABOUT' });
+        this.setData({ contentKey, contentTitle: contentItem ? contentItem.title : '园区信息', isScenicAbout: contentKey === 'SETUP_CONTENT_ABOUT' });
         await this.loadAbout();
         if(options&&/^[0-2]$/.test(options.section||''))wx.nextTick(()=>this.section({currentTarget:{dataset:{index:Number(options.section)}}}));
 	},
@@ -55,7 +52,7 @@ Page({
         this.prepareScenic(null);this.setData({scenicRecord:null});await this._loadDetail(key,projectSetting.SETUP_CONTENT_ITEMS);
     },
     bindExpand(){this.setData({expanded:!this.data.expanded});},
-    onShareAppMessage(){return {title:this.data.adminPreview?'景区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'景区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
+    onShareAppMessage(){return {title:this.data.adminPreview?'园区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'园区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
     onPullDownRefresh: async function () {
         try { await this.loadAbout(); }
         finally { wx.stopPullDownRefresh(); }

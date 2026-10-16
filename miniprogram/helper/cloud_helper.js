@@ -63,6 +63,11 @@ async function callCloudData(route, params = {}, options) {
 }
 
 function callCloud(route, params = {}, options) {
+	const preview = require('../projects/TRIP1/ui/ui_preview.js');
+	if (preview.isEnabled(wx, setting)) {
+		return Promise.resolve().then(() => preview.respond(route, params));
+	}
+
 
 	let title = '加载中';
 	let hint = true;

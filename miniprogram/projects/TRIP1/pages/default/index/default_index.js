@@ -3,6 +3,9 @@ const cloudHelper = require('../../../../../helper/cloud_helper.js');
 const { normalizeContent, mergeContent } = require('../../../ui/content_ui.js');
 const sceneConfig = require('../../../ui/scene_config.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
+const homePreview = require('../../../ui/home_preview.js');
+const settings = require('../../../../../setting/setting.js');
+
 
 Page({
     bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
@@ -10,7 +13,7 @@ Page({
 	 * 页面的初始数据
 	 */
 	data: {mediaUrls:{},
-        homeNavMode:'home',
+        homeNavMode:'home',portalBrandName:'WeTravel',
         heroRender:true,heroLoading:true,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:[],practical:[],scenicAboutUrl:'/projects/TRIP1/pages/about/index/about_index',
         heroIndex: 0,
         heroImage: sceneConfig.heroImage,
@@ -26,6 +29,7 @@ Page({
         homeLoading: false,
         hasHomeLoaded: false,
         homeError: false,
+        homeUiPreview: false,
         services: [
             { title: '美食餐饮', icon: 'icon-shop', url: '../../news/index/news_index?id=2' },
             { title: '地方特产', icon: 'icon-goodsnew', url: '../../news/index/news_index?id=3' },
@@ -55,7 +59,8 @@ Page({
     onPageScroll(e){const mode=e.scrollTop>200?'page':'home';if(mode!==this.data.homeNavMode)this.setData({homeNavMode:mode});},
     bindAllNews() { wx.navigateTo({url:'/projects/TRIP1/pages/news/index/news_index?layout=waterfall&id=1'}); },
     bindHeroChange: function (e) {
-        this.setData({ heroIndex: e.detail.current });
+        const index=Number(e.detail.current);
+        if(Number.isInteger(index)&&index>=0&&index<this.data.heroSlides.length)this.setData({heroIndex:index});
     },
 
     referenceUrl(ref){
@@ -73,16 +78,21 @@ Page({
             const p=module.toUpperCase()+'_',id=row.id||row._id;
             return {id,title:row.title||row[p+'NAME'],desc:row.desc||row[p+'DESC']||'',pic:row.pic||(row[p+'IMAGES']||row[p+'COVER']||[])[0]||'',demo:!!(row.demo||row[p+'DEMO']),path:this.referenceUrl({module,id})};
         }).filter(Boolean);
-        const practical=[{title:'开放时间',text:scenic&&scenic.SCENIC_HOURS,icon:'time'},{title:'景区地址',text:scenic&&scenic.SCENIC_ADDRESS,icon:'location'},{title:'交通指南',text:[info.selfDrive,info.transit].filter(Boolean).join(' / '),icon:'taxi'},{title:'建议游玩时长',text:info.visitDuration,icon:'time'},{title:'温馨提示',text:info.tips,icon:'info'}].filter(row=>row.text);
-        this.setData({heroLoading:false,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'自然为伴',subtitle:'探索自然 · 美好出发'}],heroIndex:0});
+        const practical=[{title:'开放时间',text:scenic&&scenic.SCENIC_HOURS,icon:'time'},{title:'园区地址',text:scenic&&scenic.SCENIC_ADDRESS,icon:'location'},{title:'交通指南',text:[info.selfDrive,info.transit].filter(Boolean).join(' / '),icon:'taxi'},{title:'建议游玩时长',text:info.visitDuration,icon:'time'},{title:'温馨提示',text:info.tips,icon:'info'}].filter(row=>row.text);
+        this.setData({portalBrandName:portal.brandName||'WeTravel',heroLoading:false,heroImagesLoaded:{},heroImageErrors:{},portalFeatured:featured,portalScenic:scenic,practical,scenicAboutUrl:scenic?this.referenceUrl({module:'scenic',id:scenic._id}):this.data.scenicAboutUrl,heroSlides:slides.length?slides:[{image:sceneConfig.heroImage,label:'自然为伴',subtitle:'探索自然 · 美好出发'}],heroIndex:0});
     },
     retryHero(){this.setData({heroRender:false,heroImagesLoaded:{},heroImageErrors:{}});wx.nextTick(()=>this.setData({heroRender:true}));},
-    heroImageLoaded(e){this.setData({['heroImagesLoaded.'+e.currentTarget.dataset.index]:true});},
+    heroImageLoaded(e){const index=e.currentTarget.dataset.index;this.setData({['heroImagesLoaded.'+index]:true,['heroImageErrors.'+index]:false});},
     heroImageError(e){this.setData({['heroImageErrors.'+e.currentTarget.dataset.index]:true});},
     heroTap(e){const slide=this.data.heroSlides[e.currentTarget.dataset.index];if(slide&&slide.path)wx.navigateTo({url:slide.path});},
     _loadList: async function () {
         if (this.data.homeLoading) return;
-        this.setData({ homeLoading: true, homeError: false });
+        if (homePreview.isEnabled && homePreview.isEnabled(wx, settings)) {
+            this.applyPortal(homePreview.portal);
+            this.setData({homeUiPreview:true,homeLoading:false,homeError:false,hasHomeLoaded:true,waterfallItems:homePreview.news.map(item=>normalizeContent(item,'news'))});
+            return;
+        }
+        this.setData({ homeLoading: true, homeUiPreview: false });
         try {
             const results = await Promise.allSettled([
                 cloudHelper.callCloudSumbit('home/portal', {}, {hint:false}),
@@ -113,7 +123,7 @@ Page({
 	onShow: async function () {
         ProjectBiz.syncTabBar(this, 0);
         this.setData({heroPlaying:true});
-		this._loadList();
+		await this._loadList();
 	},
 
 	onPullDownRefresh: async function () {
@@ -132,7 +142,7 @@ Page({
 	 * 生命周期函数--监听页面卸载
 	 */
 	onUnload: function () {
-
+        this.setData({heroPlaying:false});
 	},
 
 	url: async function (e) {

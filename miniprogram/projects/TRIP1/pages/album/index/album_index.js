@@ -12,7 +12,7 @@ Page({
     },
     bindScenicLayout(e) { this.setData({ uiChrome: e.detail }); },
     onLoad(options = {}) { ProjectBiz.initPage(this); this.setData({ category: options.id || '1' }); this.loadCategories(); this.load(); },
-    onShow() { ProjectBiz.syncTabBar(this, 2); },
+    onShow() { ProjectBiz.syncTabBar(this, 1); },
     async loadCategories() {
         try {
             const result = await cloudHelper.callCloudSumbit('cms/categories', { module: 'album' }, { hint: false });

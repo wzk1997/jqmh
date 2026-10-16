@@ -10,7 +10,7 @@ const models = {
     scenic: require('../../model/scenic_model.js'),
     news: require('../../model/news_model.js'), album: require('../../model/album_model.js'),
     product: require('../../model/product_model.js'), merchant: require('../../model/merchant_model.js'),
-    panorama: require('../../model/panorama_model.js'), category: require('../../model/content_category_model.js')
+    category: require('../../model/content_category_model.js')
 };
 const Asset = require('../../model/cms_asset_model.js');
 const prefix = kind => kind === 'category' ? 'CONTENT_CATEGORY_' : kind.toUpperCase() + '_';
@@ -167,12 +167,6 @@ class AdminCmsService extends BaseService {
         } else if(kind==='merchant') {
             if(!['food','stay','travel'].includes(input.category)) v.fail('商家分类不正确');
             Object.assign(data,{MERCHANT_CATEGORY:input.category,MERCHANT_DESC:v.text(input.desc,'简介',500),MERCHANT_PHONE:v.phone(input.phone),MERCHANT_ADDRESS:v.text(input.address,'地址',300),MERCHANT_HOURS:v.text(input.hours,'营业时间',100),MERCHANT_IMAGES:v.images(input.images),MERCHANT_CONTENT:v.content(input.content)});
-        } else if(kind==='panorama') {
-            if(!['image','url','provider'].includes(input.resourceType)) v.fail('全景资源类型不正确');
-            const resource=v.text(input.resource,'全景资源',1000);
-            if(input.resourceType==='url' && resource && !/^https:\/\/[^\s]+$/.test(resource)) v.fail('全景链接须使用HTTPS');
-            if(input.resourceType==='provider' && resource && !/^[a-zA-Z0-9_:-]{1,200}$/.test(resource)) v.fail('场景标识不正确');
-            Object.assign(data,{PANORAMA_DESC:v.text(input.desc,'场景描述',500),PANORAMA_COVER:v.images(input.cover,1),PANORAMA_RESOURCE_TYPE:input.resourceType,PANORAMA_RESOURCE:resource,PANORAMA_CONTENT:v.content(input.content)});
         } else if(kind==='category') {
             if(!['news','album','product'].includes(input.module)) v.fail('分类模块不正确');
             const key=v.id(input.key);
@@ -183,8 +177,7 @@ class AdminCmsService extends BaseService {
         }
         const id=row?input.id:crypto.randomBytes(16).toString('hex');
         const imgs=this.assetValues(data,kind);
-        if(kind==='panorama' && data.PANORAMA_RESOURCE_TYPE==='image' && data.PANORAMA_RESOURCE) imgs.push(data.PANORAMA_RESOURCE);
-        const prev=this.assetValues(row,kind);if(row&&row.PANORAMA_RESOURCE_TYPE==='image')prev.push(row.PANORAMA_RESOURCE);
+        const prev=this.assetValues(row,kind);
         await this.checkImages(kind,id,imgs,prev);await contentCheck.checkTextMultiAdmin(data);
         if(row)await this.persistDraft(Model,kind,id,data,row);
         else await Model.insert({_id:id,...data,[stateField(kind)]:'draft'});
@@ -211,7 +204,6 @@ class AdminCmsService extends BaseService {
             if(['album','product'].includes(kind) && !(row[p+'OBJ']&&row[p+'OBJ'].cover&&row[p+'OBJ'].cover.length)) v.fail('请先上传封面');
             if(kind==='album' && !(row.ALBUM_OBJ.detail||[]).length) v.fail('请先完善攻略正文');
             if(kind==='merchant' && (!row.MERCHANT_PHONE || !row.MERCHANT_ADDRESS || !row.MERCHANT_IMAGES.length)) v.fail('请完善电话、地址和图片');
-            if(kind==='panorama' && (!row.PANORAMA_RESOURCE || !row.PANORAMA_COVER.length)) v.fail('请完善全景资源和封面');
         }
         const data={[stateField(kind)]:state,[p+'EDIT_ADMIN']:adminId};
         if(state==='published' && row.hasDraft){Object.assign(data,row[p+'DRAFT']);data[p+'DRAFT']={};}

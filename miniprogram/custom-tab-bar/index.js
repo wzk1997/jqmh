@@ -6,12 +6,6 @@ const tabs = [
         "activeIcon": "/projects/TRIP1/images/ui/home_v2_active.png"
     },
     {
-        "path": "/projects/TRIP1/pages/product/index/product_index",
-        "text": "景区导览",
-        "icon": "/projects/TRIP1/images/ui/guide_v2.png",
-        "activeIcon": "/projects/TRIP1/images/ui/guide_v2_active.png"
-    },
-    {
         "path": "/projects/TRIP1/pages/album/index/album_index",
         "text": "园区攻略",
         "icon": "/projects/TRIP1/images/ui/album_v2.png",

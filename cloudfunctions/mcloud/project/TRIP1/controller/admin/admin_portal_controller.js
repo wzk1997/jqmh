@@ -11,6 +11,6 @@ class AdminPortalController extends Base {
  async save(){await this.authorize('write');const result=await new Portal().save(this._request.config,this._adminId);await this.logOther('保存首页配置草稿');return result;}
  async publish(){await this.authorize('publish');const result=await new Portal().publish(this._adminId);await this.logOther('发布首页配置');return result;}
  async upload(){await this.authorize('write');return new Cms().upload('scenic',v.id(this._request.scenicId),this._request.base64,this._adminId);}
- async choices(){await this.authorize('read');const module=this._request.module;if(!['scenic','album','product','news','merchant','panorama'].includes(module))v.fail('内容模块不正确');this.requirePermission(module,'read');return new Cms().list(module,{page:this._request.page,size:20,search:this._request.search},true);}
+ async choices(){await this.authorize('read');const module=this._request.module;if(!['scenic','album','product','news','merchant'].includes(module))v.fail('内容模块不正确');this.requirePermission(module,'read');return new Cms().list(module,{page:this._request.page,size:20,search:this._request.search},true);}
 }
 module.exports=AdminPortalController;

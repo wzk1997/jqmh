@@ -61,6 +61,18 @@
 			{
 				"type": "suffix",
 				"value": ".svg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/profile-landscape-v1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/profile-traveler-avatar-v1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/vr-visitor-card-v1.jpg"
 			}
 		],
 		"include": []

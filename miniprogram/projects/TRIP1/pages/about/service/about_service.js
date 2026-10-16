@@ -26,7 +26,7 @@ Page({
    const data=result.value.data||{},rows=data.list||[];
    state[kind+'Page']=task.page;state[kind+'HasMore']=hasMore(data,task.page);
    if(kind==='legacy')state.items=merge(state.items,rows.map(row=>normalizeContent(row,'album')));
-   else state.merchants=merge(state.merchants,rows.map(row=>({id:row._id,title:row.MERCHANT_NAME,desc:row.MERCHANT_DESC,pic:(row.MERCHANT_IMAGES||[])[0]||'',phone:row.MERCHANT_DEMO?'':row.MERCHANT_PHONE,demo:row.MERCHANT_DEMO,path:'../merchant/merchant_detail?id='+row._id})));
+   else state.merchants=merge(state.merchants,rows.map(row=>({id:row._id,title:row.MERCHANT_NAME,desc:row.MERCHANT_DESC,address:row.MERCHANT_ADDRESS||'',hours:row.MERCHANT_HOURS||'',pic:(row.MERCHANT_IMAGES||[])[0]||'',phone:row.MERCHANT_DEMO?'':row.MERCHANT_PHONE,demo:row.MERCHANT_DEMO,path:'../merchant/merchant_detail?id='+row._id})));
   });
   const failed=state.legacyError||state.merchantError,empty=!state.items.length&&!state.merchants.length;
   this.setData({...state,loading:false,error:!!failed&&empty,partialError:!!failed&&!empty,hasMore:state.legacyHasMore||state.merchantHasMore});

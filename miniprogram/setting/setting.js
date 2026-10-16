@@ -8,6 +8,7 @@ module.exports = {
 
 	// #### 系统参数 
 	IS_SUB: false, //分包模式 
+	HOME_UI_PREVIEW: true, //仅开发者工具启用全站 UI 示例；体验版/正式版仍读取接口
 	IS_DEMO: false, //是否演示版  
 
 	MOBILE_CHECK: false, //手机号码是否真实性校验

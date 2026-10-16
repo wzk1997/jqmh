@@ -18,7 +18,6 @@ const form=(mark,type,val)=>({mark,type,title:mark,val});
   if(['album','product','news'].includes(spec.module))input.title=spec.name;
   if(spec.module==='album')input.forms=[form('cover','image',[uploaded[0]]),form('desc','textarea',spec.data.desc),form('detail','content',input.content),form('spots','select',spec.data.spots)];
   if(spec.module==='product')input.forms=[form('cover','image',[uploaded[0]]),form('album','image',uploaded),...['desc','address','hours','subtitle','duration','bestTime','other'].map(key=>form(key==='hours'?'time':key,'textarea',spec.data[key]||''))];
-  if(spec.module==='panorama'){input.cover=[uploaded[0]];input.resource=uploaded[0];}
   await call('save',{module:spec.module,data:input});await call('state',{module:spec.module,id:reserved.id,state:'published'});
   report.push({key:spec.key,id:reserved.id,status:'published'});console.log('PUBLISHED',spec.module,spec.name);
   fs.writeFileSync(path.join(root,'artifacts/cms-demo-import-result.json'),JSON.stringify({environment:'cloud1-d7g9o14z451e97c40',records:report},null,2));

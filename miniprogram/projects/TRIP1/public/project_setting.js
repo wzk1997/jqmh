@@ -5,7 +5,7 @@ module.exports = {
 
 	// setup
 	SETUP_CONTENT_ITEMS: [
-		{ title: '景区概况', key: 'SETUP_CONTENT_ABOUT' },
+		{ title: '园区概况', key: 'SETUP_CONTENT_ABOUT' },
 		{ title: '公交信息', key: 'SETUP_CONTENT_BUS' },
 		{ title: '停车场', key: 'SETUP_CONTENT_PARKING' },
 		{ title: '找厕所', key: 'SETUP_CONTENT_TOLIET' },
@@ -24,7 +24,7 @@ module.exports = {
 
 	NEWS_NAME: '内容',
 	NEWS_CATE: [
-		{ id: 1, title: '景区动态', style: 'upimg' },
+		{ id: 1, title: '园区动态', style: 'upimg' },
 		{ id: 2, title: '美食', style: 'leftbig1' },
 		{ id: 3, title: '特产', style: 'leftbig3' },
 	],

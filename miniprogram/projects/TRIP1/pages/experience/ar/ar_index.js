@@ -9,6 +9,6 @@ Page({
  bindCamera(){this.setData({cameraActive:!this.data.cameraActive,cameraError:''});},
  bindCameraError(){this.setData({cameraActive:false,cameraError:'相机暂不可用，请检查微信相机权限'});},
  bindProvider(){openARProvider({page:this});},
- bindExit(){if(getCurrentPages().length>1)wx.navigateBack();else wx.switchTab({url:'/projects/TRIP1/pages/product/index/product_index'});},
+ bindExit(){if(getCurrentPages().length>1)wx.navigateBack();else wx.switchTab({url:'/projects/TRIP1/pages/album/index/album_index'});},
  url(e){pageHelper.url(e,this);}
 });

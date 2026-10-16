@@ -1,5 +1,5 @@
 const cloudHelper=require('../../../helper/cloud_helper.js');
-const META={scenic:{title:'景区简介',icon:'icon-home'},album:{title:'园区攻略',icon:'icon-pic'},merchant:{title:'吃住行管理',icon:'icon-shop'},panorama:{title:'全景图管理',icon:'icon-camera'},news:{title:'活动资讯',icon:'icon-form'},product:{title:'景点管理',icon:'icon-location'},category:{title:'分类管理',icon:'icon-cascades'}};
+const META={scenic:{title:'园区简介',icon:'icon-home'},album:{title:'园区攻略',icon:'icon-pic'},merchant:{title:'吃住行管理',icon:'icon-shop'},news:{title:'活动资讯',icon:'icon-form'},product:{title:'景点管理',icon:'icon-location'},category:{title:'分类管理',icon:'icon-cascades'}};
 const STATES={draft:'草稿',published:'已发布',offline:'已下架',deleted:'已删除'};
 function normalize(kind,row){
  const p=kind==='category'?'CONTENT_CATEGORY_':kind.toUpperCase()+'_',obj=row[p+'OBJ']||{};
@@ -9,7 +9,7 @@ function normalize(kind,row){
  return {id:row._id,name:row[p+'NAME']||row[p+'TITLE']||'',desc:row[p+'DESC']||obj.desc||'',images,content,cover:images[0]||'',state,stateLabel:STATES[state]||'草稿',hasDraft:row.hasDraft||Object.keys(row[p+'DRAFT']||{}).length>0,
  order:row[p+'ORDER']===undefined?9999:row[p+'ORDER'],category:row[p+'CATEGORY']||row[p+'CATE_ID']||'',categoryName:row[p+'CATE_NAME']||({food:'餐饮',stay:'住宿',travel:'交通'}[row[p+'CATEGORY']])||'',phone:row[p+'PHONE']||'',address:row[p+'ADDRESS']||obj.address||'',hours:row[p+'HOURS']||obj.time||'',
  activityStart:row.NEWS_ACTIVITY_START||'',activityEnd:row.NEWS_ACTIVITY_END||'',
- resourceType:row.PANORAMA_RESOURCE_TYPE||'image',resource:row.PANORAMA_RESOURCE||'',module:row.CONTENT_CATEGORY_MODULE||'',key:row.CONTENT_CATEGORY_KEY||'',spots:obj.spots||[],raw:row,
+ module:row.CONTENT_CATEGORY_MODULE||'',key:row.CONTENT_CATEGORY_KEY||'',spots:obj.spots||[],raw:row,
  date:row[p+'EDIT_TIME']?new Date(row[p+'EDIT_TIME']).toLocaleDateString():'',publishedAt:row[p+'PUBLISH_TIME']?new Date(row[p+'PUBLISH_TIME']).toLocaleString():''};
 }
 function can(admin,module,operation){

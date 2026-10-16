@@ -2,11 +2,11 @@
 <scenic-nav-bar title="园区攻略" bind:layout="bindScenicLayout"/>
 <view class="guide-page">
     <view class="guide-hero">
-        <image class="guide-hero-image" src="/projects/TRIP1/images/design/portal-mountains-v3.jpg" mode="aspectFill"/>
+        <image class="guide-hero-image" src="/projects/TRIP1/images/town/street-v1.jpg" mode="aspectFill"/>
         <view class="guide-hero-shade"/>
         <view class="guide-hero-copy">
-            <text class="guide-hero-title">山水之间，自在游览</text>
-            <text class="guide-hero-subtitle">山水相拥 · 遇见更美的自己</text>
+            <text class="guide-hero-title">江纺1953</text>
+            <text class="guide-hero-subtitle">逛逛街区 · 发现小镇新体验</text>
         </view>
     </view>
     <view class="guide-sheet">
@@ -28,7 +28,7 @@
         </block>
         <view wx:else class="guide-section-heading">
             <text>{{contentMode==='spots'?'必玩景点':'游玩贴士'}}</text>
-            <text>{{contentMode==='spots'?'发现值得停留的园区风景':'出发前，了解实用的游览建议'}}</text>
+            <text>{{contentMode==='spots'?'发现值得停留的小镇空间':'出发前，了解实用的游览建议'}}</text>
         </view>
         <button wx:for="{{items}}" wx:key="id" class="guide-row" bindtap="detail" data-path="{{item.path}}">
             <view class="guide-cover-wrap">

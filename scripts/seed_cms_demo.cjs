@@ -3,7 +3,7 @@ const fs=require('fs'),path=require('path');
 const auto=require(process.env.WETRAVEL_AUTOMATOR_PATH||'miniprogram-automator');
 const specs=require('../cloudfunctions/mcloud/project/TRIP1/public/cms_demo_data.js');
 const root=path.resolve(__dirname,'..');
-const assets={hero:fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/images/design/portal-mountains-v3.jpg')).toString('base64'),forest:fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/images/design/ar-forest-v3.jpg')).toString('base64'),lake:fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/images/design/profile-landscape-v1.jpg')).toString('base64')};
+const assets={hero:fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/images/town/street-v1.jpg')).toString('base64'),forest:fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/images/town/night-v1.jpg')).toString('base64'),lake:fs.readFileSync(path.join(root,'miniprogram/projects/TRIP1/images/town/courtyard-v1.jpg')).toString('base64')};
 const form=(mark,type,val)=>({mark,type,title:mark,val});
 (async()=>{
  const m=await auto.connect({wsEndpoint:process.env.WETRAVEL_AUTOMATOR_ENDPOINT||'ws://127.0.0.1:9421'});

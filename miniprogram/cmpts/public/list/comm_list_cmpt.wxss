@@ -1,5 +1,8 @@
 /*sort*/
 .tabs {
+	box-sizing: border-box;
+	min-width: 0;
+	max-width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
@@ -183,5 +186,11 @@
 
 .filter-button { width: auto; margin: 0 10rpx 0 0; background: #f0f5f2; vertical-align: middle; }
 .filter-button::after { border: 0; }
+
+/* Keep native phone buttons content-sized inside a bounded scroll viewport. */
+.list-filter-scroll { flex: 1 1 auto; width: 100%; max-width: 100%; min-width: 0; height: 80rpx; white-space: nowrap; }
+.list-filter-track { display: inline-flex; align-items: center; height: 80rpx; white-space: nowrap; }
+.tabs .filter-button { flex: none; width: auto; min-width: 0; min-height: 0; height: 54rpx; margin: 0 10rpx 0 0; padding: 0 22rpx; box-sizing: border-box; line-height: 54rpx; white-space: nowrap; }
+.tabs .filter-button:last-child { margin-right: 0; }
 
 .list-heading:not(.unused){background:#f8fbf9;overflow:hidden}.list-heading:before{content:"";position:absolute;right:-25rpx;bottom:-60rpx;width:280rpx;height:210rpx;background:linear-gradient(135deg,#e2eee7,#f8fbf9);transform:rotate(-25deg);border-radius:45rpx}.list-heading-copy{position:absolute;z-index:1}.list-heading-title{font-size:42rpx;letter-spacing:1rpx}.list-heading-subtitle{font-size:23rpx;margin-top:12rpx}.list-heading-image+.list-heading-shade+.list-heading-copy{position:absolute}.filter-button,.tabs .tab-menu{border-radius:40rpx}.tabs .cur{background:#087f70!important;color:white!important;border-bottom:0!important}

@@ -73,6 +73,50 @@
 			{
 				"type": "file",
 				"value": "projects/TRIP1/images/design/vr-visitor-card-v1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/portal-mountains-v3.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/ar-forest-v3.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/guide-map-v3.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/home-card-intro-v1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/home-card-map-v1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/home-card-panorama-v1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/design/home-card-vr-v1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/home/b1.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/home/b3.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/home/b4.jpg"
+			},
+			{
+				"type": "file",
+				"value": "projects/TRIP1/images/home/b5.jpg"
 			}
 		],
 		"include": []

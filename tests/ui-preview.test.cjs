@@ -23,7 +23,7 @@ test('preview lists filter categories and search, paginate, and keep merchant st
  }
  const a=preview.respond('product/list',{page:1,size:2}).data,b=preview.respond('product/list',{page:2,size:2}).data;
  assert.equal(a.total,6);assert.equal(a.count,3);assert.equal(b.list.length,2);assert.notEqual(a.list[0]._id,b.list[0]._id);
- assert.equal(preview.respond('product/list',{search:'湖畔观景台'}).data.total,1);
+ assert.equal(preview.respond('product/list',{search:'街区入口（示例）'}).data.total,1);
  assert(preview.respond('news/list',{cateId:'announcement'}).data.list.every(r=>r.NEWS_CATE_ID==='announcement'));
  assert.equal(preview.respond('album/list',{sortType:'cateId',sortVal:'3'}).data.list[0].ALBUM_CATE_NAME,'住宿');
  const altered=preview.respond('product/list').data;altered.list[0].PRODUCT_TITLE='changed';assert.notEqual(preview.modules.product[0].PRODUCT_TITLE,'changed');

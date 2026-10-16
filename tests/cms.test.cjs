@@ -189,12 +189,12 @@ test('demo creation is gated by super administrator authentication before any da
 });
 
 test('public guide sorting restores semantic priority after cloud transport reorders object keys',async()=>{
- let order;const Service=load('cloudfunctions/mcloud/project/TRIP1/service/album_service.js',{'./base_project_service.js':class{getProjectId(){return 'TRIP1';}},'../../../framework/utils/util.js':{isDefined:v=>v!==undefined},'../model/album_model.js':{STATUS:{COMM:1},getList:async(_,__,o)=>{order=o;return {list:[]};}}});await new Service().getAlbumList({orderBy:{ALBUM_ADD_TIME:'desc',ALBUM_ORDER:'asc'}});assert.deepEqual(Object.keys(order),['ALBUM_ORDER','ALBUM_ADD_TIME']);await new Service().getAlbumList({orderBy:{ALBUM_ADD_TIME:'desc',ALBUM_VIEW_CNT:'desc'}});assert.deepEqual(Object.keys(order),['ALBUM_VIEW_CNT','ALBUM_ADD_TIME']);await assert.rejects(new Service().getAlbumList({orderBy:{private:'asc'}}));
+ let order;const Service=load('cloudfunctions/mcloud/project/TRIP1/service/album_service.js',{'./base_project_service.js':class{getProjectId(){return 'TRIP1';}},'../../../framework/utils/util.js':{isDefined:v=>v!==undefined},'../model/album_model.js':{STATUS:{COMM:1},count:async()=>0,getList:async(_,__,o)=>{order=o;return {list:[]};}}});await new Service().getAlbumList({orderBy:{ALBUM_ADD_TIME:'desc',ALBUM_ORDER:'asc'}});assert.deepEqual(Object.keys(order),['ALBUM_ORDER','ALBUM_ADD_TIME']);await new Service().getAlbumList({orderBy:{ALBUM_ADD_TIME:'desc',ALBUM_VIEW_CNT:'desc'}});assert.deepEqual(Object.keys(order),['ALBUM_VIEW_CNT','ALBUM_ADD_TIME']);await assert.rejects(new Service().getAlbumList({orderBy:{private:'asc'}}));
 });
 
 test('keyword searches retain route categories and treat regex punctuation as literal text',async()=>{
  const util=require('../cloudfunctions/mcloud/framework/utils/util.js');assert.equal(util.escapeRegex('观景(台)+[1]'),'观景\\(台\\)\\+\\[1\\]');
- let where;const Service=load('cloudfunctions/mcloud/project/TRIP1/service/album_service.js',{'./base_project_service.js':class{getProjectId(){return 'TRIP1';}},'../../../framework/utils/util.js':util,'../model/album_model.js':{STATUS:{COMM:1},getList:async w=>{where=w;return {list:[]};}}});await new Service().getAlbumList({search:'山水',sortType:'cateId',sortVal:'1'});assert.equal(where.and.ALBUM_CATE_ID,'1');assert(where.or.some(clause=>clause['ALBUM_OBJ.desc']));
+ let where;const Service=load('cloudfunctions/mcloud/project/TRIP1/service/album_service.js',{'./base_project_service.js':class{getProjectId(){return 'TRIP1';}},'../../../framework/utils/util.js':util,'../model/album_model.js':{STATUS:{COMM:1},count:async()=>0,getList:async w=>{where=w;return {list:[]};}}});await new Service().getAlbumList({search:'山水',sortType:'cateId',sortVal:'1'});assert.equal(where.and.ALBUM_CATE_ID,'1');assert(where.or.some(clause=>clause['ALBUM_OBJ.desc']));
 });
 test('prepared storage rules use documented expressions without unsupported regex groups or negation',()=>{
  const rules=JSON.parse(fs.readFileSync(path.join(root,'cloudfunctions/mcloud/security/storage-rules.json')));
@@ -244,4 +244,30 @@ test('retired panorama CMS operations reject before touching content storage',as
  await assert.rejects(api.detail('panorama','legacy'),/公开模块不正确/);
  assert.equal(f.queries.length,0);assert.equal(f.files.size,0);
  assert(!require('../cloudfunctions/mcloud/project/TRIP1/public/cms_demo_data.js').some(row=>row.module==='panorama'));
+});
+
+test('guide first page starts count and list together and selects only card fields',async()=>{
+ const calls=[];let finishCount,finishList;
+ const Model={STATUS:{COMM:1},count:where=>{calls.push({kind:'count',where});return new Promise(r=>finishCount=r);},getList:(...args)=>{calls.push({kind:'list',args});return new Promise(r=>finishList=r);}};
+ const Service=load('cloudfunctions/mcloud/project/TRIP1/service/album_service.js',{'./base_project_service.js':class{getProjectId(){return 'TRIP1';}},'../../../framework/utils/util.js':{isDefined:v=>v!==undefined},'../model/album_model.js':Model});
+ const pending=new Service().getAlbumList({page:1,size:20,sortType:'cateId',sortVal:'1'});
+ assert.deepEqual(calls.map(c=>c.kind),['count','list']);
+ const [,fields,,,size,isTotal]=calls[1].args;assert.equal(size,20);assert.equal(isTotal,false);
+ assert(fields.split(',').includes('ALBUM_OBJ.cover'));assert(fields.split(',').includes('ALBUM_OBJ.desc'));assert(fields.split(',').includes('ALBUM_OBJ.spots'));
+ for(const excluded of ['ALBUM_OBJ','ALBUM_ROUTE','ALBUM_OBJ.detail','ALBUM_DRAFT'])assert(!fields.split(',').includes(excluded));
+ assert.deepEqual(calls[0].where,calls[1].args[0]);assert.equal(calls[0].where.and.ALBUM_STATUS,1);assert.equal(calls[0].where.and._pid,'TRIP1');
+ finishList({page:1,size:20,list:[{_id:'card'}]});finishCount(41);
+ const result=await pending;assert.equal(result.total,41);assert.equal(result.count,3);assert.equal(result.list[0]._id,'card');
+ // Later pages still use the existing oldTotal offset calculation, without an extra count.
+ Model.count=()=>assert.fail('must use pagination count path');let args;Model.getList=async(...v)=>{args=v;return {list:[],total:41}};
+ await new Service().getAlbumList({page:2,size:20,oldTotal:40});assert.equal(args[5],true);assert.equal(args[6],40);
+ await new Service().getAlbumList({page:1,size:20,isTotal:false});assert.equal(args[5],false);
+});
+
+test('latest guide first page also runs its count alongside the computed publication query',async()=>{
+ const started=[];let resolveCount,resolveList;
+ const Model={CL:'bx_album',STATUS:{COMM:1},count:()=>{started.push('count');return new Promise(r=>resolveCount=r);}};
+ const aggregate={ifNull:x=>x,gt:x=>x,cond:x=>x};
+ const Service=load('cloudfunctions/mcloud/project/TRIP1/service/album_service.js',{'./base_project_service.js':class{getProjectId(){return 'TRIP1';}},'../../../framework/utils/util.js':{isDefined:v=>v!==undefined},'../model/album_model.js':Model,'../../../framework/database/db_util.js':{getCmd:()=>({aggregate}),getListComputed:(...args)=>{started.push('list');assert.equal(args[7],false);assert(!args[2].split(',').includes('ALBUM_OBJ'));return new Promise(r=>resolveList=r);}}});
+ const pending=new Service().getAlbumList({sortMode:'latest',page:1,size:20});assert.deepEqual(started,['count','list']);resolveCount(0);resolveList({page:1,size:20,list:[]});assert.equal((await pending).count,0);
 });

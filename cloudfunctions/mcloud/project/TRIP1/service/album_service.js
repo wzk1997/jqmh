@@ -43,8 +43,8 @@ class AlbumService extends BaseProjectService {
 		sortVal, // 搜索菜单
 		orderBy, // 排序 
         sortMode,
-		page,
-		size,
+		page = 1,
+		size = 20,
 		isTotal = true,
 		oldTotal
 	}) {
@@ -63,7 +63,8 @@ class AlbumService extends BaseProjectService {
 			'ALBUM_ORDER': 'asc',
 			'ALBUM_ADD_TIME': 'desc'
 		};
-		let fields = 'ALBUM_DEMO,ALBUM_DURATION,ALBUM_ROUTE,ALBUM_OBJ,ALBUM_VIEW_CNT,ALBUM_TITLE,ALBUM_CATE_ID,ALBUM_ADD_TIME,ALBUM_PUBLISH_TIME,ALBUM_ORDER,ALBUM_STATUS,ALBUM_CATE_NAME';
+		// List cards need cover, summary and linked IDs, never the full article or itinerary.
+		let fields = 'ALBUM_DEMO,ALBUM_DURATION,ALBUM_OBJ.cover,ALBUM_OBJ.desc,ALBUM_OBJ.spots,ALBUM_VIEW_CNT,ALBUM_TITLE,ALBUM_CATE_ID,ALBUM_ADD_TIME,ALBUM_PUBLISH_TIME,ALBUM_ORDER,ALBUM_STATUS,ALBUM_CATE_NAME';
 
 		let where = { ALBUM_DELETED: ['<>',true] };
 		where.and = {
@@ -94,12 +95,21 @@ class AlbumService extends BaseProjectService {
 			}
 		}
 
+        // First-page offset does not depend on the count, so both reads can start together.
+        const withTotal = async read => {
+            if(isTotal && Number(page)===1) {
+                const [total,result]=await Promise.all([AlbumModel.count(where),read(false)]);
+                return {...result,total,count:Math.ceil(total/Number(result.size || size))};
+            }
+            return read(isTotal);
+        };
         if(sortMode==='latest') {
             const dbUtil=require('../../../framework/database/db_util.js'),v=require('./cms_validation.js'),a=dbUtil.getCmd().aggregate;
             const effective=a.cond({if:a.gt([a.ifNull(['$ALBUM_PUBLISH_TIME',0]),0]),then:'$ALBUM_PUBLISH_TIME',else:'$ALBUM_ADD_TIME'});
-            return dbUtil.getListComputed(AlbumModel.CL,where,fields,{__publishSort:effective},{__publishSort:'desc',_id:'asc'},v.integer(page,'页码',1,10000,1),v.integer(size,'每页数量',1,50,20),isTotal,oldTotal);
+            const currentPage=v.integer(page,'页码',1,10000,1),pageSize=v.integer(size,'每页数量',1,50,20);
+            return withTotal(total=>dbUtil.getListComputed(AlbumModel.CL,where,fields,{__publishSort:effective},{__publishSort:'desc',_id:'asc'},currentPage,pageSize,total,oldTotal));
         }
-		return await AlbumModel.getList(where, fields, orderBy, page, size, isTotal, oldTotal);
+		return withTotal(total=>AlbumModel.getList(where, fields, orderBy, page, size, total, oldTotal));
 	}
 
 

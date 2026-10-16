@@ -2,7 +2,7 @@
 <view class="scenic-nav scenic-nav-{{mode}} {{fixed?'is-fixed':'is-absolute'}}" style="height:{{chrome.height}}px">
  <view class="scenic-nav-row" style="top:{{chrome.rowTop}}px;padding-right:{{chrome.right}}px">
   <button wx:if="{{back}}" class="scenic-nav-button scenic-nav-back" bindtap="goBack" aria-label="返回上一页"><text class="icon-back"/></button>
-  <view wx:if="{{brand}}" class="scenic-nav-brand"><view class="scenic-brand-copy"><text class="scenic-brand-title">{{title||'WeTravel'}}</text><text class="scenic-brand-subtitle" wx:if="{{subtitle}}">{{subtitle}}</text></view></view>
+  <view wx:if="{{brand}}" class="scenic-nav-brand"><view class="scenic-brand-copy"><text class="scenic-brand-title">{{title||'江纺1953'}}</text><text class="scenic-brand-subtitle" wx:if="{{subtitle}}">{{subtitle}}</text></view></view>
   <text wx:elif="{{title}}" class="scenic-nav-title" style="left:{{titleLeft}}px;right:{{titleRight}}px">{{title}}</text>
   <view class="scenic-nav-actions"><button wx:if="{{search}}" class="scenic-nav-button scenic-nav-search" bindtap="searchTap" aria-label="搜索"><text class="scenic-search-symbol icon-search"/></button><button wx:for="{{actions}}" wx:key="id" class="scenic-nav-button {{item.round?'scenic-business-round':''}}" bindtap="actionTap" data-index="{{index}}" open-type="{{item.openType||''}}" aria-label="{{item.label}}"><text class="{{item.icon}}"/></button><view wx:if="{{rightSlotWidth}}" class="scenic-nav-slot" style="width:{{rightSlotWidth}}px"><slot name="right"/></view></view>
  </view>

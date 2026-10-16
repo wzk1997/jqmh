@@ -93,3 +93,12 @@ test('merged panorama entry uses only the fixed URL with no CMS dependency or le
  assert.deepEqual(app.subpackages.find(pack=>pack.name==='experience').pages,['webview/panorama_webview']);
  p.fail();assert.equal(p.data.error,true);assert.equal(p.data.url,'');
 });
+
+test('guide ignores repeated sort taps and preserves cards only for the same query refresh',async()=>{
+ let finish,calls=0;const p=page('miniprogram/projects/TRIP1/pages/album/index/album_index.js',{'../../../ui/content_ui.js':ui,'../../../../../helper/cloud_helper.js':{callCloudSumbit:()=>{calls++;return new Promise(r=>finish=r);}}});
+ let pending=p.load();finish({data:{list:[{_id:'a',ALBUM_TITLE:'攻略A',ALBUM_OBJ:{cover:[],spots:[]}}],total:1}});await pending;
+ pending=p.load();assert.equal(p.data.items[0].id,'a');finish({data:{list:[{_id:'a',ALBUM_TITLE:'攻略A'}],total:1}});await pending;
+ p.sort({currentTarget:{dataset:{id:'recommend'}}});assert.equal(calls,2);
+ p.sort({currentTarget:{dataset:{id:'unknown'}}});assert.equal(calls,2);
+ p.data.sort='popular';pending=p.load();assert.equal(p.data.items.length,0);finish({data:{list:[],total:0}});await pending;
+});

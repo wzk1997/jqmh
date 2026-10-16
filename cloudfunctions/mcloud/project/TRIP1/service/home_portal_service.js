@@ -13,7 +13,7 @@ function validate(input){
  const slides=input.slides||[],featured=input.featured||[];
  if(!Array.isArray(slides)||slides.length>8||!Array.isArray(featured)||featured.length>12)v.fail('轮播最多8张，推荐最多12项');
  const seen=new Set();
- return {scenicId:input.scenicId?v.id(input.scenicId):'',brandName:v.text(input.brandName,'品牌名称',30)||'WeTravel',
+ return {scenicId:input.scenicId?v.id(input.scenicId):'',brandName:v.text(input.brandName,'品牌名称',30)||'江纺1953',
   slides:slides.map(row=>{if(!row||typeof row!=='object')v.fail('轮播配置不正确');if(row.enabled!==undefined&&typeof row.enabled!=='boolean')v.fail('轮播启用状态不正确');return {image:v.text(row.image,'轮播图片',600,true),title:v.text(row.title,'轮播标题',60,true),subtitle:v.text(row.subtitle,'轮播副标题',120),enabled:row.enabled!==false,target:row.target?reference(row.target):null};}),
   featured:featured.map(row=>{const ref=reference(row),key=ref.module+':'+ref.id;if(seen.has(key))v.fail('推荐内容不能重复');seen.add(key);return ref;})};
 }

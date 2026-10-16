@@ -1,6 +1,6 @@
 <view class="ar-page"><image wx:if="{{!cameraActive}}" class="ar-scene" src="{{backdrop}}" mode="aspectFill"/><camera wx:else class="ar-scene" device-position="back" flash="off" binderror="bindCameraError"/>
 <scenic-nav-bar mode="immersive" title="AR 实景导航" overlay bind:layout="bindScenicLayout"/>
-<view class="ar-intro" style="padding-top:{{uiChrome.height}}px"><text>{{cameraActive?'相机画面':'实景导航 · 预览'}}</text><text>{{cameraActive?'记录眼前的风景':'跟随风景，探索自然之美'}}</text></view>
+<view class="ar-intro" style="padding-top:{{uiChrome.height}}px"><text>{{cameraActive?'相机画面':'实景导航 · 预览'}}</text><text>{{cameraActive?'记录眼前的小镇时光':'走进街区，发现小镇故事'}}</text></view>
 <view wx:if="{{!cameraActive}}" class="ar-chevrons"><view></view><view></view><view></view></view>
 <view class="ar-controls"><button bindtap="url" data-type="relaunch" data-url="../../album/index/album_index" aria-label="园区攻略"><text class="icon-location"></text></button><button bindtap="bindCamera" aria-label="{{cameraActive?'关闭相机':'打开相机'}}"><text class="icon-camera"></text></button></view>
 <view class="ar-sheet"><view class="ar-sheet-top"><image src="{{backdrop}}" mode="aspectFill"/><view><text>实景导航暂未开放</text></view><button bindtap="bindExit">退出导航</button></view><text wx:if="{{cameraError}}" class="ar-error">{{cameraError}}</text><view class="ar-actions"><button bindtap="url" data-type="relaunch" data-url="../../album/index/album_index">查看攻略</button><button bindtap="bindProvider">导航服务</button></view></view>

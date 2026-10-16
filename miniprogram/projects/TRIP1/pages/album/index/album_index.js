@@ -38,7 +38,8 @@ Page({
             route = 'album/list';
             params = { page, size: 20, sortType: 'cateId', sortVal: this.data.category, orderBy, ...(this.data.sort === 'new' ? { sortMode: 'latest' } : {}) };
         }
-        this.setData({ loading: true, error: false, ...(more ? {} : { items: [], hasMore: false }) });
+        const queryKey = JSON.stringify({ route, category: this.data.category, sort: this.data.sort });
+        this.setData({ loading: true, error: false, ...(more ? {} : { ...(queryKey === this.renderedQuery ? {} : { items: [] }), hasMore: false }) });
         try {
             const result = await cloudHelper.callCloudSumbit(route, params, { title: 'bar' });
             if (serial !== this.serial) return;
@@ -51,6 +52,7 @@ Page({
                 }
                 return { ...normalizeContent(row, 'album'), duration: row.ALBUM_DURATION || '', spotCount: (row.ALBUM_OBJ && row.ALBUM_OBJ.spots || []).length };
             });
+            this.renderedQuery = queryKey;
             this.setData({ items: page === 1 ? rows : this.data.items.concat(rows), page, hasMore: page * 20 < (data.total || 0) });
         } catch (_) {
             if (serial === this.serial) this.setData({ error: true });
@@ -64,7 +66,7 @@ Page({
         this.setData({ category: id });
         this.load();
     },
-    sort(e) { if (this.data.contentMode !== 'route') return; this.setData({ sort: e.currentTarget.dataset.id }); this.load(); },
+    sort(e) { const id=e.currentTarget.dataset.id; if (this.data.contentMode !== 'route'||id===this.data.sort||!this.data.sorts.some(item=>item.id===id)) return; this.setData({ sort: id }); this.load(); },
     entry(e) {
         const id = e.currentTarget.dataset.id;
         if (!['route', 'spots', 'tips'].includes(id)) return;

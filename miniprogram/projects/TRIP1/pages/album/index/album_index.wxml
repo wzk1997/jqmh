@@ -1,6 +1,7 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <wxs module="media" src="../../../../../wxs/media.wxs"/>
 <scenic-nav-bar title="园区攻略" bind:layout="bindScenicLayout"/>
-<view class="guide-page">
+<view class="guide-page {{wtDisplayMode==='enlarged'?'display-enlarged':''}}">
     <view class="guide-hero">
         <image class="guide-hero-image" src="/projects/TRIP1/images/town/street-v1.jpg" mode="aspectFill"/>
         <view class="guide-hero-shade"/>
@@ -61,3 +62,4 @@
         <view wx:elif="{{hasMore}}" class="guide-state">上拉加载更多</view>
     </view>
 </view>
+<reading-tools id="readingTools"/>

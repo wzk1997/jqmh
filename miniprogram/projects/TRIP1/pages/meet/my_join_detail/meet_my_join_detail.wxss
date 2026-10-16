@@ -31,7 +31,7 @@
 
 .text-pic-list-box .item .oprt {
 	line-height: 1.5;
-	font-size: 27rpx;
+	font-size: calc(27rpx * var(--wt-font-scale, 1));
 	margin: 30rpx 0 10rpx;
 	display: flex;
 	justify-content: center;
@@ -68,7 +68,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	line-height: 1.5;
 	color: #333;
 	border-bottom: 2rpx dotted #ccc;

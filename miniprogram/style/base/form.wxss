@@ -20,7 +20,7 @@
 .form-group .title {
 	text-align: justify;
 	padding-right: 30rpx;
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	position: relative;
 	height: 60rpx;
 	line-height: 60rpx;
@@ -39,13 +39,13 @@
 }
 
 .form-group.form-detail text {
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	font-weight: normal;
 }
 
 .form-group input {
 	flex: 1;
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	color: #555;
 	padding-right: 20rpx;
 	height: 60rpx;
@@ -75,7 +75,7 @@
 	width: 100%;
 	line-height: 1.2em;
 	flex: 1;
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	padding: 0;
 	text-align: left;
 	line-height: 1.8;
@@ -127,7 +127,7 @@
 .form-group .picker .picker,
 .form-group .picker-null .picker {
 	line-height: 100rpx;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -141,7 +141,7 @@
 	display: block;
 	content: "\e6a3";
 	position: absolute;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	color: var(--grey);
 	line-height: 100rpx;
 	width: 60rpx;
@@ -170,7 +170,7 @@ switch::before {
 	color: var(--white) !important;
 	top: 0%;
 	left: 0rpx;
-	font-size: 26rpx;
+	font-size: calc(26rpx * var(--wt-font-scale, 1));
 	line-height: 26px;
 	width: 50%;
 	text-align: center;
@@ -213,7 +213,7 @@ checkbox::before {
 	top: 50%;
 	margin-top: -8px;
 	right: 5px;
-	font-size: 32rpx;
+	font-size: calc(32rpx * var(--wt-font-scale, 1));
 	line-height: 16px;
 	pointer-events: none;
 	transform: scale(1, 1);
@@ -583,19 +583,19 @@ radio.white[checked] .wx-radio-input {
 
 .form-box .hint-desc.error {
 	color: #e54d42;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 .form-box .hint-desc.error::before {
 	font-family: "icon";
-	font-size: 24rpx !important;
+	font-size: calc(24rpx * var(--wt-font-scale, 1)) !important;
 	display: inline-block;
 	content: "\e659";
 	margin-right: 2rpx; 
 }
 
 .form-box .hint-desc.error::before {
-	font-size: 32rpx;
+	font-size: calc(32rpx * var(--wt-font-scale, 1));
 }
 
 .phc {

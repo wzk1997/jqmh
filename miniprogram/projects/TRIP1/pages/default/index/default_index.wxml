@@ -1,6 +1,7 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <wxs module="media" src="../../../../../wxs/media.wxs"/>
-<view class="portal"><scenic-nav-bar bind:layout="bindScenicLayout" mode="{{homeNavMode}}" title="{{portalBrandName}}" subtitle="{{homeNavMode==='home'?'拾光小镇 · 遇见日常好时光':''}}" brand="{{homeNavMode==='home'}}" back="{{false}}" overlay/>
-<view class="portal-hero" style="height:calc(380rpx + {{uiChrome.height||88}}px)">
+<view class="portal {{wtDisplayMode==='enlarged'?'display-enlarged':''}}"><scenic-nav-bar bind:layout="bindScenicLayout" mode="{{homeNavMode}}" title="{{portalBrandName}}" subtitle="{{homeNavMode==='home'?'拾光小镇 · 遇见日常好时光':''}}" brand="{{homeNavMode==='home'}}" back="{{false}}" overlay/>
+<view class="portal-hero" style="height:calc({{wtDisplayMode==='enlarged'?440:380}}rpx + {{uiChrome.height||88}}px)">
   <view wx:if="{{heroLoading&&!heroSlides.length}}" class="portal-hero-loading"/>
   <swiper wx:if="{{heroRender&&heroSlides.length}}" class="portal-hero-swiper" autoplay="{{heroPlaying&&heroSlides.length>1}}" circular="{{heroSlides.length>1}}" interval="5000" duration="500" current="{{heroIndex}}" bindchange="bindHeroChange" aria-label="小镇内容轮播">
     <swiper-item wx:for="{{heroSlides}}" wx:key="index">
@@ -26,7 +27,8 @@
 <button hover-class="portal-card-pressed" bindtap="url" data-url="../../about/service/about_service"><view class="portal-utility-icon"><image src="/projects/TRIP1/images/ui/home/food.png" mode="aspectFit"/></view><view class="portal-utility-copy"><text class="portal-entry-title">吃住行</text><text class="portal-utility-caption">美食·住宿·交通</text></view><text class="portal-utility-arrow icon-right"/></button>
 <button hover-class="portal-card-pressed" bindtap="url" data-url="../../feedback/index/feedback_index"><view class="portal-utility-icon"><image src="/projects/TRIP1/images/ui/home/feedback.png" mode="aspectFit"/></view><view class="portal-utility-copy"><text class="portal-entry-title">意见反馈</text><text class="portal-utility-caption">倾听你的声音</text></view><text class="portal-utility-arrow icon-right"/></button>
 </view>
-<view class="portal-news-section"><view class="portal-section"><view class="portal-activity-heading"><image class="portal-leaf" src="/projects/TRIP1/images/ui/home/leaf.png" mode="aspectFit"/><view class="portal-section-copy"><text class="portal-section-title">活动资讯</text><text class="portal-section-subtitle">小镇新鲜事 · 精彩不打烊</text></view></view><button class="portal-section-more" bindtap="bindAllNews">查看更多 <text class="icon-right"/></button></view><news-waterfall compact="{{true}}" media-urls="{{mediaUrls}}" items="{{waterfallItems}}"/>
+<reading-tools id="readingTools" inline="{{true}}"/>
+<view class="portal-news-section"><view class="portal-section"><view class="portal-activity-heading"><image class="portal-leaf" src="/projects/TRIP1/images/ui/home/leaf.png" mode="aspectFit"/><view class="portal-section-copy"><text class="portal-section-title">活动资讯</text><text class="portal-section-subtitle">小镇新鲜事 · 精彩不打烊</text></view></view><button class="portal-section-more" bindtap="bindAllNews">查看更多 <text class="icon-right"/></button></view><news-waterfall id="homeNews" enlarged="{{wtDisplayMode==='enlarged'}}" compact="{{true}}" media-urls="{{mediaUrls}}" items="{{waterfallItems}}"/>
 <view wx:if="{{homeLoading&&!hasHomeLoaded&&!homeError}}" class="wt-state">正在发现精彩…</view>
 <view wx:if="{{!waterfallItems.length&&(homeError||!homeLoading)}}" class="portal-empty">
   <text class="portal-empty-copy">{{homeError?'暂时无法获取资讯':'新的园区故事，即将与你相遇'}}</text>

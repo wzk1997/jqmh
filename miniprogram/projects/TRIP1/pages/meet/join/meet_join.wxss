@@ -2,7 +2,7 @@
 @import "../../../style/skin.wxss";
 
 .form-group .line-desc {
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	text-align: center;
 	width: 100%;
 	color: #666;

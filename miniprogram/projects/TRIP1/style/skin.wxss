@@ -41,7 +41,7 @@ page {
 }
 
 .tabs .tab {
-	font-size: 28rpx !important;
+	font-size: calc(28rpx * var(--wt-font-scale, 1)) !important;
 }
 
 .tabs .cur {

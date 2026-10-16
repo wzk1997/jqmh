@@ -56,7 +56,7 @@
 
 .comm-list-box .item-leftbig .leftbig-right .leftbig-title {
 	width: 100%;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	color: #000;
 	line-height: 1.5;
 	margin-top: 0rpx;
@@ -65,7 +65,7 @@
 
 .comm-list-box .item-leftbig .leftbig-desc {
 	margin-top: 5rpx;
-	font-size: 26rpx;
+	font-size: calc(26rpx * var(--wt-font-scale, 1));
 	color: #666;
 	line-height: 1.4;
 	height: 107rpx;
@@ -80,18 +80,18 @@
 	align-items: center;
 	margin-top: 0rpx;
 	color: #bbb;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	position: relative;
 	min-height: 40rpx;
 }
 
 .comm-list-box .item-leftbig .data .bottom-tag-list {
 	margin-top: 0rpx;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 .comm-list-box .item-leftbig .leftbig-right .bottom-status {
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 /* 大文字模式  */
@@ -132,19 +132,19 @@
 
 .comm-list-box .item-bigtext .right .bigtext-title {
 	width: 100%;
-	font-size: 36rpx;
+	font-size: calc(36rpx * var(--wt-font-scale, 1));
 	font-weight: bold;
 	text-align: left;
 }
 
 .comm-list-box .item-bigtext .right .data-desc {
 	width: 100%;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	opacity: .7;
 }
 
 .comm-list-box .item-bigtext .data-status {
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	position: absolute;
 	bottom: 10rpx;
 	right: 40rpx;
@@ -168,7 +168,7 @@
 
 .comm-list-box .item-upimg .upimg-title {
 	width: 100%;
-	font-size: 38rpx;
+	font-size: calc(38rpx * var(--wt-font-scale, 1));
 	font-weight: bold;
 	text-align: left;
 	padding: 10rpx 20rpx;
@@ -183,7 +183,7 @@
 
 .comm-list-box .item-upimg .data-desc {
 	width: 100%;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	color: #666;
 	padding: 10rpx 20rpx;
 	max-height: 90rpx;
@@ -191,7 +191,7 @@
 
 .comm-list-box .item-upimg .data-status {
 	width: 100%;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	color: #bbb;
 	padding-right: 20rpx;
 	text-align: right;
@@ -229,14 +229,14 @@
 
 .comm-list-box .item-leftbig1 .leftbig-right .leftbig-title {
 	width: 100%;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	color: #000;
 	font-weight: bold;
 }
 
 .comm-list-box .item-leftbig1 .leftbig-desc {
 	margin-top: 5rpx;
-	font-size: 27rpx;
+	font-size: calc(27rpx * var(--wt-font-scale, 1));
 	color: #666; 
 }
 
@@ -247,7 +247,7 @@
 	justify-content: flex-end;
 	align-items: center;
 	color: #bbb;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -255,11 +255,11 @@
 
 .comm-list-box .item-leftbig1 .data .bottom-tag-list {
 	margin-top: 0rpx;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 .comm-list-box .item-leftbig1 .leftbig-right .bottom-status {
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 
@@ -301,7 +301,7 @@
 
 .comm-list-box .item-leftbig2 .leftbig-right .leftbig-title {
 	width: 100%;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	color: #000;
 	line-height: 1.5;
 	margin-top: 0rpx;
@@ -310,7 +310,7 @@
 
 .comm-list-box .item-leftbig2 .leftbig-desc {
 	margin-top: 5rpx;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	color: #666;
 	line-height: 1.4;
 	height: 107rpx;
@@ -325,18 +325,18 @@
 	align-items: center;
 	margin-top: 0rpx;
 	color: #999;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	position: relative;
 	min-height: 40rpx;
 }
 
 .comm-list-box .item-leftbig2 .data .bottom-tag-list {
 	margin-top: 0rpx;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 .comm-list-box .item-leftbig2 .leftbig-right .bottom-status {
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 /* 左大图模式3  */
@@ -378,7 +378,7 @@
 
 .comm-list-box .item-leftbig3 .leftbig-right .leftbig-title {
 	width: 100%;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	color: #000;
 	line-height: 1.5;
 	margin-top: 0rpx;
@@ -387,7 +387,7 @@
 
 .comm-list-box .item-leftbig3 .leftbig-desc {
 	margin-top: 5rpx;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	color: #666;
 	line-height: 1.4;
 	height: 60rpx;
@@ -402,18 +402,18 @@
 	align-items: center;
 	margin-top: 0rpx;
 	color: #999;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	position: relative;
 	min-height: 40rpx;
 }
 
 .comm-list-box .item-leftbig3 .data .bottom-tag-list {
 	margin-top: 0rpx;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 .comm-list-box .item-leftbig3 .leftbig-right .bottom-status {
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 }
 
 /*右边/左边图*/
@@ -432,7 +432,7 @@
 .comm-list-box .item-leftpic .title {
 	max-height: 88rpx;
 	line-height: 44rpx;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	color: #000;
 	font-weight: bold;
 	z-index: 999;
@@ -451,7 +451,7 @@
 .comm-list-box .item-leftpic .desc text {
 	max-height: 120rpx;
 	line-height: 40rpx;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	color: #666;
 	flex: 1;
 }
@@ -476,7 +476,7 @@
 .comm-list-box .item-leftpic .data {
 	height: 24rpx;
 	line-height: 24rpx;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	color: #bbb;
 	margin-top: 30rpx;
 	display: flex;
@@ -504,7 +504,7 @@
 }
 
 .comm-list-scroll .item-scroll .title {
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	width: 300rpx;
 	height: 40rpx;
 	color:#000;
@@ -547,7 +547,7 @@
 	width: 100%;
 	text-align: left;
 	color: #333;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	font-weight: bold;
 	margin-top: 20rpx;
 }
@@ -580,20 +580,20 @@
 	margin-right: 10rpx;
 	align-items: center;
 	justify-content: center;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	border-bottom-left-radius: 10rpx;
 	border-top-right-radius: 10rpx;
 }
 
 .comm-list-box .item-line .left .title {
 	flex: 1;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	color: #000;
 }
 
 .comm-list-box .item-line .right {
 	width: 40rpx;
-	font-size: 26rpx;
+	font-size: calc(26rpx * var(--wt-font-scale, 1));
 	text-align: right;
 	color: #999;
-} 
+}

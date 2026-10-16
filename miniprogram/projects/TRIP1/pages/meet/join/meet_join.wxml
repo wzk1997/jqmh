@@ -1,3 +1,4 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <view wx:if="{{isLoad===null}}" class="margin-top load notexist text-l load-project"></view>
 <view wx:if="{{isLoad===false}}" class="margin-top load loading text-l load-project"></view>
 
@@ -29,3 +30,4 @@
 
 
 </view>
+<reading-tools id="readingTools"/>

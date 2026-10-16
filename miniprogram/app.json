@@ -36,7 +36,8 @@
     "cmpt-comm-list": "/cmpts/public/list/comm_list_cmpt",
     "cmpt-picker": "/cmpts/public/picker/picker_cmpt",
     "cmpt-modal": "/cmpts/public/modal/modal_cmpt",
-    "scenic-nav-bar": "/cmpts/public/scenic_nav_bar/scenic_nav_bar"
+    "scenic-nav-bar": "/cmpts/public/scenic_nav_bar/scenic_nav_bar",
+    "reading-tools": "/cmpts/public/reading_tools/reading_tools"
   },
   "sitemapLocation": "sitemap.json",
   "subpackages": [

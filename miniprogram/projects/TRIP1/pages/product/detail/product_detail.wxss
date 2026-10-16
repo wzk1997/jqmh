@@ -1,4 +1,4 @@
 @import "../../../style/ui_common.wxss";
 @import "../../../style/travel_content.wxss";
 
-.travel-navigation{display:flex;align-items:center;justify-content:center;gap:12rpx;margin:24rpx 0;min-height:88rpx;line-height:88rpx;border-radius:44rpx;background:#a44736;color:#fff;font-size:28rpx;font-weight:600}.travel-navigation:after{border:0}
+.travel-navigation{display:flex;align-items:center;justify-content:center;gap:12rpx;margin:24rpx 0;min-height:88rpx;line-height:88rpx;border-radius:44rpx;background:#a44736;color:#fff;font-size:calc(28rpx * var(--wt-font-scale, 1));font-weight:600}.travel-navigation:after{border:0}

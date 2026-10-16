@@ -11,9 +11,9 @@ page {
   --wt-radius-small: 16rpx;
   --wt-space-page: 32rpx;
   --wt-space-section: 48rpx;
-  --wt-font-small: 24rpx;
-  --wt-font-body: 28rpx;
-  --wt-font-title: 36rpx;
+  --wt-font-small: calc(24rpx * var(--wt-font-scale, 1));
+  --wt-font-body: calc(28rpx * var(--wt-font-scale, 1));
+  --wt-font-title: calc(36rpx * var(--wt-font-scale, 1));
   /* Align existing utility classes with the same brand and text palette. */
   --projectColor: #a44736;
   --projectColorLight: #f4e6de;

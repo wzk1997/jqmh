@@ -45,7 +45,7 @@
 
 .main-poster .poster-share .item>text {
 	margin-top: 15rpx;
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	text-align: center;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .main-poster .poster-img .save-hint {
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	color: #555;
 	margin-top: 10rpx;
 }
@@ -80,5 +80,5 @@
 	margin: 30rpx 0 30rpx;
 	border-top: 1rpx solid #ddd;
 	padding: 30rpx 0 20rpx;
-	font-size: 32rpx;
+	font-size: calc(32rpx * var(--wt-font-scale, 1));
 }

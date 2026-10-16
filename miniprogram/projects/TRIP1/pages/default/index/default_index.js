@@ -47,7 +47,7 @@ Page({
 
 	},
 
-    onPageScroll(e){const mode=e.scrollTop>200?'page':'home';if(mode!==this.data.homeNavMode)this.setData({homeNavMode:mode});},
+    onPageScroll(e){const mode=e.scrollTop>80?'page':'home';if(mode!==this.data.homeNavMode)this.setData({homeNavMode:mode});},
     bindAllNews() { wx.navigateTo({url:'/projects/TRIP1/pages/news/index/news_index?layout=waterfall'}); },
     bindHeroChange: function (e) {
         const index=Number(e.detail.current);

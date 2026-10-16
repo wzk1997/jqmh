@@ -1,0 +1,91 @@
+/* Enlarged display reflows the same content within the screen; standard layouts remain unchanged. */
+.display-enlarged{--wt-muted:#6f5b51}
+.display-enlarged .portal-entry-cards{gap:20rpx;margin-bottom:24rpx}
+.display-enlarged .portal-entry-card{height:280rpx;border-radius:28rpx}
+.display-enlarged .portal-card-icon-wrap{width:68rpx;height:68rpx}
+.display-enlarged .portal-card-icon{width:48rpx;height:48rpx}
+.display-enlarged .portal-entry-utilities{grid-template-columns:minmax(0,1fr);gap:16rpx;margin-bottom:20rpx}
+.display-enlarged .portal-entry-utilities>button{min-height:124rpx;padding:22rpx 26rpx;gap:24rpx;border-radius:24rpx}
+.display-enlarged .portal-utility-icon{width:68rpx;height:68rpx}
+.display-enlarged .portal-utility-icon image{width:48rpx;height:48rpx}
+.display-enlarged .portal-entry-utilities .portal-entry-title{font-size:36rpx;line-height:1.5}
+.display-enlarged .portal-utility-caption{font-size:28rpx;line-height:1.6;margin-top:4rpx;color:#6f5b51}
+.display-enlarged .portal-utility-arrow{display:block;flex-shrink:0;color:#a44736;font-size:28rpx}
+.display-enlarged .portal-news-section{margin-top:32rpx}
+.display-enlarged .portal-section{gap:16rpx;align-items:center;flex-wrap:wrap}
+.display-enlarged .portal-section-more{min-height:96rpx;font-size:30rpx}
+.display-enlarged .portal-section-subtitle{color:#6f5b51;line-height:1.7}
+.display-enlarged .guide-hero{height:330rpx}
+.display-enlarged .guide-hero-copy{top:90rpx}
+.display-enlarged .guide-sheet{padding:32rpx 28rpx}
+.display-enlarged .guide-entries{gap:12rpx;margin-bottom:24rpx}
+.display-enlarged .guide-entry{min-height:160rpx;gap:16rpx}
+.display-enlarged .guide-entry-icon{width:96rpx;height:96rpx}
+.display-enlarged .guide-entry-icon>text{font-size:44rpx}
+.display-enlarged .guide-sort-button{line-height:100rpx;min-height:100rpx}
+.display-enlarged .guide-category-button{min-height:88rpx;line-height:88rpx;padding:0 28rpx}
+.display-enlarged .guide-row-title{line-height:1.55;word-break:break-word}
+.display-enlarged .guide-row-desc{-webkit-line-clamp:2;line-height:1.75;color:#6f5b51}
+.display-enlarged .guide-row-meta{gap:12rpx 20rpx;line-height:1.65;color:#6f5b51}
+.display-enlarged .guide-section-heading{align-items:flex-start;flex-wrap:wrap;padding:20rpx 0;gap:12rpx}
+.display-enlarged .living-tabs button{min-height:96rpx;line-height:96rpx}
+.display-enlarged .living-list{padding:0 28rpx}
+.display-enlarged .living-row{display:block;position:relative;padding:30rpx 0}
+.display-enlarged .living-cover,.display-enlarged .living-placeholder{display:block;width:100%;height:340rpx;border-radius:22rpx;box-sizing:border-box}
+.display-enlarged .living-copy{gap:14rpx;margin-top:24rpx}
+.display-enlarged .living-copy>text:first-child{font-size:38rpx;line-height:1.55;word-break:break-word}
+.display-enlarged .living-copy>text:nth-child(2){font-size:30rpx;line-height:1.75;color:#6f5b51}
+.display-enlarged .living-copy>text:last-child{font-size:28rpx;line-height:1.7;color:#6f5b51}
+.display-enlarged .living-call{position:absolute;right:0;bottom:30rpx;width:92rpx;min-width:92rpx;height:92rpx;line-height:92rpx}
+.display-enlarged .living-arrow{position:absolute;right:0;bottom:30rpx}
+.display-enlarged .living-copy>text:last-child{padding-right:72rpx;min-height:52rpx;box-sizing:border-box}
+.display-enlarged .living-with-phone .living-copy>text:last-child{padding-right:116rpx;min-height:92rpx}
+.display-enlarged .living-with-phone .living-arrow{display:none}
+.display-enlarged .v3-menu-row{padding:28rpx;min-height:132rpx;gap:20rpx;align-items:center}
+.display-enlarged .v3-menu-icon{width:76rpx;height:76rpx;font-size:38rpx}
+.display-enlarged .v3-menu-copy{min-width:0}
+.display-enlarged .v3-menu-copy>text{white-space:normal;word-break:break-word;line-height:1.65}
+.travel-hero.display-enlarged{height:470rpx}
+.travel-body.display-enlarged{padding:36rpx 34rpx 60rpx}
+.display-enlarged .travel-description,.display-enlarged .travel-text{line-height:1.95;color:#59483f}
+.display-enlarged .travel-section{margin-top:44rpx}
+.display-enlarged .travel-section-title{margin-bottom:24rpx}
+.display-enlarged .travel-highlight>image{height:240rpx}
+.display-enlarged .travel-stop{padding-top:28rpx;padding-bottom:28rpx;flex-wrap:wrap;gap:20rpx}
+.display-enlarged .travel-stop>image{width:152rpx;height:132rpx}
+.display-enlarged .travel-stop-copy{min-width:0;line-height:1.7}
+.editorial-cover.display-enlarged{height:480rpx}
+.editorial-body.display-enlarged{padding:38rpx 34rpx 72rpx}
+.display-enlarged .editorial-title{line-height:1.5;word-break:break-word}
+.display-enlarged .editorial-text{line-height:1.95;color:#59483f;margin-top:24rpx;margin-bottom:28rpx}
+.scenic-body.display-enlarged{padding:36rpx 34rpx}
+.display-enlarged .scenic-section{padding-bottom:66rpx}
+.display-enlarged .scenic-copy,.display-enlarged .intro-text{line-height:1.95;color:#59483f}
+.display-enlarged .scenic-wide{height:450rpx}
+.display-enlarged .scenic-facts{flex-wrap:wrap;gap:24rpx}
+.display-enlarged .scenic-facts>view{min-width:40%;flex:1}
+.display-enlarged .practical-card{padding:32rpx;margin-bottom:28rpx}
+.display-enlarged .intro-body{padding:36rpx 34rpx 60rpx}
+.display-enlarged .cms-card{padding:32rpx;margin-bottom:30rpx}
+.display-enlarged .cms-hero{height:450rpx}
+.display-enlarged .cms-detail-text{line-height:1.95;color:#59483f}
+.display-enlarged .cms-fact{flex-wrap:wrap;gap:16rpx;line-height:1.7}
+.feedback-page.display-enlarged{padding:40rpx 32rpx 76rpx}
+.display-enlarged .feedback-panel{padding:36rpx 28rpx;margin-bottom:32rpx}
+.display-enlarged .field-label{line-height:1.6;margin-top:34rpx}
+.display-enlarged .search-result{gap:24rpx;padding:28rpx}
+.display-enlarged .search-result>image{width:200rpx;height:180rpx}
+.display-enlarged .search-result>view>text:last-child{color:#6f5b51;line-height:1.7}
+.display-enlarged .search-types{flex-wrap:wrap;gap:16rpx}
+.display-enlarged .search-types button{min-width:40%;min-height:88rpx;line-height:88rpx}
+/* Full-width guide cards avoid narrow text columns and awkward one-character title lines. */
+.guide-page.display-enlarged{padding-bottom:calc(164rpx + env(safe-area-inset-bottom))}
+.portal.display-enlarged{padding-bottom:24rpx}
+.display-enlarged .guide-row{display:block;position:relative;margin-bottom:28rpx;padding:0;border-radius:26rpx;overflow:hidden}
+.display-enlarged .guide-row:after{border:1rpx solid #eadfd8;border-radius:26rpx}
+.display-enlarged .guide-cover-wrap,.display-enlarged .guide-cover{display:block;width:100%;height:320rpx;border-radius:0}
+.display-enlarged .guide-row-copy{padding:26rpx 28rpx 28rpx;box-sizing:border-box}
+.display-enlarged .guide-row-arrow{display:none}
+.display-enlarged .travel-highlights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20rpx}
+.display-enlarged .cms-photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20rpx}
+.display-enlarged .cms-photo{width:100%;height:240rpx}

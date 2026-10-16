@@ -1,2 +1,4 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <scenic-nav-bar title="浏览记录" bind:layout="bindScenicLayout"/>
 <view class="wt-page"><view class="wt-heading"><text class="wt-heading-title">浏览记录</text><text class="wt-heading-subtitle">重拾那些让你停留的小镇时光</text></view><view wx:if="{{!footList || !footList.length}}" class="wt-state"><text class="wt-state-icon icon-footprint"></text>还没有浏览记录，去发现园区的美好吧</view><view class="saved-list"><button class="saved-content saved-card wt-card-button" wx:for="{{footList}}" wx:key="path" bindtap="url" data-url="{{item.path}}"><text class="saved-icon icon-footprint"></text><view><text class="saved-title">{{item.title}}</text><text class="saved-meta">{{item.type}} · {{item.time}}</text></view><text class="icon-right"></text></button></view></view>
+<reading-tools id="readingTools"/>

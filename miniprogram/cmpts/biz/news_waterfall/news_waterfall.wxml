@@ -1,5 +1,5 @@
 <wxs module="media" src="../../../wxs/media.wxs"/>
-<view class="waterfall">
+<view class="waterfall {{enlarged?'waterfall-enlarged':''}}">
   <view wx:for="{{columns}}" wx:key="index" wx:for-item="column" class="waterfall-column">
     <button wx:for="{{column}}" wx:key="key" class="waterfall-card" data-preview="{{item.preview||false}}" bindtap="url" data-url="{{item.path}}" aria-label="阅读：{{item.title}}">
       <view class="waterfall-photo" style="height:{{item.imageHeight}}rpx;">

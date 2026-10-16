@@ -1,6 +1,6 @@
 .picker-cmpt {
 	line-height: 100rpx;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -26,7 +26,7 @@
 	color: var(--grey);
 	content: "\e6a3";
 	text-align: center;
-	font-size: 34rpx;
+	font-size: calc(34rpx * var(--wt-font-scale, 1));
 	font-family: "icon";
 	line-height: 30rpx;
 	margin-top: auto;

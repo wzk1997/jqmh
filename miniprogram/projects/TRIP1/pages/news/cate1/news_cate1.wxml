@@ -1,3 +1,4 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <wxs module="media" src="../../../../../wxs/media.wxs"/>
 <scenic-nav-bar title="园区资讯" bind:layout="bindScenicLayout"/>
 <view wx:if="{{!_params}}" class="wt-state">正在加载资讯…</view>
@@ -7,3 +8,4 @@
     <import src="../../../../../tpls/public/list_load_tpl.wxml" /><template is="listLoadTpl" data="{{skin:'load-project',dataList,noHint:'暂无符合条件的内容，试试其他分类或搜索词'}}" />
   </cmpt-comm-list>
 </block>
+<reading-tools id="readingTools"/>

@@ -12,7 +12,7 @@
 }
 
 .form-group .phone-text {
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	color: #555;
 	flex: 1;
 	text-align: left;
@@ -32,7 +32,7 @@
 	justify-content: center;
 	position: relative;
 	color: #888;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	margin-top: 10rpx;
 }
 
@@ -78,7 +78,7 @@
 	justify-content: flex-start;
 	align-items: flex-start;
 	line-height: 1.8;
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	border-bottom: 1rpx dotted #ddd;
 	color: #000;
 	padding: 10rpx 10rpx;

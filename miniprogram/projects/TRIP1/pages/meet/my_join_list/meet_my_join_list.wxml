@@ -1,3 +1,4 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <block>
 	<cmpt-comm-list type="my_join" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="meet/my_join_list" isTotalMenu="{{true}}" sortMenusDefaultIndex="0" topBottom="120" placeholder="搜索标题" bind:list="bindCommListCmpt">
 
@@ -48,3 +49,4 @@
 	<!--  button END -->
 
 </block>
+<reading-tools id="readingTools"/>

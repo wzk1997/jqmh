@@ -206,7 +206,7 @@
 }
 
 .dialog-list.menu>.dialog-list-item .content {
-	font-size: 30rpx;
+	font-size: calc(30rpx * var(--wt-font-scale, 1));
 	line-height: 1.6em;
 	flex: 1
 }

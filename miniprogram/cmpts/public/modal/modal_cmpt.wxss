@@ -28,7 +28,7 @@
 
 .modal .dialog .bar .content {
 	color: #333;
-	font-size: 36rpx; 
+	font-size: calc(36rpx * var(--wt-font-scale, 1));
 }
 
 .modal-bar {
@@ -42,7 +42,7 @@
 
 .modal-bar .modal-bar-view {
 	width: 50%;
-	font-size: 36rpx;
+	font-size: calc(36rpx * var(--wt-font-scale, 1));
 	font-weight: bold;
 }
 
@@ -58,7 +58,7 @@
 .modal .modal-dialog .subtitle {
 	width:100%;
 	text-align: center;
-	font-size:30rpx;
+	font-size:calc(30rpx * var(--wt-font-scale, 1));
 	color:#777;
 	padding:0 60rpx;
 	margin-top:10rpx;

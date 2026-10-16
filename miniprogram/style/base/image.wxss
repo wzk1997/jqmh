@@ -32,7 +32,7 @@ image.loading::after {
 	right: 0;
 	bottom: 0;
 	z-index: -1;
-	font-size: 32rpx;
+	font-size: calc(32rpx * var(--wt-font-scale, 1));
 	margin: auto;
 	color: #ccc;
 	-webkit-animation: icon-spin 2s infinite linear;

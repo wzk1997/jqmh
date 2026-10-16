@@ -9,7 +9,7 @@
 	justify-content: center;
 	box-sizing: border-box;
 	padding: 0 30rpx;
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	height: 64rpx;
 	line-height: 1;
 	text-align: center;
@@ -57,21 +57,21 @@
 
 .btn.small {
 	padding: 0 20rpx;
-	font-size: 20rpx;
+	font-size: calc(20rpx * var(--wt-font-scale, 1));
 	height: 48rpx;
 	border-radius: 10rpx;
 }
 
 .btn.mid {
 	padding: 0 20rpx;
-	font-size: 24rpx;
+	font-size: calc(24rpx * var(--wt-font-scale, 1));
 	height: 50rpx;
 	border-radius: 10rpx;
 }
 
 .btn.large {
 	padding: 0 40rpx;
-	font-size: 32rpx;
+	font-size: calc(32rpx * var(--wt-font-scale, 1));
 	height: 80rpx;
 	border-radius: 14rpx;
 }
@@ -125,4 +125,4 @@ button.btn-icon.large {
 
 .btn.border-bold::after {
 	border: 6rpx solid currentColor;
-} 
+}

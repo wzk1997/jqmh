@@ -1,5 +1,6 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <scenic-nav-bar title="提交反馈" bind:layout="bindScenicLayout"/>
-<view class="feedback-page">
+<view class="feedback-page {{wtDisplayMode==='enlarged'?'display-enlarged':''}}">
   <view class="feedback-heading"><text class="feedback-title">提交反馈</text><text class="feedback-subtitle">反馈你的体验与建议，帮助我们改善园区服务。</text></view>
   <view wx:if="{{submitted}}" class="feedback-panel success-panel"><text class="icon-roundcheck success-icon"></text><text class="success-title">{{previewSubmitted?'本地预览完成':'反馈已提交'}}</text><text class="feedback-subtitle">{{previewSubmitted?'这是提交效果演示，反馈未发送到后台。':'感谢你的体验与建议，我们会认真查看。'}}</text><button class="submit-button" bindtap="writeAnother">继续反馈</button></view>
   <view wx:else class="feedback-panel">
@@ -10,3 +11,4 @@
     <text class="privacy-note">联系方式仅用于本次反馈沟通。请勿上传身份证、银行卡等敏感资料。</text><text wx:if="{{error}}" class="error-note">{{error}}</text><button class="submit-button" bindtap="submit" loading="{{submitting}}" disabled="{{submitting || choosing}}">{{submitting?'正在提交':'提交反馈'}}</button>
   </view>
 </view>
+<reading-tools id="readingTools"/>

@@ -55,7 +55,7 @@ page {
 	position: absolute;
 	right: 0rpx;
 	width: 100rpx;
-	font-size: 40rpx;
+	font-size: calc(40rpx * var(--wt-font-scale, 1));
 	font-weight: bold;
 }
 
@@ -63,7 +63,7 @@ page {
 	position: absolute;
 	left: 5rpx;
 	width: 100rpx;
-	font-size: 28rpx; 
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -88,7 +88,7 @@ page {
 	justify-content: center;
 	align-items: center;
 	color: #333;
-	font-size: 32rpx;
+	font-size: calc(32rpx * var(--wt-font-scale, 1));
 	font-weight: bold;
 }
 
@@ -145,12 +145,12 @@ page {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	font-size: 32rpx;
+	font-size: calc(32rpx * var(--wt-font-scale, 1));
 	font-family: 'din';
 }
 
 .cal-center .num .lunar {
-	font-size: 20rpx;
+	font-size: calc(20rpx * var(--wt-font-scale, 1));
 	font-weight: normal;
 	color: #aaa;
 }

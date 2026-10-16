@@ -4,6 +4,6 @@
 .news-cover { width: 190rpx; height: 184rpx; flex-shrink: 0; border-radius: 16rpx; }
 .news-placeholder { display: flex; align-items: center; justify-content: center; font-size: 48rpx; color: var(--wt-brand); background: var(--wt-brand-soft); }
 .news-copy { flex: 1; min-width: 0; margin-left: 24rpx; }
-.news-title { font-size: 30rpx; font-weight: 600; line-height: 1.5; }
-.news-desc { color: var(--wt-muted); font-size: 25rpx; line-height: 1.7; margin-top: 10rpx; }
-.news-meta { margin-top: 20rpx; display: flex; justify-content: space-between; align-items: center; color: var(--wt-muted); font-size: 22rpx; }
+.news-title { font-size: calc(30rpx * var(--wt-font-scale, 1)); font-weight: 600; line-height: 1.5; }
+.news-desc { color: var(--wt-muted); font-size: calc(25rpx * var(--wt-font-scale, 1)); line-height: 1.7; margin-top: 10rpx; }
+.news-meta { margin-top: 20rpx; display: flex; justify-content: space-between; align-items: center; color: var(--wt-muted); font-size: calc(22rpx * var(--wt-font-scale, 1)); }

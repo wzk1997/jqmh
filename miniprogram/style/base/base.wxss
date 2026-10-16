@@ -56,7 +56,7 @@
 	--blackShadow: rgba(26, 26, 26, 0.2);
 
 	background-color: var(--ghostWhite);
-	font-size: 28rpx;
+	font-size: calc(28rpx * var(--wt-font-scale, 1));
 	color: var(--black);
 	font-family: Helvetica Neue, Helvetica, sans-serif;
 

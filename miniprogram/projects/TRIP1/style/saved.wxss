@@ -5,8 +5,8 @@
 .saved-content { display: flex; width: 100%; align-items: center; padding: 28rpx 24rpx; }
 .saved-icon { width: 72rpx; height: 72rpx; border-radius: 20rpx; color: var(--wt-brand); background: var(--wt-brand-soft); display: flex; align-items: center; justify-content: center; font-size: 34rpx; flex-shrink: 0; margin-right: 20rpx; }
 .saved-content > view { flex: 1; min-width: 0; }
-.saved-title { display: block; font-size: 30rpx; font-weight: 600; line-height: 1.5; word-break: break-all; }
-.saved-meta { display: block; font-size: 23rpx; color: var(--wt-muted); margin-top: 12rpx; }
+.saved-title { display: block; font-size: calc(30rpx * var(--wt-font-scale, 1)); font-weight: 600; line-height: 1.5; word-break: break-all; }
+.saved-meta { display: block; font-size: calc(23rpx * var(--wt-font-scale, 1)); color: var(--wt-muted); margin-top: 12rpx; }
 .saved-content > .icon-right { color: var(--wt-muted); margin-left: 12rpx; font-size: 22rpx; }
-.saved-delete { display: flex; align-items: center; justify-content: flex-end; width: 100%; min-height: 80rpx; padding: 16rpx 24rpx; border-top: 1rpx solid var(--wt-border); color: #a43d31; font-size: 24rpx; }
+.saved-delete { display: flex; align-items: center; justify-content: flex-end; width: 100%; min-height: 80rpx; padding: 16rpx 24rpx; border-top: 1rpx solid var(--wt-border); color: #a43d31; font-size: calc(24rpx * var(--wt-font-scale, 1)); }
 .saved-delete .icon-delete { margin-right: 8rpx; }

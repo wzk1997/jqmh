@@ -1,3 +1,4 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <scenic-nav-bar title="完善资料" bind:layout="bindScenicLayout"/>
 <view wx:if="{{isLoad===null}}" class="margin-top load notexist text-l load-project"></view>
 <view wx:if="{{isLoad===false}}" class="margin-top load loading text-l load-project"></view>
@@ -7,3 +8,4 @@
 	<include src="/projects/TRIP1/ui/user_form.wxml" /> 
 	<button bindtap="bindSubmitTap" class="btn-base btn-project">提交注册</button>
 </view>
+<reading-tools id="readingTools"/>

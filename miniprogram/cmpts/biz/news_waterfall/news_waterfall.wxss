@@ -5,17 +5,28 @@
 .waterfall-card::after { border: 1rpx solid #f1eeed; border-radius: 20rpx; }
 .waterfall-photo { position: relative; overflow: hidden; background: #f5efed; }
 .waterfall-image { display: block; width: 100%; height: 100%; }
-.waterfall-label { position: absolute; bottom: 14rpx; left: 14rpx; background: rgba(251,243,242,.95); color: #3a221c; font-size: 21rpx; font-weight: 600; padding: 6rpx 14rpx; border-radius: 26rpx; }
+.waterfall-label { position: absolute; bottom: 14rpx; left: 14rpx; background: rgba(251,243,242,.95); color: #3a221c; font-size: calc(21rpx * var(--wt-font-scale, 1)); font-weight: 600; padding: 6rpx 14rpx; border-radius: 26rpx; }
 .waterfall-copy { background: #fff; padding: 16rpx 18rpx 18rpx; }
-.waterfall-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 26rpx; font-weight: 600; line-height: 1.4; }
-.waterfall-desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 22rpx; font-weight: 400; color: #6d777f; line-height: 1.55; margin-top: 10rpx; }
-.waterfall-meta { display: flex; align-items: center; justify-content: space-between; min-height: 32rpx; color: #657181; font-size: 20rpx; margin-top: 12rpx; }
-.waterfall-views { margin-left: 8rpx; font-size: 20rpx; }
+.waterfall-title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: calc(26rpx * var(--wt-font-scale, 1)); font-weight: 600; line-height: 1.4; }
+.waterfall-desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: calc(22rpx * var(--wt-font-scale, 1)); font-weight: 400; color: #6d777f; line-height: 1.55; margin-top: 10rpx; }
+.waterfall-meta { display: flex; align-items: center; justify-content: space-between; min-height: 32rpx; color: #657181; font-size: calc(20rpx * var(--wt-font-scale, 1)); margin-top: 12rpx; }
+.waterfall-views { margin-left: 8rpx; font-size: calc(20rpx * var(--wt-font-scale, 1)); }
 .waterfall-meta-activity { flex-wrap: wrap; gap: 6rpx; }
-.waterfall-meta-activity .waterfall-date { width: 100%; font-size: 20rpx; line-height: 1.6; }
+.waterfall-meta-activity .waterfall-date { width: 100%; font-size: calc(20rpx * var(--wt-font-scale, 1)); line-height: 1.6; }
 .read-icon { font-size: 30rpx; }
 .waterfall-placeholder { width: 100%; height: 100%; position: relative; overflow: hidden; background: linear-gradient(140deg,#f6eeec,#edddd9); display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .paper-mountain { position: absolute; width: 180rpx; height: 180rpx; transform: rotate(45deg); background: #e2d0cb; border-radius: 18rpx; top: 100rpx; left: -45rpx; }
 .paper-mountain.two { left: 160rpx; top: 124rpx; background: #d8c2bc; }
 .placeholder-icon { color: #844e3f; font-size: 48rpx; z-index: 1; }
 .placeholder-word { color: #76473b; font-size: 23rpx; margin-top: 12rpx; z-index: 1; }
+
+/* One calm reading column in enlarged display; keep source order and original photos. */
+.waterfall-enlarged .waterfall-column{width:100%}
+.waterfall-enlarged .waterfall-column+.waterfall-column{margin-left:0}
+.waterfall-enlarged .waterfall-card{margin-bottom:28rpx;border-radius:26rpx}
+.waterfall-enlarged .waterfall-copy{padding:26rpx 28rpx 28rpx}
+.waterfall-enlarged .waterfall-title{font-size:38rpx;line-height:1.55;-webkit-line-clamp:3;word-break:break-word}
+.waterfall-enlarged .waterfall-desc{font-size:30rpx;line-height:1.8;margin-top:14rpx;color:#6f5b51}
+.waterfall-enlarged .waterfall-meta{font-size:27rpx;line-height:1.7;margin-top:20rpx;flex-wrap:wrap;gap:10rpx}
+.waterfall-enlarged .waterfall-date,.waterfall-enlarged .waterfall-views{font-size:27rpx}
+.waterfall-enlarged .waterfall-label{font-size:26rpx;padding:10rpx 18rpx;left:22rpx;bottom:22rpx}

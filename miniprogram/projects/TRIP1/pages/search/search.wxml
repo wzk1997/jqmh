@@ -1,3 +1,4 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <scenic-nav-bar title="搜索" bind:layout="bindScenicLayout"/>
 <view class="wt-page search-page"><view class="wt-heading"><text class="wt-heading-title">发现你想去的地方</text><text class="wt-heading-subtitle">搜索当前分类的景点、攻略或资讯</text></view>
   <view class="search-toolbar"><view class="search-input"><text class="icon-search"></text><input type="text" model:value="{{search}}" placeholder="请输入搜索内容" aria-label="搜索内容" confirm-type="search" bindconfirm="bindSearchConfirm" maxlength="20" focus/><button wx:if="{{search.length>0}}" class="search-clear wt-card-button" bindtap="bindClearKeyTap" aria-label="清空搜索"><text class="icon-roundclose"></text></button></view><button class="search-action" bindtap="bindSearchConfirm">搜索</button></view>
@@ -5,3 +6,4 @@
   <view wx:if="{{hisKeys.length}}" class="search-history"><button wx:for="{{hisKeys}}" wx:key="*this" data-key="{{item}}" bindtap="bindKeyTap">{{item}}</button></view><view wx:else class="search-empty">还没有搜索记录</view>
   <button class="search-back" bindtap="url" data-type="back">返回上一页</button>
 </view>
+<reading-tools id="readingTools"/>

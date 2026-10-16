@@ -1,13 +1,15 @@
+<page-meta page-style="--wt-font-scale:{{wtFontScale||1}};--wt-entry-caption-lines:{{wtFontScale>1?2:1}};--wt-entry-title-bottom:{{wtFontScale>1?62:31}}rpx;"/>
 <wxs module="media" src="../../../../../wxs/media.wxs"/>
 <wxs module="rich" src="../../../../../wxs/rich_text.wxs"/>
 <scenic-nav-bar bind:layout="bindScenicLayout" title="资讯详情"/>
 <view wx:if="{{isLoad===null}}" class="wt-state"><text class="wt-state-icon icon-info"></text><text>该资讯暂不可查看，请返回选择其他内容。</text><button bindtap="url" data-type="back">返回上一页</button></view>
 <view wx:elif="{{!isLoad}}" class="wt-state">正在加载资讯…</view>
 <block wx:else>
-  <image wx:if="{{news.NEWS_PIC[0] && news.NEWS_PIC[0]!='/images/cover.gif'}}" class="editorial-cover" src="{{media.display(news.NEWS_PIC[0],mediaUrls)}}" mode="aspectFill" bindtap="url" data-type="img" data-url="{{news.NEWS_PIC[0]}}" show-menu-by-longpress/>
-  <view class="editorial-body {{!news.NEWS_PIC[0] || news.NEWS_PIC[0]=='/images/cover.gif'?'no-cover':''}}"><view class="editorial-header"><text class="editorial-label">{{news.NEWS_CATE_NAME}}</text><text class="editorial-title" user-select>{{news.NEWS_TITLE}}</text><text class="editorial-meta">{{news.NEWS_ADD_TIME}}</text></view>
+  <image wx:if="{{news.NEWS_PIC[0] && news.NEWS_PIC[0]!='/images/cover.gif'}}" class="editorial-cover {{wtDisplayMode==='enlarged'?'display-enlarged':''}}" src="{{media.display(news.NEWS_PIC[0],mediaUrls)}}" mode="aspectFill" bindtap="url" data-type="img" data-url="{{news.NEWS_PIC[0]}}" show-menu-by-longpress/>
+  <view class="editorial-body {{wtDisplayMode==='enlarged'?'display-enlarged':''}} {{!news.NEWS_PIC[0] || news.NEWS_PIC[0]=='/images/cover.gif'?'no-cover':''}}"><view class="editorial-header"><text class="editorial-label">{{news.NEWS_CATE_NAME}}</text><text class="editorial-title" user-select>{{news.NEWS_TITLE}}</text><text class="editorial-meta">{{news.NEWS_ADD_TIME}}</text></view>
     <view wx:if="{{news.NEWS_ACTIVITY_START || news.NEWS_ACTIVITY_END}}" class="editorial-text"><text class="icon-time"/> 活动时间：{{news.NEWS_ACTIVITY_START || '待公布'}}{{news.NEWS_ACTIVITY_END?' 至 '+news.NEWS_ACTIVITY_END:''}}</view><block wx:for="{{news.NEWS_CONTENT}}" wx:key="index"><view wx:if="{{item.type=='text'}}" class="editorial-text" style="{{rich.style(item)}}"><text user-select style="{{rich.style(item)}}">{{item.val}}</text></view><view wx:elif="{{item.type=='img'}}" class="editorial-picture"><image src="{{media.display(item.val,mediaUrls)}}" mode="widthFix" lazy-load show-menu-by-longpress bindtap="url" data-type="img" data-url="{{item.val}}"/></view></block>
 
   </view>
   <cmpt-detail doShare="{{false}}" doPoster="{{false}}" doFav="{{false}}" mode="mode1" topBtnShow="{{topBtnShow}}" oid="{{news._id}}" cate="{{news.NEWS_CATE_NAME}}" title="{{news.NEWS_TITLE}}" cover="{{news.NEWS_PIC[0]}}" qr="{{news.NEWS_QR}}" desc="查看详情" bg="{{skin.PROJECT_COLOR}}" />
 </block>
+<reading-tools id="readingTools"/>

@@ -1,0 +1,6 @@
+<view wx:if="{{inline}}" class="display-preference">
+ <text class="display-preference-label">显示大小</text>
+ <view class="display-options" role="radiogroup" aria-label="页面显示大小">
+  <button wx:for="{{modes}}" wx:key="id" class="display-option {{mode===item.id?'is-selected':''}}" data-id="{{item.id}}" bindtap="choose" role="radio" aria-checked="{{mode===item.id}}" aria-label="{{item.label}}显示{{mode===item.id?'，已选择':''}}" hover-class="display-option-pressed"><text wx:if="{{mode===item.id}}" class="display-choice-check" aria-hidden="true">✓</text><text>{{item.label}}</text></button>
+ </view>
+</view>

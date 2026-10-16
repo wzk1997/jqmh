@@ -1,6 +1,8 @@
-<view wx:if="{{inline}}" class="display-preference">
- <text class="display-preference-label">显示大小</text>
- <view class="display-options" role="radiogroup" aria-label="页面显示大小">
-  <button wx:for="{{modes}}" wx:key="id" class="display-option {{mode===item.id?'is-selected':''}}" data-id="{{item.id}}" bindtap="choose" role="radio" aria-checked="{{mode===item.id}}" aria-label="{{item.label}}显示{{mode===item.id?'，已选择':''}}" hover-class="display-option-pressed"><text wx:if="{{mode===item.id}}" class="display-choice-check" aria-hidden="true">✓</text><text>{{item.label}}</text></button>
+<view class="display-dock {{expanded?'is-expanded':''}}">
+ <view class="display-panel" aria-hidden="{{!expanded}}">
+  <view wx:if="{{expanded}}" class="display-options" role="radiogroup" aria-label="页面显示大小">
+   <button wx:for="{{modes}}" wx:key="id" class="display-option {{mode===item.id?'is-selected':''}}" data-id="{{item.id}}" bindtap="choose" role="radio" aria-checked="{{mode===item.id}}" aria-label="{{item.label}}显示{{mode===item.id?'，已选择':''}}" hover-class="display-option-pressed"><text wx:if="{{mode===item.id}}" class="display-choice-check" aria-hidden="true">✓</text><text>{{item.label}}</text></button>
+  </view>
  </view>
+ <button class="display-trigger" bindtap="toggle" aria-label="{{expanded?'收起显示大小切换':'展开显示大小切换，当前为'+(mode==='enlarged'?'放大':'标准')}}" aria-expanded="{{expanded}}" hover-class="display-trigger-pressed"><view class="display-trigger-surface" aria-hidden="true"><view class="display-trigger-chevron"/></view></button>
 </view>

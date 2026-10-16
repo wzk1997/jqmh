@@ -5,7 +5,7 @@ const listeners=new Set();
 let cached=null;
 function normalize(value){
  value=value&&typeof value==='object'?value:{};
- // Preserve a previous larger-text choice while retiring the floating font control.
+ // Preserve a previous larger-text choice when migrating to the display-size control.
  const mode=MODES.some(item=>item.id===value.mode)?value.mode:['large','extra'].includes(value.level)?'enlarged':'standard';
  return {mode};
 }

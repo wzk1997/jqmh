@@ -366,36 +366,6 @@ Component({
 			this._setForm(idx, val);
 		},
 
-		bindGetPhoneNumber: async function (e) {
-			if (e.detail.errMsg == "getPhoneNumber:ok") {
-
-				let cloudID = e.detail.cloudID;
-				let params = {
-					cloudID
-				};
-				let opt = {
-					title: '手机验证中'
-				};
-				await cloudHelper.callCloudSumbit('passport/phone', params, opt).then(res => {
-					let phone = res.data;
-					if (!phone || phone.length < 11)
-						wx.showToast({
-							title: '手机号码获取失败，请重新绑定手机号码',
-							icon: 'none',
-							duration: 2000
-						});
-					else {
-						let idx = pageHelper.dataset(e, 'idx');
-						this._setForm(idx, phone);
-					}
-				});
-			} else
-				wx.showToast({
-					title: '手机号码获取失败，请重新绑定手机号码',
-					icon: 'none'
-				});
-		},
-
 		checkForms: function () {
 			// 写缓存
 			if (this.data.isCacheMatch) {

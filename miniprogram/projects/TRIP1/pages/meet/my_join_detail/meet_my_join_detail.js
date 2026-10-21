@@ -1,6 +1,5 @@
 const pageHelper = require('../../../../../helper/page_helper.js');
 const cloudHelper = require('../../../../../helper/cloud_helper.js');
-const timeHelper = require('../../../../../helper/time_helper.js');
 const qrcodeLib = require('../../../../../lib/tools/qrcode_lib.js');
 const MeetBiz = require('../../../biz/meet_biz.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
@@ -145,13 +144,4 @@ Page({
 		MeetBiz.subscribeMessageMeet(callback);
 	},
 
-	bindCalendarTap: function (e) {
-		let join = this.data.join;
-		let title = join.JOIN_MEET_TITLE;
-
-		let startTime = timeHelper.time2Timestamp(join.JOIN_MEET_DAY + ' ' + join.JOIN_MEET_TIME_START + ':00') / 1000;
-		let endTime = timeHelper.time2Timestamp(join.JOIN_MEET_DAY + ' ' + join.JOIN_MEET_TIME_END + ':00') / 1000;
-
-		pageHelper.addPhoneCalendar(title, startTime, endTime);
-	}
 })

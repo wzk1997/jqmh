@@ -93,9 +93,6 @@ Page({
 
 	},
 
-	bindGetPhoneNumber: async function (e) {
-		await PassportBiz.getPhone(e, this);
-	},
 
 
 	bindSubmitTap: async function (e) {

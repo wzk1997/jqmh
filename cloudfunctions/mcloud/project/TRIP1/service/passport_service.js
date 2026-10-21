@@ -5,7 +5,6 @@
  */
 
 const BaseProjectService = require('./base_project_service.js');
-const cloudBase = require('../../../framework/cloud/cloud_base.js');
 const UserModel = require('../model/user_model.js');
 const dataUtil = require('../../../framework/utils/data_util.js');
 
@@ -44,21 +43,6 @@ class PassportService extends BaseProjectService {
 		await UserModel.insert(data);
 
 		return await this.login(userId);
-	}
-
-	/** 获取手机号码 */
-	async getPhone(cloudID) {
-		let cloud = cloudBase.getCloud();
-		let res = await cloud.getOpenData({
-			list: [cloudID], // 假设 event.openData.list 是一个 CloudID 字符串列表
-		});
-		if (res && res.list && res.list[0] && res.list[0].data) {
-
-			let phone = res.list[0].data.phoneNumber;
-
-			return phone;
-		} else
-			return '';
 	}
 
 	/** 取得我的用户信息 */

@@ -16,23 +16,6 @@ class PassportController extends BaseProjectController {
 		return await service.getMyDetail(this._userId);
 	}
 
-	/** 获取手机号码 */
-	async getPhone() {
-
-		// 数据校验
-		let rules = {
-			cloudID: 'must|string|min:1|max:200|name=cloudID',
-		};
-
-		// 取得数据
-		let input = this.validateData(rules);
-
-
-		let service = new PassportService();
-		return await service.getPhone(input.cloudID);
-	}
-
-
 	/** 注册 */
 	async register() {
 		// 数据校验

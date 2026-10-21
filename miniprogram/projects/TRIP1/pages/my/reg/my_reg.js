@@ -92,9 +92,6 @@ Page({
 
 	},
 
-	bindGetPhoneNumber: async function (e) {
-		PassportBiz.getPhone(e, this);
-	},
 
 
 	bindSubmitTap: async function (e) {

@@ -62,7 +62,7 @@ Page({
         this.prepareScenic(null);this.setData({scenicRecord:null});await this._loadDetail(key,projectSetting.SETUP_CONTENT_ITEMS);
     },
     bindExpand(){this.setData({expanded:!this.data.expanded});},
-    onShareAppMessage(){if(this.data.serviceId)return {title:this.data.contentTitle||'便捷服务',path:'/projects/TRIP1/pages/about/index/about_index?serviceId='+encodeURIComponent(this.data.serviceId)};return {title:this.data.adminPreview?'园区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'园区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
+    onShareAppMessage(){if(this.data.serviceId)return {title:this.data.contentTitle||'游客服务',path:'/projects/TRIP1/pages/about/index/about_index?serviceId='+encodeURIComponent(this.data.serviceId)};return {title:this.data.adminPreview?'园区简介':this.data.scenicRecord&&this.data.scenicRecord.SCENIC_NAME||'园区简介',path:'/projects/TRIP1/pages/about/index/about_index'+(!this.data.adminPreview&&this.data.scenicRecord&&this.data.scenicRecord._id?'?id='+encodeURIComponent(this.data.scenicRecord._id):'')};},
     onPullDownRefresh: async function () {
         try { await this.loadAbout(); }
         finally { wx.stopPullDownRefresh(); }

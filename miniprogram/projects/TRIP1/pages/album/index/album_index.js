@@ -8,7 +8,7 @@ Page({
         items: [], loading: false, error: false, page: 0, hasMore: false,
         category: '', routeCategories: [], contentMode: 'route', sort: 'recommend',
         sorts: [{ id: 'recommend', name: '推荐攻略' }, { id: 'new', name: '最新发布' }, { id: 'popular', name: '最受欢迎' }],
-        entries: [{ id: 'route', name: '经典路线', icon: 'icon-album', color: 'green' }, { id: 'spots', name: '必玩景点', icon: 'icon-location', color: 'orange' }, { id: 'tips', name: '游玩贴士', icon: 'icon-roundcheckfill', color: 'blue' }]
+        entries: [{ id: 'route', name: '经典路线', icon: 'icon-album', color: 'green' }, { id: 'spots', name: '必玩景点', icon: 'icon-location', color: 'orange' }]
     },
     bindScenicLayout(e) { this.setData({ uiChrome: e.detail }); },
     onLoad(options = {}) { ProjectBiz.initPage(this); this.setData({ category: options.id || '' }); this.loadCategories(); this.load(); },
@@ -27,10 +27,7 @@ Page({
         const contentMode = this.data.contentMode;
         let route;
         let params;
-        if (contentMode === 'tips') {
-            route = 'album/list';
-            params = { page, size: 20, sortType: 'cateId', sortVal: 'tips' };
-        } else if (contentMode === 'spots') {
+        if (contentMode === 'spots') {
             route = 'product/list';
             params = { page, size: 20 };
         } else {
@@ -68,7 +65,7 @@ Page({
     sort(e) { const id=e.currentTarget.dataset.id; if (this.data.contentMode !== 'route'||id===this.data.sort||!this.data.sorts.some(item=>item.id===id)) return; this.setData({ sort: id }); this.load(); },
     entry(e) {
         const id = e.currentTarget.dataset.id;
-        if (!['route', 'spots', 'tips'].includes(id)) return;
+        if (!['route', 'spots'].includes(id)) return;
         if (id !== 'route' && this.data.contentMode === id) return;
         if (id === 'route' && this.data.contentMode === 'route' && this.data.category === '') return;
         this.setData({ contentMode: id, ...(id === 'route' ? { category: '' } : {}) });

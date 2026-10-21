@@ -162,11 +162,7 @@ Page({
 		wx.setClipboardData({
 			data: ret,
 			success(res) {
-				wx.getClipboardData({
-					success(res) {
-						pageHelper.showSuccToast('已复制到剪贴板');
-					}
-				})
+				pageHelper.showSuccToast('已复制到剪贴板');
 			}
 		});
 

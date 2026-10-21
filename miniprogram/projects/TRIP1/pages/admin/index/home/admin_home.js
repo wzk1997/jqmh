@@ -12,7 +12,7 @@ Page({
 	data: {modules:[],stat:[]},
     openModule(e){
         const id=e.currentTarget.dataset.id;
-        if(!MODULES.some(item=>item.id===id)||!cms.can(AdminBiz.getAdminToken(),id,'read'))return;
+        if(!MODULES.some(item=>item.id===id&&!item.hidden)||!cms.can(AdminBiz.getAdminToken(),id,'read'))return;
         wx.navigateTo({url:id==='feedback'?'/projects/TRIP1/pages/admin/feedback/admin_feedback':'/projects/TRIP1/pages/admin/cms/list/cms_list?module='+id});
     },
 
@@ -39,7 +39,7 @@ Page({
 		this.setData({
 			isLoad: true,
 			admin,
-            modules:MODULES.filter(module=>module.id!=='product'&&cms.can(admin,module.id,'read')),
+            modules:MODULES.filter(module=>!module.hidden&&module.id!=='product'&&cms.can(admin,module.id,'read')),
             canProduct:cms.can(admin,'product','read'),canScenic:cms.can(admin,'scenic','read')
 		});
 

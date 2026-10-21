@@ -210,37 +210,7 @@ class PassportBiz extends BaseBiz {
 		cacheHelper.remove(constants.CACHE_TOKEN);
 	}
 
-	// 手机号码
-	static async getPhone(e, that) {
-		if (e.detail.errMsg == "getPhoneNumber:ok") {
 
-			let cloudID = e.detail.cloudID;
-			let params = {
-				cloudID
-			};
-			let opt = {
-				title: '手机验证中'
-			};
-			await cloudHelper.callCloudSumbit('passport/phone', params, opt).then(res => {
-				let phone = res.data;
-				if (!phone || phone.length < 11)
-					wx.showToast({
-						title: '手机号码获取失败，请重新填写手机号码',
-						icon: 'none',
-						duration: 2000
-					});
-				else {
-					that.setData({
-						formMobile: phone
-					});
-				}
-			});
-		} else
-			wx.showToast({
-				title: '手机号码获取失败，请重新填写手机号码',
-				icon: 'none'
-			});
-	}
 }
 
 

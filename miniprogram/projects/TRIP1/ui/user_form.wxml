@@ -16,12 +16,8 @@
 
 	<view class="form-group">
 		<view class="title must">手机</view>
-		<input wx:if="{{!mobileCheck}}" type="number" aria-label="手机号码（必填）" placeholder="填写您的手机号码" placeholder-class="phc" model:value="{{formMobile}}" maxlength="11"></input>
+		<input type="number" aria-label="手机号码（必填）" placeholder="填写您的手机号码" placeholder-class="phc" model:value="{{formMobile}}" maxlength="11"></input>
 
-		<block wx:else>
-			<view class="mobile">{{formMobile||'未填写'}}</view>
-			<button open-type="getPhoneNumber" bindgetphonenumber="bindGetPhoneNumber" class="btn phone-button"><text wx:if="{{!formMobile}}">一键填写手机号</text><text wx:else>一键修改手机号</text></button>
-		</block>
 	</view>
 	<view wx:if="{{formMobileFocus}}" class="hint-desc error">{{formMobileFocus}}</view>
 

@@ -3,7 +3,7 @@ const pageHelper = require('../../../../../helper/page_helper.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 
 Page({
-    selectTab(e){this.setData({detailTab:e.currentTarget.dataset.tab});},
+    selectTab(e){const tab=e.currentTarget.dataset.tab;if(!['intro','tips','photos'].includes(tab)||(tab==='tips'&&!this.data.hasTips))return;this.setData({detailTab:tab});},
     photoChange(e){this.setData({photoIndex:e.detail.current});},
     previewPhoto(e){const media=require('../../../../../helper/media_helper.js');wx.previewImage({current:media.display(e.currentTarget.dataset.url),urls:this.data.photos.map(media.display)});},
     bindScenicLayout(e) { this.setData({uiChrome:e.detail}); },
@@ -12,7 +12,7 @@ Page({
 	 */
 	data: {
 		isLoad: false,
-        detailTab:'intro',photos:[],photoIndex:0,
+        detailTab:'intro',photos:[],photoIndex:0,hasTips:false,
 	},
 
 	/**
@@ -45,7 +45,12 @@ Page({
 			return;
 		}
 
+        const object=product.PRODUCT_OBJ||{};
+        product.PRODUCT_OBJ={...object,traffic:typeof object.traffic==='string'?object.traffic.trim():'',other:typeof object.other==='string'?object.other.trim():''};
+        const hasTips=!!(product.PRODUCT_OBJ.traffic||product.PRODUCT_OBJ.other);
 		this.setData({
+            hasTips,
+            detailTab:this.data.detailTab==='tips'&&!hasTips?'intro':this.data.detailTab,
 			isLoad: true,
 			product,
             photos:((product.PRODUCT_OBJ.album||[]).length?product.PRODUCT_OBJ.album:(product.PRODUCT_OBJ.cover||[])).filter(src=>src&&src!=='/images/cover.gif'),

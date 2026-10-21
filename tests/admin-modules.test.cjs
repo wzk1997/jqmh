@@ -5,7 +5,7 @@ const vm=require('node:vm');
 const inventory=require('../miniprogram/projects/TRIP1/ui/admin_modules.js');
 
 test('admin statistics omit retired modules even when an older server returns them',()=>{
- const rows=[{title:'全景资源',cnt:3},{module:'panorama',title:'全景',cnt:4},{title:'预约项目',cnt:5},{title:'精选推荐',cnt:6},{title:'景区介绍',cnt:1},{module:'album',title:'攻略数',cnt:2},{title:'商家数',cnt:7}];
+ const rows=[{module:'service',title:'服务数',cnt:8},{title:'服务数',cnt:8},{title:'全景资源',cnt:3},{module:'panorama',title:'全景',cnt:4},{title:'预约项目',cnt:5},{title:'精选推荐',cnt:6},{title:'景区介绍',cnt:1},{module:'album',title:'攻略数',cnt:2},{title:'商家数',cnt:7}];
  const stats=inventory.visibleStats(rows,id=>id!=='merchant');
  assert.deepEqual(stats,[{module:'scenic',title:'园区简介',cnt:1},{module:'album',title:'攻略数',cnt:2}]);
  assert.deepEqual(inventory.visibleStats(null,()=>true),[]);
@@ -24,11 +24,11 @@ test('admin refresh rebuilds permitted menus and rejects retired module navigati
  await page._loadDetail();
  assert.deepEqual(Array.from(page.data.modules,item=>item.id),['album']);
  assert.equal(page.data.stat.length,1);
- for(const id of ['panorama','meet','scenic'])page.openModule({currentTarget:{dataset:{id}}});
+ for(const id of ['panorama','meet','scenic','service'])page.openModule({currentTarget:{dataset:{id}}});
  assert.equal(navigations.length,0);
  page.openModule({currentTarget:{dataset:{id:'album'}}});
  assert(navigations[0].endsWith('?module=album'));
- admin={permissions:{scenic:['read'],album:['read']}};
+ admin={permissions:{scenic:['read'],album:['read'],service:['read']}};
  await page._loadDetail();
  assert.deepEqual(Array.from(page.data.modules,item=>item.id),['scenic','album']);
  assert.equal(typeof page.bindMoreTap,'undefined');

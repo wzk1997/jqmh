@@ -24,6 +24,20 @@ const CODE = {
 	ADMIN_ERROR: 2401 //管理员错误
 };
 
+// Parallel requests can fail together; keep one failure dialog visible.
+let cloudFailureVisible = false;
+function showCloudFailure(content) {
+    if (cloudFailureVisible) return;
+    cloudFailureVisible = true;
+    try {
+        wx.showModal({title: '请求失败', content, showCancel: false,
+            complete: () => { cloudFailureVisible = false; }});
+    } catch (error) {
+        cloudFailureVisible = false;
+        throw error;
+    }
+}
+
 function callCloudSumbitAsync(route, params = {}, options) {
 	if (!helper.isDefined(options)) options = {
 		hint: false
@@ -153,37 +167,22 @@ function callCloud(route, params = {}, options) {
 				resolve(res.result);
 			},
 			fail: function (err) {
-				if (hint) {
-					console.log(err)
-					if (err && err.errMsg && err.errMsg.includes('-501000') && err.errMsg.includes('Environment not found')) {
-						wx.showModal({
-							title: '',
-							content: '未找到云环境ID，请按手册检查前端配置文件setting.js的配置项【CLOUD_ID】或咨询作者微信cclinux0730',
-							showCancel: false
-						});
-
-					} else if (err && err.errMsg && err.errMsg.includes('-501000') && err.errMsg.includes('FunctionName')) {
-						wx.showModal({
-							title: '',
-							content: '云函数未创建或者未上传，请参考手册或咨询作者微信cclinux0730',
-							showCancel: false
-						});
-
-					} else if (err && err.errMsg && err.errMsg.includes('-501000') && err.errMsg.includes('performed in the current function state')) {
-						wx.showModal({
-							title: '',
-							content: '云函数正在上传中或者上传有误，请稍候',
-							showCancel: false
-						});
-					} else
-						wx.showModal({
-							title: '',
-							content: '网络故障，请稍后重试',
-							showCancel: false
-						});
-				}
-				reject(err.result);
-				return;
+                // Preserve SDK diagnostics even for background requests (hint:false).
+                const message = String(err && (err.errMsg || err.message) || '');
+                const code = err && (err.errCode || err.code);
+                const requestId = err && (err.requestID || err.requestId);
+                console.error('[cloud.callFunction failed]', {route, code, message, requestId});
+                let content = '云服务调用失败，请稍后重试';
+                if (/Environment not found/i.test(message)) content = '云环境不存在，请检查云环境配置';
+                else if (/FunctionName|FUNCTION_NOT_FOUND/i.test(message)) content = '云函数不存在，请检查 mcloud 是否已部署';
+                else if (/performed in the current function state/i.test(message)) content = '云函数正在更新或暂不可用，请稍后重试';
+                else if (/timeout|timed out|TIME_LIMIT/i.test(message)) content = '云服务响应超时，请稍后重试';
+                else if (/RESOURCE_INSUFFICIENT|quota|exceed.*limit|欠费|配额/i.test(message)) content = '云服务资源额度或并发受限，请管理员检查云环境';
+                else if (/execution error|FUNCTION_EXECUTE|FUNCTION_EXECUTION/i.test(message)) content = '云函数执行异常，请管理员检查云端日志';
+                else if (/network|net::|connection|连接失败|网络/i.test(message)) content = '网络连接失败，请检查网络后重试';
+                if (code !== undefined && code !== null) content += '（错误码：' + code + '）';
+                if (hint) showCloudFailure(content);
+                reject(err || new Error('云服务调用失败'));
 			},
 			complete: function (res) {
 				if (hint) {

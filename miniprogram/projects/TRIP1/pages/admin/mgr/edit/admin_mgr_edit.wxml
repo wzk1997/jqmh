@@ -36,7 +36,8 @@
 
 	</view>
 
-	<button bindtap="url" data-url="../permissions/admin_permissions?id={{id}}" class="btn-admin margin-top">配置操作权限</button>
+	<view wx:if="{{isTargetSuperAdmin}}" class="hint-desc margin-top">超级管理员拥有全部操作权限，无需配置</view>
+	<button wx:else bindtap="url" data-url="../permissions/admin_permissions?id={{id}}" class="btn-admin margin-top">配置操作权限</button>
 	<button bindtap="bindFormSubmit" class="btn-admin margin-top">确定修改</button>
 
 </view>

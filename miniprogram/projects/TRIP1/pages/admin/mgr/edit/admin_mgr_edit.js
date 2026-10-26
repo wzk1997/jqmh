@@ -84,6 +84,7 @@ Page({
 
 		this.setData({
 			isLoad: true,
+			isTargetSuperAdmin: Number(mgr.ADMIN_TYPE) === 1,
 
 			// 表单数据 
 			formName: mgr.ADMIN_NAME,
